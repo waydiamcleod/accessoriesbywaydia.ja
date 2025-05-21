@@ -218,18 +218,17 @@
             </label>
             <div v-if="order.payment === 'lynk'" style="margin:10px 0;">
               <b>Lynk Payment:</b>
-              <a href="https://lynk-pay-link.example" target="_blank">Pay on Lynk</a>
+              <a href="https://deep.lynk.us/6Eae
+" target="_blank">Pay on Lynk</a>
               <!-- Replace with your actual Lynk link -->
             </div>
             <div v-if="order.payment === 'paypal'" style="margin:10px 0;">
               <b>PayPal:</b>
-              <a href="https://paypal.me/yourpaypalusername" target="_blank">Pay on PayPal</a>
-              <!-- Replace with your actual PayPal.me link -->
+              <a href="https://www.paypal.me/WaydiaMcLeod" target="_blank">Pay on PayPal</a>
             </div>
             <div v-if="order.payment === 'ncb'" style="margin:10px 0;">
               <b>NCB Bank Transfer:</b>
-              <br>Bank: NCB<br>Account Name: Accessories by Waydia<br>Account Number: 123456789<br>Branch: Spanish Town<br>
-              <!-- Replace with your actual details -->
+              <br>Bank: NCB<br>Account Name: Waydia McLeod<br>Account Number: 475001613<br>Branch: St.Jago Shopping Center Branch<br>
             </div>
             <div v-if="order.payment === 'cod'" style="margin:10px 0;">
               <b>Cash on Delivery selected. Please have exact change ready.</b>
@@ -249,7 +248,7 @@
     </div>
   </div>
   <script>
-    emailjs.init('YOUR_EMAILJS_USER_ID'); // <-- Replace with your EmailJS user ID
+    emailjs.init('service_qpk2hk8'); // <-- Replace with your EmailJS user ID
 
     new Vue({
       el: '#app',
@@ -274,7 +273,7 @@
           {id: 3, name: 'Batman Lego Keychain', price: 850, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lego%20Accessories%20_%20Pink%20Batman%20Keychain%20_%20Color_%20Black_Pink%20_%20Size_%20Os.jpg?raw=true', stock: 10, colors: ['Pink','Black'], selectedColor: ''},
           {id: 4, name: 'Miu Style Cat Head Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4b7310a3a1dc460cb166048ca80bf69e0.webp', stock: 6},
           {id: 5, name: 'Miu Style Heart Shaped Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6eba452254fe438f8e74a90b6a434b87n.webp', stock: 6},
-          {id: 6, name: 'Dachshund', price: 1000, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant%20for%20Phone%20[...].jpg?raw=true', stock: 3},
+          {id: 6, name: 'Dachshund', price: 1000, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant%20for%20Phone%20Bag%20Accessories%20Style%20A.jpg?raw=true', stock: 3},
           {id: 7, name: 'Tennis Racket Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H7deef4f9cf394e708254b291e3610bf7w.webp', stock: 3},
           {id: 8, name: 'Tennis Racket Keychain + Bible', price: 1100, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4082d5e9abc343d796c724005550d886h.webp', stock: 4},
           {id: 9, name: 'Flower Claw Clip', price: 500, type: 'clawclip', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true', stock: 20, colors: ['Pink','White','Burgundy','Yellow','Orange','Green','Purple'], selectedColor: ''}
@@ -290,7 +289,7 @@
         },
         shippingOptions: [
           { label: "Spanish Town – 300 JMD", value: 300, currency: "JMD" },
-          { label: "Post-to-Door – 1000 JMD", value: 1000, currency: "JMD" },
+          { label: "Zip Mail Post-to-Door – 1000 JMD", value: 1000, currency: "JMD" },
           { label: "Zip Mail Post-to-Post – 700 JMD", value: 700, currency: "JMD" },
           { label: "International – 9 USD", value: 9, currency: "USD" }
         ]
