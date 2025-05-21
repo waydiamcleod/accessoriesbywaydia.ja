@@ -487,7 +487,7 @@
             selectedColor: [ ],
           },
         ],
-        cart: [],
+       cart: [],
           showCart: false,
           order: {
             name: "",
@@ -500,74 +500,87 @@
       },
       computed: {
         filteredProducts() {
-          return this.products.filter((product) => {
-            const typeMatch =
-              this.filters.type === "all" || product.type === this.filters.type;
-            let priceMatch = true;
-            const price = product.price;
-            switch (this.filters.price) {
-              case "under800":
-                priceMatch = price < 800;
-                break;
-              case "800to1000":
-                priceMatch = price >= 800 && price <= 1000;
-                break;
-              case "over1000":
-                priceMatch = price > 1000;
-                break;
-              default:
-                priceMatch = true;
+          let filtered = this.products;
+
+          // Filter by type
+          if (this.filters.type !== "all") {
+            filtered = filtered.filter((p) => p.type === this.filters.type);
+          }
+
+          // Filter by price
+          if (this.filters.price !== "all") {
+            if (this.filters.price === "under800") {
+              filtered = filtered.filter((p) => p.price < 800);
+            } else if (this.filters.price === "800to1000") {
+              filtered = filtered.filter(
+                (p) => p.price >= 800 && p.price <= 1000
+              );
+            } else if (this.filters.price === "over1000") {
+              filtered = filtered.filter((p) => p.price > 1000);
             }
-            return typeMatch && priceMatch;
-          });
+          }
+          return filtered;
         },
         cartCount() {
-          return this.cart.reduce((sum, item) => sum + item.qty, 0);
+          return this.cart.reduce((acc, item) => acc + item.qty, 0);
         },
         cartTotal() {
-          return this.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+          return this.cart.reduce(
+            (acc, item) => acc + item.price * item.qty,
+            0
+          );
         },
         orderSummary() {
-          if (!this.cart.length) return "";
           return this.cart
             .map(
               (item) =>
-                `${item.name}${item.color ? " (" + item.color + ")" : ""} x ${
-                  item.qty
-                } = ${this.formattedPrice(item.price * item.qty)}`
+                `${item.name} ${
+                  item.color ? "(" + item.color + ")" : ""
+                } x${item.qty} - ${this.formattedPrice(item.price * item.qty)}`
             )
-            .join("\n") + `\nTotal: ${this.formattedPrice(this.cartTotal)}`;
+            .join("\n");
         },
       },
       methods: {
-        formattedPrice(amount) {
-          // Format as Jamaican Dollar with $ sign
-          return `$${amount.toLocaleString("en-JM")}`;
+        formattedPrice(jmdPrice) {
+          const rate = this.rates[this.currency];
+          let converted = jmdPrice * rate;
+          let symbol = "";
+
+          switch (this.currency) {
+            case "USD":
+              symbol = "$";
+              break;
+            case "GBP":
+              symbol = "£";
+              break;
+            default:
+              symbol = "J$";
+          }
+
+          return symbol + converted.toFixed(2);
         },
         addToCart(product) {
-          // Find if same product/color combo exists
-          const existingIndex = this.cart.findIndex(
-            (item) => item.id === product.id && item.color === product.selectedColor
-          );
-          if (existingIndex !== -1) {
-            // Increase quantity if stock allows
-            if (this.cart[existingIndex].qty < product.stock) {
-              this.cart[existingIndex].qty++;
-            } else {
-              alert("You have reached the max stock for this item.");
+          // Compose unique cart id with color if any
+          const id = product.id + (product.selectedColor ? "-" + product.selectedColor : "");
+
+          const cartItem = this.cart.find((item) => item.id === id);
+
+          if (cartItem) {
+            if (cartItem.qty < product.stock) {
+              cartItem.qty++;
             }
           } else {
             this.cart.push({
-              id: product.id,
+              id: id,
               name: product.name,
               price: product.price,
               qty: 1,
-              color: product.selectedColor,
+              color: product.selectedColor || null,
               stock: product.stock,
             });
           }
           this.showCart = true;
-          this.orderSuccess = false;
         },
         removeItem(index) {
           this.cart.splice(index, 1);
@@ -585,15 +598,8 @@
           }
         },
         submitOrder() {
-          if (
-            !this.order.name ||
-            !this.order.email ||
-            !this.order.phone ||
-            !this.order.address
-          ) {
-            alert("Please fill all required fields.");
-            return;
-          }
+          // Normally submit form to Formspree or backend API
+          // Here simulate success and clear cart + form
           alert("Order submitted! We'll contact you soon.");
           this.orderSuccess = true;
           this.cart = [];
