@@ -385,42 +385,57 @@
 
         <h3>Total: {{ formatPrice(convertPrice(cartTotal)) }}</h3>
 
-        <form @submit.prevent="submitOrder" class="checkout-form" v-if="cart.length">
-          <label>
-            Name:
-            <input type="text" v-model="orderForm.name" required />
-          </label>
-          <label>
-            Email:
-            <input type="email" v-model="orderForm.email" required />
-          </label>
-          <label>
-            Phone Number:
-            <input type="text" v-model="orderForm.phone" required />
-          </label>
-          <label>
-            Shipping Address:
-            <input type="text" v-model="orderForm.address" required />
-          </label>
-          <label>
-            Payment Option:
-            <select v-model="orderForm.payment" required>
-              <option value="">Select Payment Option</option>
-              <option>Lynk</option>
-              <option>Cash on Delivery</option>
-              <option>PayPal</option>
-              <option>Bank Transfer (NCB)</option>
-            </select>
-          </label>
-          <button type="submit" class="btn-buy" style="margin-top: 1rem;">
-            Place Order
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-
   <script>
+    new Vue({
+      el: '#app',
+      data: {
+        cart: [],
+        showCart: false,
+        filters: {
+          type: '',
+          maxPrice: Infinity
+        },
+        currency: 'JMD',
+        selectedShipping: 'spanish_town',
+        shippingRates: {
+          spanish_town: { JMD: 300, USD: 2 },
+          zip_mail: { JMD: 700, USD: 5 },
+          post_to_door: { JMD: 1000, USD: 7 },
+          international: { JMD: 1400, USD: 9 }
+        },
+        // other existing data properties
+      },
+      computed: {
+        // existing computed properties
+        totalWithShipping() {
+          const productTotal = this.cart.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+          );
+          const shipping = this.shippingRates[this.selectedShipping][this.currency] || 0;
+          return productTotal + shipping;
+        }
+      },
+      methods: {
+        formatPrice(amount) {
+          return this.currency === 'USD'
+            ? `$${amount.toFixed(2)}`
+            : `${amount.toFixed(0)} JMD`;
+        },
+        convertPrice(price) {
+          const conversionRate = 155; // example USD to JMD rate
+          return this.currency === 'USD' ? price / conversionRate : price;
+        },
+        increaseQuantity(index) {
+          this.cart[index].quantity++;
+        },
+        decreaseQuantity(index) {
+          if (this.cart[index].quantity > 1) {
+            this.cart[index].quantity--;
+          } else {
+            this.cart.splice(index, 1);
+          }
+        },
     new Vue({
       el: '#app',
       data: {
