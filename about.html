@@ -1,71 +1,121 @@
+<!-- ABOUT PAGE -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>About - Accessories by Waydia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400|Montserrat:400,500,700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | Accessories by Waydia</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    /* Same styles as your index or put in a separate CSS */
     body {
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      font-family: 'Montserrat', Arial, sans-serif;
-      background: #fffaf7;
-      color: #7c5e3c;
+      background-color: #f8f8f8;
     }
-    .navbar { /* same navbar style as before */ }
-    .logo { /* same */ }
-    .nav-links { /* same */ }
-    .nav-links a { /* same */ }
-    .nav-links a:hover { /* same */ }
-
-    main {
-      max-width: 800px;
-      margin: 3rem auto;
-      padding: 0 1.5rem;
+    .header {
+      background-color: #ffc0cb;
+      padding: 1rem;
+      text-align: center;
     }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
+    .header a {
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+    }
+    .about-section {
+      text-align: center;
+      padding: 2rem;
+    }
+    .about-img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #ffc0cb;
       margin-bottom: 1rem;
     }
-    p {
-      line-height: 1.6;
+    .about-text {
+      max-width: 600px;
+      margin: 0 auto;
       font-size: 1.1rem;
-    }
-    footer {
-      background: #f3e8dd;
-      padding: 2rem;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #7c5e3c;
-      margin-top: 3rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="logo">Accessories by Waydia</div>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="shop.html">Shop All</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="header">
+    <a href="index.html">← Back to Homepage</a>
+  </div>
 
-  <main>
-    <h1>About Accessories by Waydia</h1>
-    <p>Welcome to Accessories by Waydia! We specialize in handcrafted keychains, bag charms, and other accessories that bring a unique, personal touch to your everyday items.</p>
-    <p>Our mission is to blend style and craftsmanship, creating pieces that make you feel special and confident. Every item is made with love and attention to detail.</p>
-    <p>Thank you for supporting our small business and allowing us to be part of your style journey!</p>
-  </main>
+  <div class="about-section">
+    <img src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/MPX_8969.JPG?raw=true" alt="Waydia" class="about-img">
+    <div class="about-text">
+      <h2>About Me</h2>
+      <p>Hi, I’m Waydia McLeod, the founder of Accessories by Waydia. I’m passionate about creating and curating stylish accessories that bring out the personality in every outfit. Whether it's cute keychains, hair clips, or custom trinkets, I make sure each piece reflects fun, creativity, and individuality. Thanks for supporting my journey!</p>
+    </div>
+  </div>
+</body>
+</html>
 
-  <footer>
-    &copy; 2025 Accessories by Waydia. All rights reserved.
-  </footer>
+
+<!-- CONTACT PAGE -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Accessories by Waydia</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background-color: #ffc0cb;
+      padding: 1rem;
+      text-align: center;
+    }
+    .header a {
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+    }
+    .contact-section {
+      text-align: center;
+      padding: 2rem;
+    }
+    .contact-logo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #ffc0cb;
+      margin-bottom: 1rem;
+    }
+    .contact-details {
+      font-size: 1.1rem;
+    }
+    .contact-details p {
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="index.html">← Back to Homepage</a>
+  </div>
+
+  <div class="contact-section">
+    <img src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/W.png?raw=true" alt="Accessories by Waydia Logo" class="contact-logo">
+    <div class="contact-details">
+      <h2>Contact Me</h2>
+      <p>Email: accessoriesbywaydia@gmail.com</p>
+      <p>Instagram: <a href="https://instagram.com/accessoriesbywaydia" target="_blank">@accessoriesbywaydia</a></p>
+      <p>Phone/WhatsApp: +1 (876) XXX-XXXX</p>
+    </div>
+  </div>
 </body>
 </html>
