@@ -306,15 +306,6 @@
       </label>
     </section>
 
-    <section class="featured-collection" v-if="featuredProduct.images.length">
-      <h2>{{ featuredProduct.name }} - Views</h2>
-      <img :src="featuredProduct.images[currentImageIndex]" :alt="featuredProduct.name" />
-      <div class="swipe-controls">
-        <button @click="prevImage">◀</button>
-        <button @click="nextImage">▶</button>
-      </div>
-    </section>
-
     <section class="shop-grid">
       <div
         v-for="product in filteredProducts"
