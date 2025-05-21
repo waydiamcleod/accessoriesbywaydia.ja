@@ -1,61 +1,122 @@
-<!-- CONTACT PAGE -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact | Accessories by Waydia</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact – Accessories by Waydia</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f8f8;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
+      background-color: #fff8f4;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .header {
-      background-color: #ffc0cb;
-      padding: 1rem;
+
+    header {
+      padding: 20px;
       text-align: center;
     }
-    .header a {
-      text-decoration: none;
-      color: #000;
-      font-weight: bold;
+
+    header h1 {
+      margin: 10px 0;
+      font-size: 2em;
     }
-    .contact-section {
-      text-align: center;
-      padding: 2rem;
-    }
-    .contact-logo {
-      width: 160px;
-      height: 160px;
+
+    .logo {
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid #ffc0cb;
-      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-    .contact-details {
-      font-size: 1.1rem;
+
+    .form-container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 500px;
+      margin: 30px 0;
     }
-    .contact-details p {
-      margin: 0.5rem 0;
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    input, textarea {
+      margin-top: 8px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #ff69b4;
+      box-shadow: 0 0 0 2px #ffe0ef;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e458a0;
+    }
+
+    .home-link {
+      margin-bottom: 30px;
+      color: #ff69b4;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .home-link:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <a href="index.html">← Back to Homepage</a>
+  <header>
+    <img class="logo" src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/W.png?raw=true" alt="Logo" />
+    <h1>Contact Me</h1>
+  </header>
+
+  <div class="form-container">
+    <form action="https://formsubmit.co/mcleodwaydia@gmail.com" method="POST">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" required>
+
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" required>
+
+      <label for="message">Message</label>
+      <textarea name="message" id="message" rows="5" required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
   </div>
 
-  <div class="contact-section">
-    <img src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/W.png?raw=true" alt="Accessories by Waydia Logo" class="contact-logo">
-    <div class="contact-details">
-      <h2>Contact Me</h2>
-      <p>Email: mcleodwaydia@gmail.com</p>
-      <p>Instagram: <a href="https://instagram.com/accessoriesbywaydia.ja" target="_blank">@accessoriesbywaydia.ja</a></p>
-      <p>Phone/WhatsApp: +1 (876) 792-2386</p>
-    </div>
-  </div>
+  <a class="home-link" href="index.html">← Back to Home</a>
 </body>
 </html>
