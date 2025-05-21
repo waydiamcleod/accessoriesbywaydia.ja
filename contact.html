@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact - Accessories by Waydia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400|Montserrat:400,500,700&display=swap" rel="stylesheet" />
+  <style>
+    /* Same base styles as above */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #fffaf7;
+      color: #7c5e3c;
+    }
+    .navbar { /* same navbar style */ }
+    .logo { /* same */ }
+    .nav-links { /* same */ }
+    .nav-links a { /* same */ }
+    .nav-links a:hover { /* same */ }
+
+    main {
+      max-width: 600px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    label {
+      font-weight: 600;
+    }
+    input, textarea {
+      padding: 0.6rem;
+      border: 1px solid #a0846a;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      color: #7c5e3c;
+    }
+    button {
+      padding: 0.8rem 1.5rem;
+      background-color: #cc6d8c;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 150px;
+      align-self: start;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #b95e7b;
+    }
+    footer {
+      background: #f3e8dd;
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #7c5e3c;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Accessories by Waydia</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop All</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Contact Us</h1>
+    <p>Have questions or want to get in touch? Send us a message!</p>
+    <form action="mailto:capu.editors@gmail.com" method="post" enctype="text/plain">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" required />
+      
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required />
+      
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+      
+      <button type="submit">Send</button>
+    </form>
+  </main>
+
+  <footer>
+    &copy; 2025 Accessories by Waydia. All rights reserved.
+  </footer>
+</body>
+</html>
