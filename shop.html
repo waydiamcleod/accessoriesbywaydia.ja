@@ -1,453 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Accessories by Waydia - Shop</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0; padding: 0;
-    background: #f9f9f9;
-  }
-  header {
-    background: #444;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-  }
-  main {
-    max-width: 1000px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-  }
-  .products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
-    gap: 1.5rem;
-  }
-  .product {
-    background: white;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .product img {
-    max-width: 100%;
-    border-radius: 5px;
-    margin-bottom: 0.5rem;
-  }
-  .product h3 {
-    margin: 0.25rem 0;
-  }
-  .product p {
-    margin: 0.25rem 0;
-  }
-  .product select {
-    margin: 0.5rem 0;
-    padding: 0.25rem;
-  }
-  button.add-to-cart {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  button.add-to-cart:hover {
-    background: #0056b3;
-  }
-  .cart {
-    background: white;
-    padding: 1rem;
-    margin-top: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-  }
-  .cart h2 {
-    margin-top: 0;
-  }
-  .cart-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  .cart-item img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
-  .cart-item p {
-    margin: 0;
-    flex-grow: 1;
-  }
-  .cart-item input[type=number] {
-    width: 60px;
-    padding: 0.25rem;
-  }
-  .cart-item button.remove-item {
-    background: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 0.3rem 0.6rem;
-    cursor: pointer;
-  }
-  .cart-item button.remove-item:hover {
-    background: #a71d2a;
-  }
-  .cart-total {
-    font-weight: bold;
-    text-align: right;
-    margin-top: 1rem;
-  }
-  form#checkout-form {
-    background: white;
-    padding: 1rem;
-    margin-top: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-    max-width: 500px;
-  }
-  form#checkout-form label {
-    display: block;
-    margin-top: 1rem;
-    font-weight: bold;
-  }
-  form#checkout-form input,
-  form#checkout-form textarea,
-  form#checkout-form select {
-    width: 100%;
-    padding: 0.4rem;
-    margin-top: 0.25rem;
-    box-sizing: border-box;
-  }
-  form#checkout-form button {
-    margin-top: 1.5rem;
-    padding: 0.7rem 1.2rem;
-    background: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  form#checkout-form button:hover {
-    background: #19692c;
-  }
-  @media (max-width: 600px) {
-    .products {
-      grid-template-columns: 1fr;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop All - Accessories by Waydia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fefefe;
     }
-  }
-</style>
+
+    header {
+      background-color: #ffd8e4;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    nav {
+      background-color: #fff0f6;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: #d6336c;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      background: #fff;
+      text-align: center;
+    }
+
+    .product img {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .product h3 {
+      margin: 10px 0 5px;
+    }
+
+    .product p {
+      margin: 0 0 10px;
+    }
+
+    .product button {
+      background-color: #d6336c;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #cart-section {
+      padding: 20px;
+      background: #fff0f6;
+    }
+
+    #cart-items {
+      margin-top: 10px;
+    }
+
+    #floating-cart {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #fff;
+      border: 2px solid #000;
+      border-radius: 50px;
+      padding: 10px 15px;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.2s ease;
+    }
+
+    #floating-cart:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
+
 <body>
+  <header>
+    <h1>Accessories by Waydia</h1>
+  </header>
 
-<header>
-  <h1>Accessories by Waydia - Shop</h1>
-</header>
-
-<main>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop All</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 
   <section class="products" id="product-list">
-    <!-- Products will be rendered here -->
+    <!-- Products go here -->
   </section>
 
-  <section class="cart" id="cart-section" style="display:none;">
+  <section id="cart-section">
     <h2>Your Cart</h2>
     <div id="cart-items"></div>
-    <div class="cart-total" id="cart-total"></div>
   </section>
 
-  <section>
-    <form id="checkout-form" style="display:none;">
-      <h2>Checkout</h2>
-      <label for="full-name">Full Name *</label>
-      <input type="text" id="full-name" name="full-name" required />
+  <div id="floating-cart" onclick="document.getElementById('cart-section').scrollIntoView({behavior: 'smooth'})">
+    🛒 <span id="cart-count">0</span>
+  </div>
 
-      <label for="email">Email Address *</label>
-      <input type="email" id="email" name="email" required />
-
-      <label for="shipping-address">Shipping Address *</label>
-      <textarea id="shipping-address" name="shipping-address" rows="3" required></textarea>
-
-      <label for="payment-method">Payment Method *</label>
-      <select id="payment-method" name="payment-method" required>
-        <option value="">-- Select Payment Method --</option>
-        <option value="cod">Cash on Delivery</option>
-        <option value="lynk">Lynk Payment Link</option>
-        <option value="paypal">PayPal</option>
-        <option value="bank-transfer">Bank Transfer (NCB)</option>
-      </select>
-
-      <button type="submit">Place Order</button>
-    </form>
-  </section>
-
-</main>
-
-<script>
-  // Sample product data
-  const products = [
-    {
-      id: 1,
-      name: "Pearl Bow Heart Keychain",
-      price: 700,
-      currency: "JMD",
-      image: "https://via.placeholder.com/200x200?text=Pearl+Bow+Heart",
-      stock: 5,
-      variants: []
-    },
-    {
-      id: 2,
-      name: "Puppy Teddy Pendant",
-      price: 800,
-      currency: "JMD",
-      image: "https://via.placeholder.com/200x200?text=Puppy+Teddy",
-      stock: 3,
-      variants: []
-    },
-    {
-      id: 3,
-      name: "Batman Lego Keychain",
-      price: 850,
-      currency: "JMD",
-      image: "https://via.placeholder.com/200x200?text=Batman+Lego",
-      stock: 2,
-      variants: []
-    },
-    {
-      id: 4,
-      name: "Miu Style Cat Head Keychain",
-      price: 1000,
-      currency: "JMD",
-      image: "https://via.placeholder.com/200x200?text=Miu+Cat+Head",
-      stock: 4,
-      variants: []
-    },
-    {
-      id: 5,
-      name: "Dachshund Keychain",
-      price: 1000,
-      currency: "JMD",
-      image: "https://via.placeholder.com/200x200?text=Dachshund",
-      stock: 0,
-      variants: []
-    },
-    {
-      id: 6,
-      name: "Tennis Racket Keychain",
-      price: 1000,
-      currency: "JMD",
-      image: "https://via.placeholder.com/200x200?text=Tennis+Racket",
-      stock: 6,
-      variants: []
-    },
-    {
-      id: 7,
-      name: "Tennis Racket + Bible Keychain",
-      price: 1100,
-      currency: "JMD",
-      image: "https://via.placeholder.com/200x200?text=Tennis+Racket+Bible",
-      stock: 1,
-      variants: []
-    },
-    {
-      id: 8,
-      name: "Claw Clip",
-      price: 800,
-      currency: "JMD",
-      image: "https://via.placeholder.com/200x200?text=Claw+Clip",
-      stock: 10,
-      variants: ["Black", "Brown", "Pink", "Purple", "Yellow"]
-    }
-  ];
-
-  // Cart structure: {productId, variant (optional), quantity}
-  let cart = [];
-
-  const productListEl = document.getElementById("product-list");
-  const cartSectionEl = document.getElementById("cart-section");
-  const cartItemsEl = document.getElementById("cart-items");
-  const cartTotalEl = document.getElementById("cart-total");
-  const checkoutForm = document.getElementById("checkout-form");
-
-  // Render products to page
-  function renderProducts() {
-    productListEl.innerHTML = "";
-
-    products.forEach(product => {
-      const productEl = document.createElement("div");
-      productEl.className = "product";
-
-      let variantSelectHTML = "";
-      if(product.variants.length > 0) {
-        variantSelectHTML = `<select class="variant-select">
-          <option value="">Select Color</option>
-          ${product.variants.map(v => `<option value="${v}">${v}</option>`).join("")}
-        </select>`;
+  <script>
+    const products = [
+      {
+        name: "Pearl Bow Heart Keychain",
+        price: 700,
+        image: "images/pearl-bow-heart.jpg"
+      },
+      {
+        name: "Puppy Teddy Pendant",
+        price: 800,
+        image: "images/puppy-teddy.jpg"
+      },
+      {
+        name: "Batman Lego Keychain",
+        price: 850,
+        image: "images/batman-lego.jpg"
+      },
+      {
+        name: "Miu Style Cat Head Keychain",
+        price: 1000,
+        image: "images/cat-head.jpg"
+      },
+      {
+        name: "Dachshund",
+        price: 1000,
+        image: "images/dachshund.jpg"
+      },
+      {
+        name: "Tennis Racket Keychain",
+        price: 1000,
+        image: "images/tennis-racket.jpg"
+      },
+      {
+        name: "Tennis Racket + Bible",
+        price: 1100,
+        image: "images/tennis-bible.jpg"
       }
+    ];
 
-      productEl.innerHTML = `
+    const productList = document.getElementById("product-list");
+
+    products.forEach((product, index) => {
+      const div = document.createElement("div");
+      div.className = "product";
+      div.innerHTML = `
         <img src="${product.image}" alt="${product.name}" />
         <h3>${product.name}</h3>
-        <p>Price: ${product.price} ${product.currency}</p>
-        <p>Availability: ${product.stock > 0 ? 'In Stock' : 'Out of Stock'}</p>
-        ${variantSelectHTML}
-        <button class="add-to-cart" ${product.stock === 0 ? "disabled" : ""}>Add to Cart</button>
+        <p>Price: $${product.price} JMD</p>
+        <button onclick="addToCart(${index})">Add to Cart</button>
       `;
-
-      // Add event listener for Add to Cart button
-      const addToCartBtn = productEl.querySelector("button.add-to-cart");
-      addToCartBtn.addEventListener("click", () => {
-        const variant = productEl.querySelector("select.variant-select")?.value || null;
-
-        if (product.variants.length > 0 && !variant) {
-          alert("Please select a color option.");
-          return;
-        }
-
-        addToCart(product.id, variant);
-      });
-
-      productListEl.appendChild(productEl);
+      productList.appendChild(div);
     });
-  }
 
-  // Add item to cart
-  function addToCart(productId, variant = null) {
-    const product = products.find(p => p.id === productId);
-    if (!product || product.stock === 0) {
-      alert("Sorry, this product is out of stock.");
-      return;
-    }
+    let cart = [];
 
-    // Check if item+variant already in cart
-    const existingIndex = cart.findIndex(item => item.productId === productId && item.variant === variant);
-    if (existingIndex > -1) {
-      // Increment quantity but do not exceed stock
-      if(cart[existingIndex].quantity < product.stock) {
-        cart[existingIndex].quantity++;
+    function addToCart(index) {
+      const existingItem = cart.find(item => item.name === products[index].name);
+      if (existingItem) {
+        existingItem.quantity++;
       } else {
-        alert("You've reached maximum stock for this product.");
+        cart.push({ ...products[index], quantity: 1 });
       }
-    } else {
-      cart.push({ productId, variant, quantity: 1 });
-    }
-    renderCart();
-  }
-
-  // Remove item from cart
-  function removeFromCart(index) {
-    cart.splice(index, 1);
-    renderCart();
-  }
-
-  // Update quantity
-  function updateQuantity(index, quantity) {
-    const product = products.find(p => p.id === cart[index].productId);
-    if(quantity < 1) quantity = 1;
-    if(quantity > product.stock) {
-      alert("Quantity exceeds stock available.");
-      quantity = product.stock;
-    }
-    cart[index].quantity = quantity;
-    renderCart();
-  }
-
-  // Render cart items
-  function renderCart() {
-    if(cart.length === 0) {
-      cartSectionEl.style.display = "none";
-      checkoutForm.style.display = "none";
-      return;
+      renderCart();
     }
 
-    cartSectionEl.style.display = "block";
-    checkoutForm.style.display = "block";
+    function renderCart() {
+      const cartItems = document.getElementById("cart-items");
+      cartItems.innerHTML = "";
 
-    cartItemsEl.innerHTML = "";
-    let total = 0;
-
-    cart.forEach((item, idx) => {
-      const product = products.find(p => p.id === item.productId);
-      const variantText = item.variant ? ` - ${item.variant}` : "";
-      const itemTotal = product.price * item.quantity;
-      total += itemTotal;
-
-      const cartItemEl = document.createElement("div");
-      cartItemEl.className = "cart-item";
-      cartItemEl.innerHTML = `
-        <img src="${product.image}" alt="${product.name}" />
-        <p>${product.name}${variantText}</p>
-        <p>Price: ${product.price} ${product.currency}</p>
-        <input type="number" min="1" max="${product.stock}" value="${item.quantity}" />
-        <button class="remove-item">Remove</button>
-      `;
-
-      // Quantity input listener
-      cartItemEl.querySelector("input").addEventListener("change", (e) => {
-        const newQty = parseInt(e.target.value);
-        if(isNaN(newQty) || newQty < 1) {
-          e.target.value = item.quantity;
-          return;
-        }
-        updateQuantity(idx, newQty);
+      cart.forEach(item => {
+        const div = document.createElement("div");
+        div.textContent = `${item.name} x${item.quantity} - $${item.price * item.quantity} JMD`;
+        cartItems.appendChild(div);
       });
 
-      // Remove button listener
-      cartItemEl.querySelector("button.remove-item").addEventListener("click", () => {
-        removeFromCart(idx);
-      });
-
-      cartItemsEl.appendChild(cartItemEl);
-    });
-
-    cartTotalEl.textContent = `Total: ${total} JMD`;
-  }
-
-  // Checkout form submit handler
-  checkoutForm.addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    // Simple validation already done by required fields
-
-    // Prepare order summary
-    let orderSummary = "Order details:\n\n";
-    cart.forEach(item => {
-      const product = products.find(p => p.id === item.productId);
-      orderSummary += `${product.name}${item.variant ? ' - ' + item.variant : ''} x${item.quantity}\n`;
-    });
-
-    orderSummary += `\nTotal: ${cart.reduce((sum, item) => {
-      const product = products.find(p => p.id === item.productId);
-      return sum + (product.price * item.quantity);
-    }, 0)} JMD\n\n`;
-
-    orderSummary += `Name: ${this["full-name"].value}\n`;
-    orderSummary += `Email: ${this["email"].value}\n`;
-    orderSummary += `Shipping Address: ${this["shipping-address"].value}\n`;
-    orderSummary += `Payment Method: ${this["payment-method"].value}\n`;
-
-    alert("Thank you for your order!\n\n" + orderSummary);
-
-    // Reset cart and form
-    cart = [];
-    renderCart();
-    checkoutForm.reset();
-  });
-
-  // Initial render
-  renderProducts();
-  renderCart();
-
-</script>
-
+      document.getElementById("cart-count").textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+    }
+  </script>
 </body>
+
 </html>
