@@ -1,828 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Shop All - Accessories by Waydia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
-    href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400|Montserrat:400,500,700&display=swap"
-    rel="stylesheet"
-  />
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-  <style>
-    /* Reset & base */
-    * {
-      box-sizing: border-box;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Accessories by Waydia - Shop</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 0;
+    background: #f9f9f9;
+  }
+  header {
+    background: #444;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+  }
+  main {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+    gap: 1.5rem;
+  }
+  .product {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .product img {
+    max-width: 100%;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+  }
+  .product h3 {
+    margin: 0.25rem 0;
+  }
+  .product p {
+    margin: 0.25rem 0;
+  }
+  .product select {
+    margin: 0.5rem 0;
+    padding: 0.25rem;
+  }
+  button.add-to-cart {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button.add-to-cart:hover {
+    background: #0056b3;
+  }
+  .cart {
+    background: white;
+    padding: 1rem;
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  }
+  .cart h2 {
+    margin-top: 0;
+  }
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .cart-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  .cart-item p {
+    margin: 0;
+    flex-grow: 1;
+  }
+  .cart-item input[type=number] {
+    width: 60px;
+    padding: 0.25rem;
+  }
+  .cart-item button.remove-item {
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+  }
+  .cart-item button.remove-item:hover {
+    background: #a71d2a;
+  }
+  .cart-total {
+    font-weight: bold;
+    text-align: right;
+    margin-top: 1rem;
+  }
+  form#checkout-form {
+    background: white;
+    padding: 1rem;
+    margin-top: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+    max-width: 500px;
+  }
+  form#checkout-form label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: bold;
+  }
+  form#checkout-form input,
+  form#checkout-form textarea,
+  form#checkout-form select {
+    width: 100%;
+    padding: 0.4rem;
+    margin-top: 0.25rem;
+    box-sizing: border-box;
+  }
+  form#checkout-form button {
+    margin-top: 1.5rem;
+    padding: 0.7rem 1.2rem;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  form#checkout-form button:hover {
+    background: #19692c;
+  }
+  @media (max-width: 600px) {
+    .products {
+      grid-template-columns: 1fr;
     }
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Montserrat", Arial, sans-serif;
-      background: #fffaf7;
-      color: #7c5e3c;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    /* Navbar */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.2rem 2rem;
-      background: #fff;
-      border-bottom: 1px solid #e7dac7;
-      flex-wrap: wrap;
-    }
-    .logo {
-      font-family: "Playfair Display", serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #7c5e3c;
-    }
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .nav-links a {
-      font-size: 1rem;
-      font-weight: 500;
-      color: #7c5e3c;
-    }
-    .cart-icon {
-      position: relative;
-      cursor: pointer;
-      font-size: 1.6rem;
-      user-select: none;
-    }
-    .cart-count {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      background: #cc6d8c;
-      color: white;
-      font-size: 0.7rem;
-      border-radius: 50%;
-      padding: 2px 6px;
-      min-width: 18px;
-      text-align: center;
-      font-weight: 700;
-    }
-
-    /* Container */
-    .container {
-      max-width: 1200px;
-      margin: 1.5rem auto;
-      padding: 0 1rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    /* Filters */
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-      justify-content: flex-start;
-    }
-    .filters label {
-      font-weight: 600;
-      margin-right: 0.5rem;
-    }
-    .filters select {
-      padding: 0.3rem 0.5rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    /* Shop Grid */
-    .shop-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-    }
-    .product-card {
-      background: #f8f1ea;
-      border-radius: 15px;
-      padding: 1rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .product-card img {
-      width: 100%;
-      border-radius: 10px;
-      cursor: pointer;
-      object-fit: contain;
-      max-height: 200px;
-      margin-bottom: 0.8rem;
-      transition: transform 0.3s ease;
-    }
-    .product-card img:hover {
-      transform: scale(1.05);
-    }
-    .product-card h3 {
-      margin: 0 0 0.4rem 0;
-      font-weight: 700;
-    }
-    .product-card p {
-      margin: 0 0 0.8rem 0;
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    .stock {
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-      color: #555;
-    }
-    .color-select {
-      margin-bottom: 0.8rem;
-    }
-    .btn-buy {
-      background: #cc6d8c;
-      color: white;
-      padding: 0.5rem 1.2rem;
-      border-radius: 20px;
-      font-weight: 600;
-      cursor: pointer;
-      border: none;
-      transition: background 0.3s ease;
-    }
-    .btn-buy:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-    .btn-buy:hover:not(:disabled) {
-      background: #b05975;
-    }
-
-    /* Cart Modal */
-    .cart-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      padding: 1rem;
-    }
-    .cart-content {
-      background: #fff;
-      padding: 1.5rem 2rem;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 480px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      position: relative;
-    }
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 1.6rem;
-      cursor: pointer;
-      color: #999;
-      user-select: none;
-    }
-    .cart-items {
-      list-style: none;
-      padding: 0;
-      margin: 1rem 0;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.8rem;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 0.5rem;
-    }
-    .cart-item-info {
-      flex-grow: 1;
-    }
-    .cart-item-name {
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-    .cart-item-color,
-    .cart-item-qty,
-    .cart-item-price {
-      font-size: 0.9rem;
-      color: #555;
-    }
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      margin-left: 1rem;
-    }
-    .qty-btn {
-      background: #cc6d8c;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 0.15rem 0.5rem;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: background 0.3s ease;
-    }
-    .qty-btn:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-    .qty-btn:hover:not(:disabled) {
-      background: #b05975;
-    }
-    .remove-btn {
-      background: transparent;
-      border: none;
-      color: #cc6d8c;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 1.1rem;
-      user-select: none;
-    }
-    .remove-btn:hover {
-      color: #b05975;
-    }
-    /* Checkout form */
-    .checkout-form label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 600;
-    }
-    .checkout-form input,
-    .checkout-form select {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    .checkout-form button {
-      margin-top: 1.5rem;
-      width: 100%;
-      background: #cc6d8c;
-      color: white;
-      padding: 0.7rem;
-     
-```
-
-
-font-weight: 700;
-font-size: 1.1rem;
-border: none;
-border-radius: 25px;
-cursor: pointer;
-transition: background 0.3s ease;
-}
-.checkout-form button\:hover {
-background: #b05975;
-}
-.empty-cart {
-text-align: center;
-padding: 2rem 0;
-font-weight: 700;
-font-size: 1.2rem;
-color: #999;
-}
-/\* Responsive \*/
-@media (max-width: 600px) {
-.filters {
-flex-direction: column;
-align-items: flex-start;
-}
-.nav-links {
-justify-content: center;
-margin-top: 0.5rem;
-}
-.cart-content {
-width: 95%;
-max-height: 80vh;
-}
-} </style>
-
+  }
+</style>
 </head>
 <body>
-  <div id="app">
-    <!-- Navbar -->
-    <nav class="navbar">
-      <div class="logo">Accessories by Waydia</div>
-      <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Shop All</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-      <div class="cart-icon" @click="toggleCart">
-        🛒
-        <span v-if="cartCount > 0" class="cart-count">{{ cartCount }}</span>
-      </div>
-    </nav>
 
-```
-<!-- Filters -->
-<div class="container">
-  <div class="filters">
-    <label for="type-filter">Filter by type:</label>
-    <select id="type-filter" v-model="filters.type">
-      <option value="">All</option>
-      <option value="Keychain">Keychains</option>
-      <option value="Claw Clip">Claw Clips</option>
-    </select>
+<header>
+  <h1>Accessories by Waydia - Shop</h1>
+</header>
 
-    <label for="price-filter">Filter by price:</label>
-    <select id="price-filter" v-model="filters.price">
-      <option value="">All</option>
-      <option value="under500">Under $500</option>
-      <option value="500to1000">$500 - $1000</option>
-      <option value="above1000">Above $1000</option>
-    </select>
+<main>
 
-    <label for="currency">Currency:</label>
-    <select id="currency" v-model="currency">
-      <option value="JMD">JMD</option>
-      <option value="USD">USD</option>
-      <option value="GBP">GBP</option>
-    </select>
-  </div>
+  <section class="products" id="product-list">
+    <!-- Products will be rendered here -->
+  </section>
 
-  <!-- Shop grid -->
-  <div class="shop-grid">
-    <div
-      class="product-card"
-      v-for="product in filteredProducts"
-      :key="product.id"
-    >
-      <img
-        :src="product.image"
-        :alt="product.name"
-        @click="showProductDetails(product)"
-      />
-      <h3>{{ product.name }}</h3>
-      <p>
-        {{ formattedPrice(product.price) }}
-      </p>
-      <p class="stock" v-if="product.stock <= 0" style="color:#cc6d8c">
-        Out of Stock
-      </p>
-      <div
-        class="color-select"
-        v-if="product.type === 'Claw Clip' && product.colors.length"
-      >
-        <label for="color-select-{{product.id}}">Color:</label>
-        <select
-          :id="'color-select-' + product.id"
-          v-model="selectedColors[product.id]"
-        >
-          <option
-            v-for="color in product.colors"
-            :value="color"
-            :key="color"
-          >
-            {{ color }}
-          </option>
-        </select>
-      </div>
-      <div>
-        <label for="qty-{{product.id}}">Qty:</label>
-        <input
-          type="number"
-          min="1"
-          :max="product.stock"
-          :id="'qty-' + product.id"
-          v-model.number="quantities[product.id]"
-          style="width: 50px; text-align: center; margin-left: 5px;"
-          :disabled="product.stock === 0"
-        />
-      </div>
-      <button
-        class="btn-buy"
-        :disabled="product.stock === 0 || quantities[product.id] < 1"
-        @click="addToCart(product)"
-      >
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Cart Modal -->
-<div v-if="cartVisible" class="cart-modal" @click.self="toggleCart">
-  <div class="cart-content">
-    <div class="close-btn" @click="toggleCart">&times;</div>
+  <section class="cart" id="cart-section" style="display:none;">
     <h2>Your Cart</h2>
-    <ul class="cart-items" v-if="cart.length">
-      <li class="cart-item" v-for="(item, index) in cart" :key="index">
-        <div class="cart-item-info">
-          <div class="cart-item-name">{{ item.name }}</div>
-          <div class="cart-item-color" v-if="item.color">
-            Color: {{ item.color }}
-          </div>
-          <div class="cart-item-qty">Quantity: {{ item.qty }}</div>
-          <div class="cart-item-price">
-            Price: {{ formattedPrice(item.price * item.qty) }}
-          </div>
-        </div>
-        <div class="qty-controls">
-          <button
-            class="qty-btn"
-            @click="updateCartQty(index, item.qty - 1)"
-            :disabled="item.qty <= 1"
-          >
-            -
-          </button>
-          <button class="qty-btn" @click="updateCartQty(index, item.qty + 1)">
-            +
-          </button>
-        </div>
-        <button class="remove-btn" @click="removeFromCart(index)">×</button>
-      </li>
-    </ul>
-    <p v-else class="empty-cart">Your cart is empty.</p>
+    <div id="cart-items"></div>
+    <div class="cart-total" id="cart-total"></div>
+  </section>
 
-    <h3>Total: {{ formattedPrice(cartTotal) }}</h3>
+  <section>
+    <form id="checkout-form" style="display:none;">
+      <h2>Checkout</h2>
+      <label for="full-name">Full Name *</label>
+      <input type="text" id="full-name" name="full-name" required />
 
-    <form
-      class="checkout-form"
-      :action="formspreeUrl"
-      method="POST"
-      v-if="cart.length"
-      @submit.prevent="handleCheckout"
-    >
-      <label for="name">Full Name</label>
-      <input
-        type="text"
-        id="name"
-        v-model="checkout.name"
-        required
-        placeholder="Your full name"
-      />
+      <label for="email">Email Address *</label>
+      <input type="email" id="email" name="email" required />
 
-      <label for="email">Email Address</label>
-      <input
-        type="email"
-        id="email"
-        v-model="checkout.email"
-        required
-        placeholder="you@example.com"
-      />
+      <label for="shipping-address">Shipping Address *</label>
+      <textarea id="shipping-address" name="shipping-address" rows="3" required></textarea>
 
-      <label for="address">Shipping Address</label>
-      <input
-        type="text"
-        id="address"
-        v-model="checkout.address"
-        required
-        placeholder="Street, City, Country"
-      />
-
-      <label for="payment">Payment Method</label>
-      <select id="payment" v-model="checkout.paymentMethod" required>
-        <option value="" disabled>Select a payment method</option>
-        <option>Cash on Delivery</option>
-        <option>Lynk Payment Link</option>
-        <option>PayPal</option>
-        <option>Bank Transfer (NCB)</option>
+      <label for="payment-method">Payment Method *</label>
+      <select id="payment-method" name="payment-method" required>
+        <option value="">-- Select Payment Method --</option>
+        <option value="cod">Cash on Delivery</option>
+        <option value="lynk">Lynk Payment Link</option>
+        <option value="paypal">PayPal</option>
+        <option value="bank-transfer">Bank Transfer (NCB)</option>
       </select>
 
       <button type="submit">Place Order</button>
     </form>
-  </div>
-</div>
-```
+  </section>
 
-  </div>
+</main>
 
-  <script>
-    new Vue({
-      el: "#app",
-      data: {
-        currency: "JMD",
-        filters: {
-          type: "",
-          price: "",
-        },
-        products: [
-          {
-            id: 1,
-            name: "Pearl Bow Heart Keychain",
-            price: 700,
-            type: "Keychain",
-            stock: 25,
-            image:
-              "https://cdn.shopify.com/s/files/1/0661/9637/0935/products/heart2.png?v=1669916260",
-            colors: [],
-          },
-          {
-            id: 2,
-            name: "Puppy Teddy Pendant",
-            price: 800,
-            type: "Keychain",
-            stock: 20,
-            image:
-              "https://cdn.shopify.com/s/files/1/0661/9637/0935/products/puppy1.png?v=1669916545",
-            colors: [],
-          },
-          {
-            id: 3,
-            name: "Batman Lego Keychain",
-            price: 850,
-            type: "Keychain",
-            stock: 15,
-            image:
-              "https://cdn.shopify.com/s/files/1/0661/9637/0935/products/batman_lego_keychain-removebg-preview.png?v=1675103868",
-            colors: [],
-          },
-          {
-            id: 4,
-            name: "Miu Style Cat Head Keychain",
-            price: 1000,
-            type: "Keychain",
-            stock: 18,
-            image:
-              "https://cdn.shopify.com/s/files/1/0661/9637/0935/products/cat-removebg-preview.png?v=1675770899",
-            colors: [],
-          },
-          {
-            id: 5,
-            name: "Dachshund Keychain",
-            price: 1000,
-            type: "Keychain",
-            stock: 30,
-            image:
-              "https://cdn.shopify.com/s/files/1/0661/9637/0935/products/dachshund_1-removebg-preview.png?v=1675194545",
-            colors: [],
-          },
-          {
-            id: 6,
-            name: "Tennis Racket Keychain",
-            price: 1000,
-            type: "Keychain",
-            stock: 12,
-            image:
-              "https://cdn.shopify.com/s/files/1/0661/9637/0935/products/tennisracket-removebg-preview.png?v=1675194336",
-            colors: [],
-          },
-          {
-            id: 7,
-            name: "Tennis Racket Keychain + Bible",
-            price: 1100,
-            type: "Keychain",
-            stock: 8,
-            image:
-              "https://cdn.shopify.com/s/files/1/0661/9637/0935/products/tennisracket-removebg-preview.png?v=1675194336",
-            colors: [],
-          },
-          {
-            id: 8,
-            name: "Assorted Claw Clip Set",
-            price: 450,
-            type: "Claw Clip",
-            stock: 40,
-            image:
-              "https://cdn.shopify.com/s/files/1/0661/9637/0935/products/clear-clip-removebg-preview.png?v=1678147589",
-            colors: ["Clear", "Pink", "Blue", "Purple", "Green", "Red"],
-          },
-          {
-            id: 9,
-            name: "Pastel Claw Clip Set",
-            price: 500,
-            type: "Claw Clip",
-            stock: 25,
-            image:
-              "https://cdn.shopify.com/s/files/1/0661/9637/0935/products/pastel-removebg-preview.png?v=1678147589",
-            colors: ["Pink", "Blue", "Yellow", "Green"],
-          },
-          {
-            id: 10,
-            name: "Colorful Claw Clip Set",
-            price: 550,
-            type: "Claw Clip",
-            stock: 30,
-            image:
-              "https://cdn.shopify.com/s/files/1/0661/9637/0935/products/colorful-removebg-preview.png?v=1678147589",
-            colors: ["Pink", "Blue", "Yellow", "Green", "Purple"],
-          },
-        ],
-        selectedColors: {},
-        quantities: {},
-        cart: [],
-        cartVisible: false,
-        checkout: {
-          name: "",
-          email: "",
-          address: "",
-          paymentMethod: "",
-        },
-        exchangeRates: {
-          // 1 JMD = x USD/GBP
-          USD: 0.0065,
-          GBP: 0.0053,
-          JMD: 1,
-        },
-        formspreeUrl:
-          "https://formspree.io/f/yourFormID", // Replace with your Formspree form ID
-      },
-      computed: {
-        filteredProducts() {
-          return this.products.filter((p) => {
-            let passType = true;
-            let passPrice = true;
+<script>
+  // Sample product data
+  const products = [
+    {
+      id: 1,
+      name: "Pearl Bow Heart Keychain",
+      price: 700,
+      currency: "JMD",
+      image: "https://via.placeholder.com/200x200?text=Pearl+Bow+Heart",
+      stock: 5,
+      variants: []
+    },
+    {
+      id: 2,
+      name: "Puppy Teddy Pendant",
+      price: 800,
+      currency: "JMD",
+      image: "https://via.placeholder.com/200x200?text=Puppy+Teddy",
+      stock: 3,
+      variants: []
+    },
+    {
+      id: 3,
+      name: "Batman Lego Keychain",
+      price: 850,
+      currency: "JMD",
+      image: "https://via.placeholder.com/200x200?text=Batman+Lego",
+      stock: 2,
+      variants: []
+    },
+    {
+      id: 4,
+      name: "Miu Style Cat Head Keychain",
+      price: 1000,
+      currency: "JMD",
+      image: "https://via.placeholder.com/200x200?text=Miu+Cat+Head",
+      stock: 4,
+      variants: []
+    },
+    {
+      id: 5,
+      name: "Dachshund Keychain",
+      price: 1000,
+      currency: "JMD",
+      image: "https://via.placeholder.com/200x200?text=Dachshund",
+      stock: 0,
+      variants: []
+    },
+    {
+      id: 6,
+      name: "Tennis Racket Keychain",
+      price: 1000,
+      currency: "JMD",
+      image: "https://via.placeholder.com/200x200?text=Tennis+Racket",
+      stock: 6,
+      variants: []
+    },
+    {
+      id: 7,
+      name: "Tennis Racket + Bible Keychain",
+      price: 1100,
+      currency: "JMD",
+      image: "https://via.placeholder.com/200x200?text=Tennis+Racket+Bible",
+      stock: 1,
+      variants: []
+    },
+    {
+      id: 8,
+      name: "Claw Clip",
+      price: 800,
+      currency: "JMD",
+      image: "https://via.placeholder.com/200x200?text=Claw+Clip",
+      stock: 10,
+      variants: ["Black", "Brown", "Pink", "Purple", "Yellow"]
+    }
+  ];
 
-            if (this.filters.type) {
-              passType = p.type === this.filters.type;
-            }
+  // Cart structure: {productId, variant (optional), quantity}
+  let cart = [];
 
-            if (this.filters.price) {
-              if (this.filters.price === "under500") {
-                passPrice = p.price < 500;
-              } else if (this.filters.price === "500to1000") {
-                passPrice = p.price >= 500 && p.price <= 1000;
-              } else if (this.filters.price === "above1000") {
-                passPrice = p.price > 1000;
-              }
-            }
-            return passType && passPrice;
-          });
-        },
-        cartCount() {
-          return this.cart.reduce((acc, item) => acc + item.qty, 0);
-        },
-        cartTotal() {
-          return this.cart.reduce(
-            (acc, item) => acc + item.price * item.qty,
-            0
-          );
-        },
-      },
-      methods: {
-        formattedPrice(amount) {
-          let rate = this.exchangeRates[this.currency];
-          let converted = amount * rate;
+  const productListEl = document.getElementById("product-list");
+  const cartSectionEl = document.getElementById("cart-section");
+  const cartItemsEl = document.getElementById("cart-items");
+  const cartTotalEl = document.getElementById("cart-total");
+  const checkoutForm = document.getElementById("checkout-form");
 
-          if (this.currency === "JMD") {
-            return `J$${converted.toFixed(0)}`;
-          } else if (this.currency === "USD") {
-            return `$${converted.toFixed(2)}`;
-          } else if (this.currency === "GBP") {
-            return `£${converted.toFixed(2)}`;
-          } else {
-            return converted.toFixed(2);
-          }
-        },
-        addToCart(product) {
-          const color = this.selectedColors[product.id] || null;
-          const qty = this.quantities[product.id] || 1;
+  // Render products to page
+  function renderProducts() {
+    productListEl.innerHTML = "";
 
-          // Check stock availability
-          if (qty < 1 || qty > product.stock) {
-            alert(
-              `Please enter a valid quantity between 1 and ${product.stock}.`
-            );
-            return;
-          }
+    products.forEach(product => {
+      const productEl = document.createElement("div");
+      productEl.className = "product";
 
-          // Check if product + color already in cart
-          const index = this.cart.findIndex(
-            (item) => item.id === product.id && item.color === color
-          );
-          if (index !== -1) {
-            // Update quantity but don't exceed stock
-            const newQty = this.cart[index].qty + qty;
-            if (newQty > product.stock) {
-             
-
-
-alert(
-`Cannot add more than available stock (${product.stock}).`
-);
-return;
-}
-this.cart\[index].qty = newQty;
-} else {
-this.cart.push({
-id: product.id,
-name: product.name,
-price: product.price,
-color: color,
-qty: qty,
-});
-}
-this.quantities\[product.id] = 1;
-this.selectedColors\[product.id] = product.colors.length
-? product.colors\[0]
-: null;
-},
-removeFromCart(index) {
-this.cart.splice(index, 1);
-},
-updateCartQty(index, newQty) {
-if (newQty < 1) return;
-
-```
-      const item = this.cart[index];
-      const product = this.products.find((p) => p.id === item.id);
-      if (newQty > product.stock) {
-        alert(`Maximum available stock is ${product.stock}.`);
-        return;
+      let variantSelectHTML = "";
+      if(product.variants.length > 0) {
+        variantSelectHTML = `<select class="variant-select">
+          <option value="">Select Color</option>
+          ${product.variants.map(v => `<option value="${v}">${v}</option>`).join("")}
+        </select>`;
       }
-      this.cart[index].qty = newQty;
-    },
-    toggleCart() {
-      this.cartVisible = !this.cartVisible;
-    },
-    handleCheckout() {
-      // Prepare order data to send with form
-      const orderDetails = this.cart
-        .map(
-          (item) =>
-            `${item.name}${item.color ? " (" + item.color + ")" : ""} x ${
-              item.qty
-            }`
-        )
-        .join(", ");
 
-      const formData = new FormData();
-      formData.append("name", this.checkout.name);
-      formData.append("email", this.checkout.email);
-      formData.append("address", this.checkout.address);
-      formData.append("paymentMethod", this.checkout.paymentMethod);
-      formData.append("order", orderDetails);
+      productEl.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>Price: ${product.price} ${product.currency}</p>
+        <p>Availability: ${product.stock > 0 ? 'In Stock' : 'Out of Stock'}</p>
+        ${variantSelectHTML}
+        <button class="add-to-cart" ${product.stock === 0 ? "disabled" : ""}>Add to Cart</button>
+      `;
 
-      // Send form data to Formspree
-      fetch(this.formspreeUrl, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: formData,
-      })
-        .then((response) => {
-          if (response.ok) {
-            alert("Order placed successfully!");
-            // Clear cart and checkout form
-            this.cart = [];
-            this.checkout = {
-              name: "",
-              email: "",
-              address: "",
-              paymentMethod: "",
-            };
-            this.toggleCart();
-          } else {
-            alert("Failed to place order. Please try again.");
-          }
-        })
-        .catch(() => {
-          alert("Failed to place order. Please try again.");
-        });
-    },
-    showProductDetails(product) {
-      alert(
-        `${product.name}\nPrice: ${this.formattedPrice(
-          product.price
-        )}\nType: ${product.type}\nStock: ${product.stock}`
-      );
-    },
-  },
-  mounted() {
-    // Initialize quantities and selectedColors
-    this.products.forEach((p) => {
-      this.$set(this.quantities, p.id, 1);
-      this.$set(
-        this.selectedColors,
-        p.id,
-        p.colors.length ? p.colors[0] : null
-      );
+      // Add event listener for Add to Cart button
+      const addToCartBtn = productEl.querySelector("button.add-to-cart");
+      addToCartBtn.addEventListener("click", () => {
+        const variant = productEl.querySelector("select.variant-select")?.value || null;
+
+        if (product.variants.length > 0 && !variant) {
+          alert("Please select a color option.");
+          return;
+        }
+
+        addToCart(product.id, variant);
+      });
+
+      productListEl.appendChild(productEl);
     });
-  },
-});
-```
+  }
 
-  </script>
+  // Add item to cart
+  function addToCart(productId, variant = null) {
+    const product = products.find(p => p.id === productId);
+    if (!product || product.stock === 0) {
+      alert("Sorry, this product is out of stock.");
+      return;
+    }
+
+    // Check if item+variant already in cart
+    const existingIndex = cart.findIndex(item => item.productId === productId && item.variant === variant);
+    if (existingIndex > -1) {
+      // Increment quantity but do not exceed stock
+      if(cart[existingIndex].quantity < product.stock) {
+        cart[existingIndex].quantity++;
+      } else {
+        alert("You've reached maximum stock for this product.");
+      }
+    } else {
+      cart.push({ productId, variant, quantity: 1 });
+    }
+    renderCart();
+  }
+
+  // Remove item from cart
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    renderCart();
+  }
+
+  // Update quantity
+  function updateQuantity(index, quantity) {
+    const product = products.find(p => p.id === cart[index].productId);
+    if(quantity < 1) quantity = 1;
+    if(quantity > product.stock) {
+      alert("Quantity exceeds stock available.");
+      quantity = product.stock;
+    }
+    cart[index].quantity = quantity;
+    renderCart();
+  }
+
+  // Render cart items
+  function renderCart() {
+    if(cart.length === 0) {
+      cartSectionEl.style.display = "none";
+      checkoutForm.style.display = "none";
+      return;
+    }
+
+    cartSectionEl.style.display = "block";
+    checkoutForm.style.display = "block";
+
+    cartItemsEl.innerHTML = "";
+    let total = 0;
+
+    cart.forEach((item, idx) => {
+      const product = products.find(p => p.id === item.productId);
+      const variantText = item.variant ? ` - ${item.variant}` : "";
+      const itemTotal = product.price * item.quantity;
+      total += itemTotal;
+
+      const cartItemEl = document.createElement("div");
+      cartItemEl.className = "cart-item";
+      cartItemEl.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <p>${product.name}${variantText}</p>
+        <p>Price: ${product.price} ${product.currency}</p>
+        <input type="number" min="1" max="${product.stock}" value="${item.quantity}" />
+        <button class="remove-item">Remove</button>
+      `;
+
+      // Quantity input listener
+      cartItemEl.querySelector("input").addEventListener("change", (e) => {
+        const newQty = parseInt(e.target.value);
+        if(isNaN(newQty) || newQty < 1) {
+          e.target.value = item.quantity;
+          return;
+        }
+        updateQuantity(idx, newQty);
+      });
+
+      // Remove button listener
+      cartItemEl.querySelector("button.remove-item").addEventListener("click", () => {
+        removeFromCart(idx);
+      });
+
+      cartItemsEl.appendChild(cartItemEl);
+    });
+
+    cartTotalEl.textContent = `Total: ${total} JMD`;
+  }
+
+  // Checkout form submit handler
+  checkoutForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    // Simple validation already done by required fields
+
+    // Prepare order summary
+    let orderSummary = "Order details:\n\n";
+    cart.forEach(item => {
+      const product = products.find(p => p.id === item.productId);
+      orderSummary += `${product.name}${item.variant ? ' - ' + item.variant : ''} x${item.quantity}\n`;
+    });
+
+    orderSummary += `\nTotal: ${cart.reduce((sum, item) => {
+      const product = products.find(p => p.id === item.productId);
+      return sum + (product.price * item.quantity);
+    }, 0)} JMD\n\n`;
+
+    orderSummary += `Name: ${this["full-name"].value}\n`;
+    orderSummary += `Email: ${this["email"].value}\n`;
+    orderSummary += `Shipping Address: ${this["shipping-address"].value}\n`;
+    orderSummary += `Payment Method: ${this["payment-method"].value}\n`;
+
+    alert("Thank you for your order!\n\n" + orderSummary);
+
+    // Reset cart and form
+    cart = [];
+    renderCart();
+    checkoutForm.reset();
+  });
+
+  // Initial render
+  renderProducts();
+  renderCart();
+
+</script>
+
 </body>
 </html>
