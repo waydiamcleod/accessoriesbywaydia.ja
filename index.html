@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Accessories by Waydia - About</title>
+  <style>
+    /* Reset and basic styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    a {
+      color: #0073e6;
+      text-decoration: none;
+    }
+    a:hover,
+    a:focus {
+      text-decoration: underline;
+    }
+
+    /* Header and Nav */
+    header {
+      background: #222;
+      color: white;
+      padding: 1rem 2rem;
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links li a {
+      color: white;
+      font-weight: 600;
+    }
+    .nav-links li a[aria-current="page"] {
+      text-decoration: underline;
+    }
+
+    /* Main Section */
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    .about-canva {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .about-img-block {
+      flex: 1 1 300px;
+    }
+    .about-img-block img {
+      max-width: 100%;
+      border-radius: 6px;
+      display: block;
+    }
+    .about-text-block {
+      flex: 2 1 400px;
+    }
+    .about-text-block h2 {
+      margin-top: 0;
+    }
+    blockquote {
+      font-style: italic;
+      background: #f1f1f1;
+      border-left: 5px solid #0073e6;
+      margin: 1rem 0;
+      padding: 0.75rem 1rem;
+    }
+    blockquote .founder {
+      display: block;
+      margin-top: 0.5rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .our-values ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .our-values ul li {
+      margin: 0.25rem 0;
+      font-weight: 600;
+    }
+    .value-icon {
+      color: green;
+      margin-right: 0.5rem;
+    }
+
+    /* Footer */
+    footer.main-footer {
+      background: #222;
+      color: white;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+    .footer-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .footer-col {
+      flex: 1 1 250px;
+      margin-bottom: 1.5rem;
+    }
+    .footer-title {
+      margin-top: 0;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .footer-desc {
+      margin: 0;
+    }
+    .footer-heading {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .footer-col ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    .footer-col ul li {
+      margin: 0.5rem 0;
+    }
+    .footer-divider {
+      border: none;
+      border-top: 1px solid #444;
+      margin: 1rem auto 0 auto;
+      max-width: 900px;
+    }
+    .footer-copyright {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      color: #aaa;
+    }
+
+    /* Modal Overlay and Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .order-modal {
+      background: white;
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+      padding: 1.5rem 2rem;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #888;
+    }
+    .modal-close:hover,
+    .modal-close:focus {
+      color: #333;
+      outline: none;
+    }
+    .modal-title {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .order-summary {
+      margin-bottom: 1.5rem;
+      border-top: 1px solid #ddd;
+      padding-top: 0.75rem;
+    }
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .order-total {
+      border-top: 1px solid #0073e6;
+      padding-top: 0.5rem;
+      font-size: 1.1rem;
+      color: #0073e6;
+    }
+
+    .modal-form label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+    .modal-form input[type="text"],
+    .modal-form input[type="email"],
+    .modal-form textarea {
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .modal-form textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    .btn-primary {
+      background-color: #0073e6;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      margin-top: 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background-color: #005bb5;
+      outline: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .about-canva {
+        flex-direction: column;
+      }
+      .footer-container {
+        flex-direction: column;
+      }
+      .footer-col {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar" aria-label="Primary navigation">
+      <div class="logo">Accessories by Waydia</div>
+      <ul class="nav-links">
+        <li><a href="#" aria-current="page">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="about-canva" aria-label="About Accessories by Waydia">
+      <div class="about-img-block">
+        <img src="https://i.imgur.com/22QeY6G.png" alt="Founder and products of Accessories by Waydia" />
+      </div>
+
+      <div class="about-text-block">
+        <h2>About Accessories by Waydia</h2>
+        <p>Accessories by Waydia is a small business passionate about delivering high-quality accessories and party event rentals with an elegant touch.</p>
+        <blockquote>
+          “Each item is carefully selected and thoughtfully presented — packaged in elegant Mylar bags, adorned with thank-you stickers, and shipped in bubble mailers to ensure safe and stylish delivery.”
+          <span class="founder">— Waydia McLeod, Founder</span>
+        </blockquote>
+
+        <div class="our-values">
+          <p>Our mission is to bring style, convenience, and joy to every occasion with unique, affordable products.</p>
+          <p class="value-title">Our core values include:</p>
+          <ul>
+            <li><span class="value-icon">✔️</span> Elegance</li>
+            <li><span class="value-icon">✔️</span> Quality</li>
+            <li><span class="value-icon">✔️</span> Customer Care</li>
+            <li><span class="value-icon">✔️</span> Creativity</li>
+          </ul>
+        </div>
+
+        <button onclick="openOrderModal()" class="btn-primary" style="margin-top:2rem;">Order Now</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="main-footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-col">
+        <h3 class="footer-title">Accessories by Waydia</h3>
+        <p class="footer-desc">Elegant accessories and party event rentals designed to elevate your celebrations.</p>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-heading">Contact</p>
+        <ul>
+          <li><a href="tel:+8761234567" aria-label="Call Accessories by Waydia">📞 +1 (876) 123-4567</a></li>
+          <li><a href="mailto:info@accessoriesbywaydia.com" aria-label="Email Accessories by Waydia">✉️ info@accessoriesbywaydia.com</a></li>
+          <li><a href="https://instagram.com/accessoriesbywaydia" target="_blank" rel="noopener" aria-label="Instagram profile">📸 @accessoriesbywaydia</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-heading">Follow Us</p>
+        <ul>
+          <li><a href="https://facebook.com/accessoriesbywaydia" target="_blank" rel="noopener" aria-label="Facebook profile">Facebook</a></li>
+          <li><a href="https://twitter.com/accessoriesbywaydia" target="_blank" rel="noopener" aria-label="Twitter profile">Twitter</a></li>
+          <li><a href="https://pinterest.com/accessoriesbywaydia" target="_blank" rel="noopener" aria-label="Pinterest profile">Pinterest</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="footer-divider" />
+    <p class="footer-copyright">© 2025 Accessories by Waydia. All rights reserved.</p>
+  </footer>
+
+  <!-- Modal HTML (hidden initially) -->
+  <div id="modalOverlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-backdrop" onclick="closeOrderModal()" tabindex="-1"></div>
+    <div class="order-modal" role="document">
+      <button aria-label="Close order modal" class="modal-close" onclick="closeOrderModal()">×</button>
+      <div class="modal-content">
+        <h3 id="modalTitle" class="modal-title">Complete Your Purchase</h3>
+        <div class="order-summary" aria-live="polite">
+          <div class="order-row">
+            <span>Keychain</span>
+            <span>JMD 900</span>
+          </div>
+          <div class="order-row">
+            <span>Bubble Polymailer</span>
+            <span>JMD 600</span>
+          </div>
+          <div class="order-row order-total">
+            <span>Total</span>
+            <span>JMD 1,500</span>
+          </div>
+        </div>
+
+        <form id="productOrderForm" class="modal-form" aria-describedby="orderInstructions">
+          <p id="orderInstructions">Please fill in your details to complete the order.</p>
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullName" required placeholder="Your full name" />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="you@example.com" />
+
+          <label for="address">Shipping Address</label>
+          <textarea id="address" name="address" required placeholder="Your shipping address"></textarea>
+
+          <button type="submit" class="btn-primary">Submit Order</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Open modal function
+    function openOrderModal() {
+      const modal = document.getElementById('modalOverlay');
+      modal.classList.remove('hidden');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden'; // prevent background scroll
+    }
+
+    // Close modal function
+    function closeOrderModal() {
+      const modal = document.getElementById('modalOverlay');
+      modal.classList.add('hidden');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = 'auto'; // restore scroll
+    }
+
+    // Form submit handler
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('productOrderForm');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        alert('Thank you for your order!');
+        closeOrderModal();
+        form.reset();
+      });
+    });
+  </script>
+</body>
+</html>
