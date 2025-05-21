@@ -146,13 +146,12 @@
           </label>
         </div>
         <button
-          class="btn-buy"
-          @click="addToCart(product)"
-          :disabled="product.stock === 0 || !user.loggedIn"
-          :title="user.loggedIn ? '' : 'Please login to add to cart'"
-        >
-          Add to Cart
-        </button>
+  class="btn-buy"
+  @click="addToCart(product)"
+  :disabled="product.stock === 0"
+>
+  Add to Cart
+</button>
       </div>
     </section>
 
