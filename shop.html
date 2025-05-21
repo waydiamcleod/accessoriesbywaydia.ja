@@ -38,6 +38,7 @@
       list-style: none;
       margin: 0;
       padding: 0;
+      align-items: center;
     }
     .nav-links a {
       font-size: 1rem;
@@ -49,7 +50,7 @@
       position: relative;
       cursor: pointer;
       font-size: 1.4rem;
-      margin-left: auto;
+      margin-left: 1rem;
     }
     .cart-count {
       position: absolute;
@@ -60,6 +61,54 @@
       font-size: 0.7rem;
       border-radius: 50%;
       padding: 2px 6px;
+    }
+    .user-auth {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-left: 1rem;
+    }
+    .user-auth input {
+      font-size: 0.9rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .user-auth button {
+      background: #cc6d8c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 3px 12px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .user-info {
+      font-size: 0.95rem;
+      color: #7c5e3c;
+      font-weight: 600;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1rem;
+      justify-content: center;
+      align-items: center;
+      background: #f0e6db;
+      border-radius: 10px;
+      margin: 1rem;
+    }
+    .filters label {
+      font-size: 0.9rem;
+      color: #7c5e3c;
+    }
+    .filters input[type="text"] {
+      padding: 0.4rem 0.8rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      min-width: 180px;
     }
     .shop-grid {
       display: grid;
@@ -101,22 +150,6 @@
       background: #ccc;
       cursor: not-allowed;
     }
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding: 1rem;
-      justify-content: center;
-      align-items: center;
-      background: #f0e6db;
-      border-radius: 10px;
-      margin: 1rem;
-    }
-    select,
-    label {
-      font-size: 0.9rem;
-      color: #7c5e3c;
-    }
     .cart-modal {
       position: fixed;
       top: 0;
@@ -133,12 +166,13 @@
     }
     .cart-content {
       background: #fff;
-      padding: 2rem;
+      padding: 2rem 1.2rem;
       border-radius: 10px;
       width: 100%;
       max-width: 480px;
       max-height: 90vh;
       overflow-y: auto;
+      position: relative;
     }
     .checkout-form label {
       display: block;
@@ -154,7 +188,9 @@
       font-size: 1rem;
     }
     .close-btn {
-      float: right;
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
       font-size: 1.6rem;
       cursor: pointer;
       color: #999;
@@ -205,46 +241,45 @@
       color: #a0445e;
       margin-top: 0.3rem;
     }
-    /* Featured collection swipe */
-    .featured-collection {
-      margin: 1rem auto;
-      max-width: 500px;
+    .payment-success {
+      padding: 1rem;
+      background: #e6ffe6;
+      color: #257a3a;
+      border-radius: 7px;
+      margin: 1.5rem 0;
+      font-weight: 600;
       text-align: center;
     }
-    .featured-collection img {
-      width: 100%;
-      max-height: 300px;
-      border-radius: 10px;
-      cursor: pointer;
-      object-fit: contain;
+    .cart-actions {
+      margin-top: 1rem;
+      text-align: right;
     }
-    .swipe-controls {
-      margin-top: 0.5rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-    .swipe-controls button {
-      background: #cc6d8c;
+    .checkout-btn {
+      background: #7c5e3c;
+      color: #fff;
       border: none;
-      color: white;
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 0.3rem 0.7rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 20px;
       cursor: pointer;
-      border-radius: 5px;
+      font-size: 1.08rem;
+      font-weight: 600;
     }
-
     /* Responsive tweaks */
     @media (max-width: 600px) {
       .navbar {
         flex-direction: column;
         align-items: flex-start;
+        padding: 1rem;
+      }
+      .logo {
+        margin-bottom: 0.5rem;
       }
       .nav-links {
         width: 100%;
-        justify-content: space-around;
+        justify-content: flex-start;
         margin-top: 0.5rem;
+        flex-wrap: wrap;
+        gap: 0.8rem;
       }
       .cart-icon {
         margin-left: 0;
@@ -253,11 +288,17 @@
       }
       .filters {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 0.7rem;
       }
       .shop-grid {
         grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
         gap: 1rem;
+      }
+      .user-auth {
+        flex-direction: column;
+        margin-left: 0;
+        gap: 0.4rem;
       }
     }
   </style>
@@ -274,6 +315,17 @@
           🛒
           <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
         </li>
+        <li>
+          <div class="user-auth" v-if="!user.loggedIn">
+            <input type="text" v-model="user.username" placeholder="Username" @keyup.enter="login" />
+            <input type="password" v-model="user.password" placeholder="Password" @keyup.enter="login" />
+            <button @click="login">Login</button>
+          </div>
+          <div v-else class="user-auth">
+            <span class="user-info">Hello, {{ user.username }}!</span>
+            <button @click="logout">Logout</button>
+          </div>
+        </li>
       </ul>
     </header>
 
@@ -286,7 +338,6 @@
           <option value="clawclip">Claw Clip</option>
         </select>
       </label>
-
       <label>
         Filter by max price:
         <select v-model.number="filters.maxPrice">
@@ -296,7 +347,6 @@
           <option :value="1000">1000 JMD</option>
         </select>
       </label>
-
       <label>
         Currency:
         <select v-model="currency">
@@ -304,23 +354,26 @@
           <option value="USD">USD</option>
         </select>
       </label>
+      <label>
+        Search:
+        <input type="text" v-model="filters.search" placeholder="Search products..." />
+      </label>
     </section>
 
     <section class="shop-grid">
       <div
         v-for="product in filteredProducts"
-        :key="product.id"
+        :key="product.id + (product.selectedColor || '')"
         class="product-card"
       >
         <a
           :href="product.image"
           target="_blank"
           v-if="product.stock > 0"
-          ><img
+        ><img
             :src="product.image"
             :alt="product.name"
-            @click="selectFeatured(product)"
-        /></a>
+          /></a>
         <img
           v-else
           :src="product.image"
@@ -329,13 +382,11 @@
         />
         <h3>{{ product.name }}</h3>
         <p>
-          {{ formatPrice(convertPrice(product.price)) }}
+          {{ formatPrice(product.price) }}
           <span class="stock-info" v-if="product.stock <= 5 && product.stock > 0"
-            >Only {{ product.stock }} left!</span
-          >
+            >Only {{ product.stock }} left!</span>
           <span class="stock-info" v-if="product.stock === 0">Out of stock</span>
         </p>
-
         <div v-if="product.type === 'clawclip'">
           <label>
             Color:
@@ -350,11 +401,11 @@
             </select>
           </label>
         </div>
-
         <button
           class="btn-buy"
           @click="addToCart(product)"
-          :disabled="product.stock === 0"
+          :disabled="product.stock === 0 || !user.loggedIn"
+          :title="user.loggedIn ? '' : 'Please login to add to cart'"
         >
           Add to Cart
         </button>
@@ -366,12 +417,11 @@
         <span class="close-btn" @click="showCart = false">&times;</span>
         <h2>Your Cart</h2>
         <ul class="cart-items" v-if="cart.length">
-          <li v-for="(item, index) in cart" :key="item.id + '-' + item.selectedColor">
+          <li v-for="(item, index) in cart" :key="item.id + '-' + (item.color || '')">
             <div>
               {{ item.name }}
-              <span v-if="item.selectedColor"> ({{ item.selectedColor }})</span>
-              -
-              {{ formatPrice(convertPrice(item.price)) }}
+              <span v-if="item.color"> ({{ item.color }})</span>
+              - {{ formatPrice(item.price) }}
             </div>
             <div class="quantity-control">
               <button @click="decreaseQuantity(index)">−</button>
@@ -382,23 +432,59 @@
           </li>
         </ul>
         <p v-else>Your cart is empty.</p>
-
-        <h3>Total: {{ formatPrice(convertPrice(cartTotal)) }}</h3>
-
+        <h3>Total: {{ formatPrice(cartTotal) }}</h3>
+        <div class="cart-actions" v-if="cart.length">
+          <button class="checkout-btn" @click="showCheckout = !showCheckout" v-if="!orderSuccess">
+            {{ showCheckout ? 'Hide Checkout' : 'Checkout' }}
+          </button>
+        </div>
+        <div v-if="showCheckout && cart.length && !orderSuccess">
+          <form class="checkout-form" @submit.prevent="submitOrder">
+            <label>
+              Name:
+              <input type="text" v-model="order.name" required />
+            </label>
+            <label>
+              Email:
+              <input type="email" v-model="order.email" required />
+            </label>
+            <label>
+              Phone:
+              <input type="tel" v-model="order.phone" required />
+            </label>
+            <label>
+              Address:
+              <input type="text" v-model="order.address" required />
+            </label>
+            <button type="submit" class="checkout-btn" style="margin-top:1rem;">
+              Pay {{ formatPrice(cartTotal) }}
+            </button>
+          </form>
+        </div>
+        <div v-if="orderSuccess" class="payment-success">
+          Thank you! Your order was submitted.<br>
+          We'll contact you soon.
+        </div>
+      </div>
+    </div>
+  </div>
   <script>
     new Vue({
       el: '#app',
       data: {
         currency: 'JMD',
         showCart: false,
-        currentImageIndex: 0,
+        showCheckout: false,
+        orderSuccess: false,
         filters: {
           type: '',
           maxPrice: Infinity,
+          search: ''
         },
-        featuredProduct: {
-          name: '',
-          images: [],
+        user: {
+          loggedIn: false,
+          username: '',
+          password: ''
         },
         products: [
           {
@@ -406,212 +492,185 @@
             name: 'Pearl Bow Heart Keychain',
             price: 800,
             type: 'keychain',
-            image:
-              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true',
-            stock: 10,
+            image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true',
+            stock: 10
           },
           {
             id: 2,
             name: 'Puppy Teddy Pendant',
             price: 1000,
             type: 'keychain',
-            image:
-              'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H78c602610c1c4a27b48322f6a0ac9b8be.webp',
-            stock: 10,
+            image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H78c602610c1c4a27b48322f6a0ac9b8be.webp',
+            stock: 10
           },
           {
             id: 3,
             name: 'Batman Lego Keychain',
             price: 850,
             type: 'keychain',
-            image:
-              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lego%20Accessories%20_%20Pink%20Batman%20Keychain%20_%20Color_%20Black_Pink%20_%20Size_%20Os.jpg?raw=true',
+            image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lego%20Accessories%20_%20Pink%20Batman%20Keychain%20_%20Color_%20Black_Pink%20_%20Size_%20Os.jpg?raw=true',
             stock: 10,
             colors: ['Pink', 'Black'],
-            selectedColor: [ ],
+            selectedColor: ''
           },
           {
             id: 4,
             name: 'Miu Style Cat Head Keychain',
             price: 1000,
             type: 'keychain',
-            image:
-              'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4b7310a3a1dc460cb166048ca80bf69e0.webp',
-            stock: 6,
-          },
-          {
-            id: 4,
-            name: 'Miu Style Heart Shaped Keychain',
-            price: 1000,
-            type: 'keychain',
-            image:
-              'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6eba452254fe438f8e74a90b6a434b87n.webp',
-            stock: 6,
+            image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4b7310a3a1dc460cb166048ca80bf69e0.webp',
+            stock: 6
           },
           {
             id: 5,
-            name: 'Dachshund',
+            name: 'Miu Style Heart Shaped Keychain',
             price: 1000,
             type: 'keychain',
-            image:
-              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant%20for%20Phone%20Bag%20Accessories%20Style%20A.jpg?raw=true',
-            stock: 3,
+            image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6eba452254fe438f8e74a90b6a434b87n.webp',
+            stock: 6
           },
           {
             id: 6,
-            name: 'Tennis Racket Keychain',
+            name: 'Dachshund',
             price: 1000,
             type: 'keychain',
-            image:
-              'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H7deef4f9cf394e708254b291e3610bf7w.webp',
-            stock: 3,
+            image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant%20for%20Phone%20Bag%2.jpg?raw=true',
+            stock: 3
           },
           {
             id: 7,
-            name: 'Tennis Racket Keychain + Bible',
-            price: 1100,
+            name: 'Tennis Racket Keychain',
+            price: 1000,
             type: 'keychain',
-            image:
-              'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4082d5e9abc343d796c724005550d886h.webp',
-            stock: 4,
+            image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H7deef4f9cf394e708254b291e3610bf7w.webp',
+            stock: 3
           },
           {
             id: 8,
+            name: 'Tennis Racket Keychain + Bible',
+            price: 1100,
+            type: 'keychain',
+            image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4082d5e9abc343d796c724005550d886h.webp',
+            stock: 4
+          },
+          {
+            id: 9,
             name: 'Flower Claw Clip',
             price: 500,
             type: 'clawclip',
-            image:
-              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true',
+            image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true',
             stock: 20,
             colors: ['Pink', 'White', 'Burgundy', 'Yellow', 'Orange', 'Green', 'Purple'],
-            selectedColor: [ ],
-          },
+            selectedColor: ''
+          }
         ],
-       cart: [],
-          showCart: false,
-          order: {
-            name: "",
-            email: "",
-            phone: "",
-            address: "",
-          },
-          orderSuccess: false,
-        };
+        cart: [],
+        order: {
+          name: "",
+          email: "",
+          phone: "",
+          address: ""
+        }
       },
       computed: {
         filteredProducts() {
-          let filtered = this.products;
-
-          // Filter by type
-          if (this.filters.type !== "all") {
-            filtered = filtered.filter((p) => p.type === this.filters.type);
-          }
-
-          // Filter by price
-          if (this.filters.price !== "all") {
-            if (this.filters.price === "under800") {
-              filtered = filtered.filter((p) => p.price < 800);
-            } else if (this.filters.price === "800to1000") {
-              filtered = filtered.filter(
-                (p) => p.price >= 800 && p.price <= 1000
-              );
-            } else if (this.filters.price === "over1000") {
-              filtered = filtered.filter((p) => p.price > 1000);
-            }
-          }
-          return filtered;
-        },
-        cartCount() {
-          return this.cart.reduce((acc, item) => acc + item.qty, 0);
+          return this.products.filter(product => {
+            const matchesType = !this.filters.type || product.type === this.filters.type;
+            const matchesPrice = product.price <= this.filters.maxPrice;
+            const matchesSearch = !this.filters.search ||
+              product.name.toLowerCase().includes(this.filters.search.toLowerCase());
+            return matchesType && matchesPrice && matchesSearch;
+          });
         },
         cartTotal() {
-          return this.cart.reduce(
-            (acc, item) => acc + item.price * item.qty,
-            0
-          );
+          return this.cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
         },
-        orderSummary() {
-          return this.cart
-            .map(
-              (item) =>
-                `${item.name} ${
-                  item.color ? "(" + item.color + ")" : ""
-                } x${item.qty} - ${this.formattedPrice(item.price * item.qty)}`
-            )
-            .join("\n");
-        },
+        totalQuantity() {
+          return this.cart.reduce((acc, item) => acc + item.quantity, 0);
+        }
       },
       methods: {
-        formattedPrice(jmdPrice) {
-          const rate = this.rates[this.currency];
-          let converted = jmdPrice * rate;
-          let symbol = "";
-
-          switch (this.currency) {
-            case "USD":
-              symbol = "$";
-              break;
-            case "GBP":
-              symbol = "£";
-              break;
-            default:
-              symbol = "J$";
+        formatPrice(price) {
+          let converted = price;
+          let symbol = "J$";
+          if (this.currency === "USD") {
+            converted = price / 150;
+            symbol = "$";
           }
-
           return symbol + converted.toFixed(2);
         },
         addToCart(product) {
-          // Compose unique cart id with color if any
-          const id = product.id + (product.selectedColor ? "-" + product.selectedColor : "");
-
-          const cartItem = this.cart.find((item) => item.id === id);
-
-          if (cartItem) {
-            if (cartItem.qty < product.stock) {
-              cartItem.qty++;
-            }
+          if (!this.user.loggedIn) {
+            alert("Please login to add items to cart.");
+            return;
+          }
+          // Unique id for cart (product + color)
+          const color = product.selectedColor || '';
+          const id = product.id + (color ? '-' + color : '');
+          const item = this.cart.find(i => i.id === id);
+          if (item) {
+            if (item.quantity < product.stock) item.quantity++;
           } else {
             this.cart.push({
               id: id,
               name: product.name,
               price: product.price,
-              qty: 1,
-              color: product.selectedColor || null,
-              stock: product.stock,
+              quantity: 1,
+              color: color,
+              stock: product.stock
             });
           }
           this.showCart = true;
         },
-        removeItem(index) {
+        removeFromCart(index) {
           this.cart.splice(index, 1);
         },
-        increaseQty(index) {
+        increaseQuantity(index) {
           const item = this.cart[index];
-          if (item.qty < item.stock) {
-            item.qty++;
+          if (item.quantity < item.stock) item.quantity++;
+        },
+        decreaseQuantity(index) {
+          const item = this.cart[index];
+          if (item.quantity > 1) item.quantity--;
+        },
+        login() {
+          // Demo only: any username/password accepted, sets as logged in
+          if (this.user.username && this.user.password) {
+            this.user.loggedIn = true;
+            this.user.password = '';
+            alert("Logged in as " + this.user.username);
+          } else {
+            alert("Please enter username and password.");
           }
         },
-        decreaseQty(index) {
-          const item = this.cart[index];
-          if (item.qty > 1) {
-            item.qty--;
-          }
-        },
-        submitOrder() {
-          // Normally submit form to Formspree or backend API
-          // Here simulate success and clear cart + form
-          alert("Order submitted! We'll contact you soon.");
-          this.orderSuccess = true;
+        logout() {
+          this.user.loggedIn = false;
+          this.user.username = '';
+          this.user.password = '';
           this.cart = [];
-          this.order = {
-            name: "",
-            email: "",
-            phone: "",
-            address: "",
-          };
           this.showCart = false;
         },
-      },
+        submitOrder() {
+          if (
+            !this.order.name ||
+            !this.order.email ||
+            !this.order.phone ||
+            !this.order.address
+          ) {
+            alert("Please fill out all fields.");
+            return;
+          }
+          // Demo: show success, clear cart
+          this.orderSuccess = true;
+          setTimeout(() => {
+            this.cart = [];
+            this.showCheckout = false;
+            this.orderSuccess = false;
+            this.showCart = false;
+            this.order = { name: "", email: "", phone: "", address: "" };
+          }, 3500);
+        }
+      }
     });
   </script>
 </body>
