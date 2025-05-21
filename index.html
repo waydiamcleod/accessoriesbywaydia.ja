@@ -149,35 +149,6 @@
       font-size: 0.9rem;
     }
 
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-
-    .order-modal {
-      background: white;
-      padding: 2rem;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 400px;
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: transparent;
-      font-size: 1.5rem;
-      border: none;
-      cursor: pointer;
-    }
-
     .main-footer {
       background: #f3e8dd;
       padding: 2rem;
@@ -219,7 +190,8 @@
       <div class="logo">Accessories by Waydia</div>
       <ul class="nav-links">
         <li><a href="#hero">Home</a></li>
-        <li><a href="#products">Products</a></li>
+        <li><a href="#products">Featured</a></li>
+        <li><a href="shop.html">Shop All</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
@@ -232,7 +204,7 @@
       <h1>Elegant <span class="accent">Accessories</span> For Your Style</h1>
       <p class="hero-desc">Elevate your look with our handcrafted keychains, bag charms, and accessories that add a touch of sophistication to your everyday items.</p>
       <div class="hero-buttons">
-        <a href="#products" class="btn-primary">Shop Now</a>
+        <a href="#products" class="btn-primary">Shop Featured</a>
         <a href="contact.html" class="btn-outline">Contact</a>
       </div>
     </div>
@@ -243,10 +215,28 @@
 
   <!-- COLLECTION -->
   <section id="products" class="collection-section">
-    <h2 class="collection-title">Our Collection</h2>
-    <p class="collection-subtitle">Discover our handcrafted accessories that blend elegance with everyday functionality.</p>
+    <h2 class="collection-title">Featured Collection</h2>
+    <p class="collection-subtitle">Discover our bestselling handcrafted accessories.</p>
     <div class="collection-grid">
-      <!-- Product Cards here (use the previous format with product images, names, and buttons) -->
+      <div class="collection-card">
+        <img src="https://raw.githubusercontent.com/yourusername/accessories-images/main/pearl-bow-heart.jpg" alt="Pearl Bow Heart Keychain">
+        <div class="card-label">Pearl Bow Heart Keychain - J$700</div>
+      </div>
+      <div class="collection-card">
+        <img src="https://raw.githubusercontent.com/yourusername/accessories-images/main/puppy-teddy.jpg" alt="Puppy Teddy Pendant">
+        <div class="card-label">Puppy Teddy Pendant - J$800</div>
+      </div>
+      <div class="collection-card">
+        <img src="https://raw.githubusercontent.com/yourusername/accessories-images/main/batman-lego.jpg" alt="Batman Lego Keychain">
+        <div class="card-label">Pink Batman Lego Keychain - J$850</div>
+      </div>
+      <div class="collection-card">
+        <img src="https://raw.githubusercontent.com/yourusername/accessories-images/main/cat-head.jpg" alt="Miu Style Cat Head">
+        <div class="card-label">Miu Style Cat Head - J$1000</div>
+      </div>
+    </div>
+    <div style="margin-top: 2rem;">
+      <a href="shop.html" class="btn-outline btn-sm">Shop All Products</a>
     </div>
   </section>
 
@@ -262,7 +252,8 @@
           <div class="footer-heading">Quick Links</div>
           <ul>
             <li><a href="#hero">Home</a></li>
-            <li><a href="#products">Products</a></li>
+            <li><a href="#products">Featured</a></li>
+            <li><a href="shop.html">Shop All</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
@@ -270,9 +261,9 @@
         <div class="footer-col">
           <div class="footer-heading">Products</div>
           <ul>
-            <li><a href="#products">Keychains</a></li>
-            <li><a href="#products">Bag Charms</a></li>
-            <li><a href="#products">Accessories</a></li>
+            <li><a href="shop.html">Keychains</a></li>
+            <li><a href="shop.html">Bag Charms</a></li>
+            <li><a href="shop.html">Accessories</a></li>
             <li><a href="contact.html">Custom Orders</a></li>
           </ul>
         </div>
