@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Shop All - Accessories by Waydia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400|Montserrat:400,500,700&display=swap" rel="stylesheet" />
+  <style>
+    /* Reuse your existing styles here or link to a CSS file */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #fffaf7;
+      color: #7c5e3c;
+    }
+    /* Navbar styles */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2.2rem;
+      background: #fff;
+      border-bottom: 1px solid #e7dac7;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #7c5e3c;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #7c5e3c;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 0.1em;
+      transition: color 0.18s;
+    }
+    .nav-links a:hover {
+      color: #a0846a;
+      border-bottom: 2px solid #a0846a;
+    }
+    /* Collection grid */
+    .collection-section {
+      padding: 4rem 2rem;
+      text-align: center;
+      max-width: 1100px;
+      margin: 2rem auto;
+    }
+    .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+    .collection-card {
+      background: #f8f1ea;
+      border-radius: 15px;
+      padding: 1rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .collection-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .card-label {
+      margin-top: 0.8rem;
+      font-weight: 600;
+    }
+    /* Footer styling */
+    footer {
+      background: #f3e8dd;
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #7c5e3c;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Accessories by Waydia</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop All</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="collection-section">
+    <h1>Shop All Products</h1>
+    <p>Explore our full collection of handcrafted accessories.</p>
+    <div class="collection-grid">
+      <!-- Repeat product cards -->
+      <div class="collection-card">
+        <img src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant%20for%20Phone%20Bag%20Accessories%20Style%20A.jpg?raw=true" alt="Dachshund Keychain" />
+        <div class="card-label">Dachshund Keychain - J$1000</div>
+      </div>
+      <div class="collection-card">
+        <img src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lego%20Accessories%20_%20Pink%20Batman%20Keychain%20_%20Color_%20Black_Pink%20_%20Size_%20Os.jpg?raw=true" alt="Pink Batman Lego Keychain" />
+        <div class="card-label">Pink Batman Lego Keychain - J$850</div>
+      </div>
+      <div class="collection-card">
+        <img src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true" alt="Flower Claw Clip" />
+        <div class="card-label">Flower Claw Clip - J$500</div>
+      </div>
+      <!-- Add more products as needed -->
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Accessories by Waydia. All rights reserved.
+  </footer>
+</body>
+</html>
