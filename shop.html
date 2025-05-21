@@ -85,6 +85,7 @@
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
+      margin-top: 0.5rem;
     }
     .cart-modal {
       position: fixed;
@@ -122,6 +123,18 @@
       cursor: pointer;
       color: #999;
     }
+    .remove-btn {
+      background: #f06565;
+      border: none;
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .color-select {
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -143,6 +156,13 @@
       <a :href="product.image" target="_blank"><img :src="product.image" :alt="product.name"></a>
       <h3>{{ product.name }}</h3>
       <p>{{ product.price }}</p>
+      <div v-if="product.colors" class="color-select">
+        <label>Choose Color:
+          <select v-model="product.selectedColor">
+            <option v-for="color in product.colors" :value="color">{{ color }}</option>
+          </select>
+        </label>
+      </div>
       <button class="btn-buy" @click="addToCart(product)">Add to Cart</button>
     </div>
   </section>
@@ -150,11 +170,16 @@
   <div v-if="showCart" class="cart-modal">
     <div class="cart-content">
       <span class="close-btn" @click="showCart = false">&times;</span>
-      <h2>Checkout</h2>
+      <h2>Your Cart</h2>
       <ul>
-        <li v-for="item in cart">{{ item.name }} - {{ item.price }}</li>
+        <li v-for="(item, index) in cart">
+          {{ item.name }} - {{ item.price }} 
+          <span v-if="item.selectedColor"> ({{ item.selectedColor }})</span>
+          <button class="remove-btn" @click="removeFromCart(index)">Remove</button>
+        </li>
       </ul>
-      <form class="checkout-form">
+
+      <form class="checkout-form" @submit.prevent="submitOrder">
         <label>Name:<input type="text" required></label>
         <label>Email:<input type="email" required></label>
         <label>Phone Number:<input type="text" required></label>
@@ -193,13 +218,24 @@
         {
           name: 'Flower Claw Clip',
           price: 'J$500',
-          image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true'
+          image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true',
+          colors: ['Pink', 'Purple', 'Blue'],
+          selectedColor: 'Pink'
         }
       ]
     },
     methods: {
       addToCart(product) {
-        this.cart.push(product);
+        const copy = { ...product };
+        this.cart.push(copy);
+      },
+      removeFromCart(index) {
+        this.cart.splice(index, 1);
+      },
+      submitOrder() {
+        alert("Thank you for your order! We’ll reach out to confirm shipping & payment.");
+        this.cart = [];
+        this.showCart = false;
       }
     }
   });
