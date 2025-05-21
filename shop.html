@@ -1,69 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Shop All - Accessories by Waydia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
-    href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400|Montserrat:400,500,700&display=swap"
-    rel="stylesheet"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400|Montserrat:400,500,700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
   <style>
-    /* Reset & base */
-    * {
-      box-sizing: border-box;
-    }
     body {
       margin: 0;
       padding: 0;
-      font-family: "Montserrat", Arial, sans-serif;
+      font-family: 'Montserrat', Arial, sans-serif;
       background: #fffaf7;
       color: #7c5e3c;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
     }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    /* Navbar */
     .navbar {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      padding: 1.2rem 2rem;
+      padding: 1.2rem 2.2rem;
       background: #fff;
       border-bottom: 1px solid #e7dac7;
-      flex-wrap: wrap;
     }
     .logo {
-      font-family: "Playfair Display", serif;
+      font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
       font-weight: 700;
       color: #7c5e3c;
     }
     .nav-links {
       display: flex;
-      gap: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
       list-style: none;
       margin: 0;
       padding: 0;
-      align-items: center;
-      flex-wrap: wrap;
     }
     .nav-links a {
       font-size: 1rem;
       font-weight: 500;
       color: #7c5e3c;
+      text-decoration: none;
     }
     .cart-icon {
       position: relative;
       cursor: pointer;
-      font-size: 1.6rem;
-      user-select: none;
     }
     .cart-count {
       position: absolute;
@@ -74,1344 +56,128 @@
       font-size: 0.7rem;
       border-radius: 50%;
       padding: 2px 6px;
-      min-width: 18px;
-      text-align: center;
-      font-weight: 700;
     }
-
-    /* Container */
-    .container {
-      max-width: 1200px;
-      margin: 1.5rem auto;
-      padding: 0 1rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    /* Filters */
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-      justify-content: flex-start;
-    }
-    .filters label {
-      font-weight: 600;
-      margin-right: 0.5rem;
-    }
-    .filters select {
-      padding: 0.3rem 0.5rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    /* Shop Grid */
     .shop-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
     }
     .product-card {
       background: #f8f1ea;
       border-radius: 15px;
       padding: 1rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
     }
     .product-card img {
       width: 100%;
       border-radius: 10px;
       cursor: pointer;
-      object-fit: contain;
-      max-height: 200px;
-      margin-bottom: 0.8rem;
-      transition: transform 0.3s ease;
-    }
-    .product-card img:hover {
-      transform: scale(1.05);
     }
     .product-card h3 {
-      margin: 0 0 0.4rem 0;
-      font-weight: 700;
-    }
-    .product-card p {
-      margin: 0 0 0.8rem 0;
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    .stock {
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-      color: #555;
-    }
-    .color-select {
-      margin-bottom: 0.8rem;
+      margin: 1rem 0 0.5rem;
     }
     .btn-buy {
+      display: inline-block;
       background: #cc6d8c;
       color: white;
       padding: 0.5rem 1.2rem;
       border-radius: 20px;
       font-weight: 600;
       cursor: pointer;
-      border: none;
-      transition: background 0.3s ease;
+      text-decoration: none;
     }
-    .btn-buy:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-    .btn-buy:hover:not(:disabled) {
-      background: #b05975;
-    }
-
-    /* Cart Modal */
-    .cart-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      padding: 1rem;
-    }
-    .cart-content {
-      background: #fff;
-      padding: 1.5rem 2rem;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 480px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      position: relative;
-    }
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 1.6rem;
-      cursor: pointer;
-      color: #999;
-      user-select: none;
-    }
-    .cart-items {
-      list-style: none;
-      padding: 0;
-      margin: 1rem 0;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.8rem;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 0.5rem;
-    }
-    .cart-item-info {
-      flex-grow: 1;
-    }
-    .cart-item-name {
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-    .cart-item-color,
-    .cart-item-qty,
-    .cart-item-price {
-      font-size: 0.9rem;
-      color: #555;
-    }
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      margin-left: 1rem;
-    }
-    .qty-btn {
-      background: #cc6d8c;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 0.15rem 0.5rem;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: background 0.3s ease;
-    }
-    .qty-btn:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-    .qty-btn:hover:not(:disabled) {
-      background: #b05975;
-    }
-    .remove-btn {
-      background: transparent;
-      border: none;
-      color: #cc6d8c;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 1.1rem;
-      user-select: none;
-    }
-    .remove-btn:hover {
-      color: #b05975;
-    }
-    /* Checkout form */
-    .checkout-form label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 600;
-    }
-    .checkout-form input,
-    .checkout-form select {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    .checkout-form button {
-      margin-top: 1.5rem;
-      width: 100%;
-      background: #cc6d8c;
-      color: white;
-      padding: 0.7rem;
-      font-weight: 700;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: background 0.3s ease;
-    }
-    .checkout-form button:hover {
-      background: #b05975;
-    }
-    /* Responsive */
-    @media (max-width: 600px) {
-      .filters {
-        flex-direction: column;
-        align-items: flex-start;
+    @media screen and (max-width: 600px) {
+      .shop-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
       }
-      .nav-links {
-        flex-wrap: wrap;
+      .navbar {
+        flex-direction: column;
         gap: 1rem;
       }
-      .cart-content {
-        max-width: 100%;
-        height: 100%;
-        border-radius: 0;
-      }
     }
   </style>
 </head>
 <body>
-  <div id="app">
-    <header class="navbar">
-      <div class="logo">Accessories by Waydia</div>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li class="cart-icon" @click="showCart = true" title="View Cart">
-          🛒
-          <span v-if="cartCount > 0" class="cart-count">{{ cartCount }}</span>
-        </li>
-      </ul>
-    </header>
-
-    <main class="container">
-      <section class="filters" aria-label="Product filters">
-        <label for="filter-type">Filter by Type:</label>
-        <select id="filter-type" v-model="filters.type">
-          <option value="all">All</option>
-          <option value="keychain">Keychain</option>
-          <option value="clawclip">Claw Clip</option>
-        </select>
-
-        <label for="filter-price">Filter by Price:</label>
-        <select id="filter-price" v-model="filters.price">
-          <option value="all">All</option>
-          <option value="under800">Under J$800</option>
-          <option value="800to1000">J$800 - J$1000</option>
-          <option value="over1000">Over J$1000</option>
-        </select>
-
-        <label for="currency-select">Currency:</label>
-        <select id="currency-select" v-model="currency" @change="updateCurrency">
-          <option value="JMD">JMD (J$)</option>
-          <option value="USD">USD ($)</option>
-          <option value="GBP">GBP (£)</option>
-        </select>
-      </section>
-
-      <section class="shop-grid" aria-label="Products listing">
-        <div
-          class="product-card"
-          v-for="product in filteredProducts"
-          :key="product.id"
-        >
-          <a :href="product.image" target="_blank" :aria-label="`View ${product.name} image`">
-            <img :src="product.image" :alt="product.name" />
-          </a>
-          <h3>{{ product.name }}</h3>
-          <p>{{ formattedPrice(product.price) }}</p>
-          <div class="stock" :style="{color: product.stock === 0 ? '#cc6d8c' : '#555'}">
-            <strong>Stock:</strong> {{ product.stock > 0 ? product.stock : 'Out of stock' }}
-          </div>
-          <div v-if="product.type === 'clawclip'" class="color-select">
-            <label :for="`color-${product.id}`">Choose Color:</label>
-            <select :id="`color-${product.id}`" v-model="product.selectedColor">
-              <option
-                v-for="color in product.colors"
-                :value="color"
-                :key="color"
-              >{{ color }}</option>
-            </select>
-          </div>
-          <button
-            class="btn-buy"
-            :disabled="product.stock === 0"
-            @click="addToCart(product)"
-          >
-            Add to Cart
-          </button>
-        </div>
-      </section>
-    </main>
-
-    <!-- Cart Modal -->
-    <div v-if="showCart" class="cart-modal" role="dialog" aria-modal="true" aria-labelledby="cart-title">
-      <div class="cart-content">
-        <span class="close-btn" @click="showCart = false" aria-label="Close cart">&times;</span>
-        <h2 id="cart-title">Your Cart ({{ cartCount }} items)</h2>
-        <ul class="cart-items" v-if="cart.length > 0">
-          <li
-            class="cart-item"
-            v-for="(item, index) in cart"
-            :key="item.id + '-' + item.color"
-          >
-            <div class="cart-item-info">
-              <div class="cart-item-name">{{ item.name }}</div>
-              <div class="cart-item-color" v-if="item.color">Color: {{ item.color }}</div>
-              <div class="cart-item-price">{{ formattedPrice(item.price) }} each</div>
-            </div>
-            <div class="qty-controls" aria-label="Quantity controls">
-              <button
-                class="qty-btn"
-                @click="decreaseQty(index)"
-                :disabled="item.qty === 1"
-                aria-label="Decrease quantity"
-              >-</button>
-              <span class="cart-item-qty" aria-live="polite">{{ item.qty }}</span>
-              <button
-                class="qty-btn"
-                @click="increaseQty(index)"
-                :disabled="item.qty >= item.stock"
-                aria-label="Increase quantity"
-              >+</button>
-            </div>
-            <button
-              class="remove-btn"
-              @click="removeItem(index)"
-              aria-label="Remove item"
-              title="Remove from cart"
-            >×</button>
-          </li>
-        </ul>
-        <p v-else>Your cart is empty.</p>
-        <h3>Total: {{ formattedPrice(cartTotal) }}</h3>
-
-        <form
-          class="checkout-form"
-          @submit.prevent="submitOrder"
-          action="https://formspree.io/f/yourFormID"
-          method="POST"
-          v-if="cart.length > 0"
-          aria-label="Checkout form"
-        >
-          <label for="name">Full Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            v-model="order.name"
-            required
-            autocomplete="name"
-          />
-
-          <label for="email">Email Address:</label>
-          <input
-            type="email"
-            id="email"
-            name="_replyto"
-            v-model="order.email"
-            required
-            autocomplete="email"
-          />
-
-          <label for="phone">Phone Number:</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            v-model="order.phone"
-            required
-            autocomplete="tel"
-          />
-
-          <label for="address">Shipping Address:</label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            v-model="order.address"
-            required
-            autocomplete="shipping street-address"
-          />
-
-          <label for="order-details">Order Details:</label>
-          <textarea
-            id="order-details"
-            name="orderDetails"
-            readonly
-            :value="orderSummary"
-            rows="4"
-            style="resize:none; background:#f8f1ea; border:none; padding:0.5rem;"
-          ></textarea>
-
-          <!-- Honeypot to block spam -->
-          <input type="text" name="_gotcha" style="display:none" />
-
-          <button type="submit">Place Order</button>
-        </form>
-        <p v-if="orderSuccess" style="color: green; margin-top: 1rem;">
-          Thank you for your order! We will contact you soon.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    new Vue({
-      el: "#app",
-      data() {
-        return {
-          currency: "JMD",
-          rates: {
-            JMD: 1,
-            USD: 0.0065,
-            GBP: 0.0052,
-          },
-          filters: {
-            type: "all",
-            price: "all",
-          },
-          products: [
-            {
-              id: 1,
-              name: "Pearl Bow Heart Keychain",
-              price: 700,
-              stock: 20,
-              type: "keychain",
-              image: "https://i.ibb.co/FVHn91x/pearl-bow-heart-keychain.webp",
-              colors: [],
-            },
-            {
-              id: 2,
-              name: "Puppy Teddy Pendant",
-              price: 800,
-              stock: 15,
-              type: "keychain",
-              image: "https://i.ibb.co/cvsbSzJ/puppy-teddy-pendant.webp",
-              colors: [],
-            },
-            {
-              id: 3,
-              name: "Batman Lego Keychain",
-              price: 850,
-              stock: 10,
-              type: "keychain",
-              image: "https://i.ibb.co/3hfNrWx/batman-lego-keychain.webp",
-              colors: [],
-            },
-            {
-              id: 4,
-              name: "Miu Style Cat Head Keychain",
-              price: 1000,
-              stock: 5,
-              type: "keychain",
-              image: "https://i.ibb.co/QDkrWL1/miu-style-cat-head.webp",
-              colors: [],
-            },
-            {
-              id: 5,
-              name: "Dachshund Keychain",
-              price: 1000,
-              stock: 8,
-              type: "keychain",
-              image: "https://i.ibb.co/R7dZRmH/dachshund.webp",
-              colors: [],
-            },
-            {
-              id: 6,
-              name: "Tennis Racket Keychain",
-              price: 1000,
-              stock: 12,
-              type: "keychain",
-              image: "https://i.ibb.co/QF7mYbT/tennis-racket.webp",
-              colors: [],
-            },
-            {
-              id: 7,
-              name: "Tennis Racket Keychain + Bible",
-              price: 1100,
-              stock: 4,
-              type: "keychain",
-              image: "https://i.ibb.co/S0vy0qk/tennis-racket-bible.webp",
-              colors: [],
-            },
-            {
-              id: 8,
-              name: "Claw Clip",
-              price: 400,
-              stock: 25,
-              type: "clawclip",
-              image: "https://i.ibb.co/gjFzG9T/clawclip1.webp",
-              colors: ["Yellow", "Pink", "Blue", "Orange", "Green"],
-              selectedColor: "Yellow",
-            },
-            {
-              id: 9,
-              name: "Claw Clip",
-              price: 400,
-              stock: 18,
-              type: "clawclip",
-              image: "https://i.ibb.co/5sWmBBr/clawclip2.webp",
-              colors: ["Yellow", "Pink", "Blue", "Orange", "Green"],
-              selectedColor: "Yellow",
-            },
-            {
-              id: 10,
-              name: "Claw Clip",
-              price: 400,
-              stock: 20,
-              type: "clawclip",
-              image: "https://i.ibb.co/tM8FTTX/clawclip3.webp",
-              colors: ["Yellow", "Pink", "Blue", "Orange", "Green"],
-              selectedColor: "Yellow",
-            },
-          ],
-          cart: [],
-          showCart: false,
-          order: {
-            name: "",
-            email: "",
-            phone: "",
-            address: "",
-          },
-          orderSuccess: false,
-        };
-      },
-      computed: {
-        filteredProducts() {
-          let filtered = this.products;
-
-          // Filter by type
-          if (this.filters.type !== "all") {
-            filtered = filtered.filter((p) => p.type === this.filters.type);
-          }
-
-          // Filter by price
-          if (this.filters.price !== "all") {
-            if (this.filters.price === "under800") {
-              filtered = filtered.filter((p) => p.price < 800);
-            } else if (this.filters.price === "800to1000") {
-              filtered = filtered.filter(
-                (p) => p.price >= 800 && p.price <= 1000
-              );
-            } else if (this.filters.price === "over1000") {
-              filtered = filtered.filter((p) => p.price > 1000);
-            }
-          }
-          return filtered;
-        },
-        cartCount() {
-          return this.cart.reduce((acc, item) => acc + item.qty, 0);
-        },
-        cartTotal() {
-          return this.cart.reduce(
-            (acc, item) => acc + item.price * item.qty,
-            0
-          );
-        },
-        orderSummary() {
-          return this.cart
-            .map(
-              (item) =>
-                `${item.name} ${
-                  item.color ? "(" + item.color + ")" : ""
-                } x${item.qty} - ${this.formattedPrice(item.price * item.qty)}`
-            )
-            .join("\n");
-        },
-      },
-      methods: {
-        formattedPrice(jmdPrice) {
-          const rate = this.rates[this.currency];
-          let converted = jmdPrice * rate;
-          let symbol = "";
-
-          switch (this.currency) {
-            case "USD":
-              symbol = "$";
-              break;
-            case "GBP":
-              symbol = "£";
-              break;
-            default:
-              symbol = "J$";
-          }
-
-          return symbol + converted.toFixed(2);
-        },
-        addToCart(product) {
-          // Compose unique cart id with color if any
-          const id = product.id + (product.selectedColor ? "-" + product.selectedColor : "");
-
-          const cartItem = this.cart.find((item) => item.id === id);
-
-          if (cartItem) {
-            if (cartItem.qty < product.stock) {
-              cartItem.qty++;
-            }
-          } else {
-            this.cart.push({
-              id: id,
-              name: product.name,
-              price: product.price,
-              qty: 1,
-              color: product.selectedColor || null,
-              stock: product.stock,
-            });
-          }
-          this.showCart = true;
-        },
-        removeItem(index) {
-          this.cart.splice(index, 1);
-        },
-        increaseQty(index) {
-          const item = this.cart[index];
-          if (item.qty < item.stock) {
-            item.qty++;
-          }
-        },
-        decreaseQty(index) {
-          const item = this.cart[index];
-          if (item.qty > 1) {
-            item.qty--;
-          }
-        },
-        submitOrder() {
-          // Normally submit form to Formspree or backend API
-          // Here simulate success and clear cart + form
-          alert("Order submitted! We'll contact you soon.");
-          this.orderSuccess = true;
-          this.cart = [];
-          this.order = {
-            name: "",
-            email: "",
-            phone: "",
-            address: "",
-          };
-          this.showCart = false;
-        },
-      },
-    });
-  </script>
-</body>
-</html>
-Here’s a full example of a Vue.js single-page app for your **Accessories by Waydia** website with:
-
-- Product listing of your keychains and claw clips (with color selectors for clips).
-- Filters by product type and price range.
-- Add to cart with quantity controls (+/-), including removing items.
-- Cart summary with total price.
-- Checkout form collecting full name, email, phone, shipping address.
-- Order details text area auto-filled with cart items.
-- Submit order button (simulated alert, clears cart and form on submit).
-- Currency formatting in JMD by default with options for USD and GBP exchange rates (you can adjust as needed).
-
-You can paste this into an `.html` file and open it in a browser to see it working.
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Accessories by Waydia</title>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff8f0;
-      color: #333;
-      margin: 0; padding: 0 1rem 2rem;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    header {
-      text-align: center;
-      margin: 1rem 0 2rem;
-    }
-    h1 {
-      color: #d14a4a;
-      margin-bottom: 0.3rem;
-    }
-    .filters {
-      margin-bottom: 1rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    select {
-      padding: 0.3rem 0.6rem;
-      font-size: 1rem;
-    }
-    .product-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
-      gap: 1rem;
-    }
-    .product-card {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-shadow: 1px 1px 6px #f2dede;
-    }
-    .product-card img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-    .product-name {
-      margin: 0.5rem 0 0.2rem;
-      font-weight: 600;
-      text-align: center;
-    }
-    .product-price {
-      color: #d14a4a;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-    .color-selector {
-      margin-bottom: 0.5rem;
-    }
-    button.add-btn {
-      background: #d14a4a;
-      border: none;
-      color: white;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    button.add-btn:hover {
-      background: #a73232;
-    }
-    .cart-button {
-      position: fixed;
-      right: 1rem;
-      bottom: 1rem;
-      background: #d14a4a;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 56px;
-      height: 56px;
-      font-size: 1.3rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 3px 8px rgba(209,74,74,0.6);
-      z-index: 100;
-    }
-    .cart-count {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      background: #fff;
-      color: #d14a4a;
-      border-radius: 50%;
-      font-size: 0.75rem;
-      width: 18px;
-      height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      box-shadow: 0 0 3px rgba(0,0,0,0.15);
-    }
-    .cart-panel {
-      position: fixed;
-      right: 1rem;
-      bottom: 70px;
-      width: 320px;
-      max-height: 80vh;
-      overflow-y: auto;
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      padding: 1rem;
-      z-index: 100;
-    }
-    .cart-panel h2 {
-      margin-top: 0;
-      margin-bottom: 0.8rem;
-      font-size: 1.2rem;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 0.5rem;
-    }
-    .cart-items {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1rem 0;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #eee;
-      padding: 0.3rem 0;
-    }
-    .cart-item-info {
-      flex: 1 1 auto;
-      margin-right: 0.5rem;
-    }
-    .cart-item-name {
-      font-weight: 600;
-    }
-    .cart-item-color {
-      font-size: 0.85rem;
-      color: #666;
-    }
-    .cart-item-price {
-      font-weight: 600;
-      color: #d14a4a;
-      font-size: 0.9rem;
-    }
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      margin-right: 0.5rem;
-    }
-    .qty-btn {
-      background: #d14a4a;
-      color: white;
-      border: none;
-      font-weight: bold;
-      width: 26px;
-      height: 26px;
-      border-radius: 4px;
-      cursor: pointer;
-      line-height: 20px;
-    }
-    .qty-btn:disabled {
-      background: #f7bcbc;
-      cursor: default;
-    }
-    .cart-item-qty {
-      width: 24px;
-      text-align: center;
-      font-weight: 600;
-      font-size: 1rem;
-      margin: 0 5px;
-    }
-    .remove-btn {
-      background: none;
-      border: none;
-      color: #d14a4a;
-      font-weight: bold;
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
-    form.checkout-form {
-      border-top: 1px solid #eee;
-      padding-top: 1rem;
-      margin-top: 1rem;
-    }
-    form.checkout-form label {
-      display: block;
-      margin: 0.5rem 0 0.2rem;
-      font-weight: 600;
-    }
-    form.checkout-form input,
-    form.checkout-form textarea {
-      width: 100%;
-      padding: 0.4rem 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-      box-sizing: border-box;
-    }
-    form.checkout-form textarea {
-      font-family: Arial, sans-serif;
-    }
-    form.checkout-form button {
-      margin-top: 1rem;
-      background: #d14a4a;
-      border: none;
-      color: white;
-      padding: 0.6rem 1.2rem;
-      font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    form.checkout-form button:hover {
-      background: #a73232;
-    }
-    .order-success-message {
-      color: green;
-      font-weight: 600;
-      margin-top: 1rem;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-  <div id="app">
-    <header>
-      <h1>Accessories by Waydia</h1>
-      <p>Shop keychains and claw clips with style!</p>
-    </header>
-
-    <div class="filters" role="region" aria-label="Product filters">
-      <div>
-        <label for="filter-type">Filter by Type:</label>
-        <select id="filter-type" v-model="filters.type" aria-controls="product-list">
-          <option value="all">All</option>
-          <option value="keychain">Keychains</option>
-          <option value="clawclip">Claw Clips</option>
-        </select>
-      </div>
-      <div>
-        <label for="filter-price">Filter by Price:</label>
-        <select id="filter-price" v-model="filters.price" aria-controls="product-list">
-          <option value="all">All</option>
-          <option value="under800">Under $800</option>
-          <option value="800to1000">$800 - $1000</option>
-          <option value="over1000">Over $1000</option>
-        </select>
-      </div>
-    </div>
-
-    <ul class="product-list" id="product-list" aria-live="polite" aria-label="Product list">
-      <li
-        v-for="product in filteredProducts"
-        :key="product.id"
-        class="product-card"
-        tabindex="0"
-      >
-        <img :src="product.image" :alt="product.name" />
-        <div class="product-name">{{ product.name }}</div>
-        <div class="product-price">{{ formattedPrice(product.price) }}</div>
-        <div v-if="product.colors.length" class="color-selector">
-          <label :for="'color-select-' + product.id">Choose color:</label>
-          <select
-            :id="'color-select-' + product.id"
-            v-model="product.selectedColor"
-            :aria-label="'Select color for ' + product.name"
-          >
-            <option v-for="color in product.colors" :key="color" :value="color">
-              {{ color }}
-            </option>
-          </select>
-        </div>
-        <button
-          class="add-btn"
-          @click="addToCart(product)"
-          :aria-label="'Add ' + product.name + (product.selectedColor ? ' (' + product.selectedColor + ')' : '') + ' to cart'"
-          :disabled="product.stock === 0"
-        >
-          {{ product.stock === 0 ? "Out of Stock" : "Add to Cart" }}
-        </button>
+<div id="app">
+  <header class="navbar">
+    <div class="logo">Accessories by Waydia</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li class="cart-icon" @click="showCart = true">
+        🛒<span v-if="cart.length" class="cart-count">{{ cart.length }}</span>
       </li>
     </ul>
+  </header>
 
-    <button
-      class="cart-button"
-      @click="showCart = !showCart"
-      aria-haspopup="dialog"
-      :aria-expanded="showCart.toString()"
-      aria-label="Toggle shopping cart"
-    >
-      🛒
-      <span class="cart-count" v-if="cartCount > 0" aria-live="polite">{{ cartCount }}</span>
-    </button>
-
-    <div
-      v-if="showCart"
-      class="cart-panel"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="cart-title"
-      tabindex="-1"
-    >
-      <h2 id="cart-title">Your Cart ({{ cartCount }} items)</h2>
-      <ul class="cart-items" v-if="cart.length > 0">
-        <li
-          class="cart-item"
-          v-for="(item, index) in cart"
-          :key="item.id"
-        >
-          <div class="cart-item-info">
-            <div class="cart-item-name">{{ item.name }}</div>
-            <div class="cart-item-color" v-if="item.color">Color: {{ item.color }}</div>
-            <div class="cart-item-price">{{ formattedPrice(item.price) }} each</div>
-          </div>
-          <div class="qty-controls" aria-label="Quantity controls">
-            <button
-              class="qty-btn"
-              @click="decreaseQty(index)"
-              :disabled="item.qty === 1"
-              aria-label="Decrease quantity"
-            >-</button>
-            <span class="cart-item-qty" aria-live="polite">{{ item.qty }}</span>
-            <button
-              class="qty-btn"
-              @click="increaseQty(index)"
-              :disabled="item.qty >= item.stock"
-              aria-label="Increase quantity"
-            >+</button>
-          </div>
-          <button
-            class="remove-btn"
-            @click="removeItem(index)"
-            aria-label="Remove item"
-            title="Remove from cart"
-          >×</button>
-        </li>
-      </ul>
-      <p v-else>Your cart is empty.</p>
-      <h3>Total: {{ formattedPrice(cartTotal) }}</h3>
-
-      <form
-        class="checkout-form"
-        @submit.prevent="submitOrder"
-        v-if="cart.length > 0"
-        aria-label="Checkout form"
-      >
-        <label for="name">Full Name:</label>
-        <input
-          type="text"
-          id="name"
-          v-model="order.name"
-          required
-          autocomplete="name"
-        />
-
-        <label for="email">Email Address:</label>
-        <input
-          type="email"
-          id="email"
-          v-model="order.email"
-          required
-          autocomplete="email"
-        />
-
-        <label for="phone">Phone Number:</label>
-        <input
-          type="tel"
-          id="phone"
-          v-model="order.phone"
-          required
-          autocomplete="tel"
-        />
-
-        <label for="address">Shipping Address:</label>
-        <input
-          type="text"
-          id="address"
-          v-model="order.address"
-          required
-          autocomplete="shipping street-address"
-        />
-
-        <label for="order-details">Order Details:</label>
-        <textarea
-          id="order-details"
-          readonly
-          :value="orderSummary"
-          rows="4"
-          aria-readonly="true"
-        ></textarea>
-
-        <button type="submit">Submit Order</button>
-      </form>
-
-      <p v-if="orderSuccess" class="order-success-message">
-        Thank you! Your order has been submitted. We'll contact you soon.
-      </p>
+  <section class="shop-grid">
+    <div v-for="product in products" :key="product.name" class="product-card">
+      <a :href="product.image" target="_blank"><img :src="product.image" :alt="product.name"></a>
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.price }}</p>
+      <button class="btn-buy" @click="addToCart(product)">Add to Cart</button>
     </div>
-  </div>
+  </section>
 
-  <script>
-    new Vue({
-      el: "#app",
-      data() {
-        return {
-          filters: {
-            type: "all",
-            price: "all",
-          },
-          products: [
-            // Keychains
-            {
-              id: "pc01",
-              name: "Pearl Bow Heart Keychain",
-              price: 700,
-              stock: 10,
-              colors: [],
-              selectedColor: null,
-              image: "https://i.imgur.com/m8j81TY.png",
-              type: "keychain",
-            },
-            {
-              id: "pc02",
-              name: "Puppy Teddy Pendant",
-              price: 800,
-              stock: 10,
-              colors: [],
-              selectedColor: null,
-              image: "https://i.imgur.com/mW2ukHp.png",
-              type: "keychain",
-            },
-            {
-              id: "pc03",
-              name: "Batman Lego Keychain",
-              price: 850,
-              stock: 10,
-              colors: [],
-              selectedColor: null,
-              image: "https://i.imgur.com/2shnk6P.png",
-              type: "keychain",
-            },
-            {
-              id: "pc04",
-              name: "Miu Style Cat Head Keychain",
-              price: 1000,
-              stock: 10,
-              colors: [],
-              selectedColor: null,
-              image: "https://i.imgur.com/FsjK51M.png",
-              type: "keychain",
-            },
-            {
-              id: "pc05",
-              name: "Dachshund",
-              price: 1000,
-              stock: 10,
-              colors: [],
-              selectedColor: null,
-              image: "https://i.imgur.com/vTjCmU1.png",
-              type: "keychain",
-            },
-            {
-              id: "pc06",
-              name: "Tennis Racket Keychain",
-              price: 1000,
-              stock: 10,
-              colors: [],
-              selectedColor: null,
-              image: "https://i.imgur.com/lNj23cu.png",
-              type: "keychain",
-            },
-            {
-              id: "pc07",
-              name: "Tennis Racket Keychain + Bible",
-              price: 1100,
-              stock: 10,
-              colors: [],
-              selectedColor: null,
-              image: "https://i.imgur.com/csKvrk7.png",
-              type: "keychain",
-            },
-            // Claw clips with color options
-            {
-              id: "cc01",
-              name: "Brown Claw Clip",
-              price: 800,
-              stock: 15,
-              colors: ["Brown", "Clear"],
-              selectedColor: "Brown",
-              image: "https://i.imgur.com/JbVAF9S.png",
-              type: "clawclip",
-            },
-            {
-              id: "cc02",
-              name: "Light Brown Claw Clip",
-              price: 700,
-              stock: 15,
-              colors: ["Light Brown", "Clear"],
-              selectedColor: "Light Brown",
-              image: "https://i.imgur.com/m3wxiBK.png",
-              type: "clawclip",
-            },
-            {
-              id: "cc03",
-              name: "Pink Claw Clip",
-              price: 850,
-              stock: 15,
-              colors: ["Pink", "Clear"],
-              selectedColor: "Pink",
-              image: "https://i.imgur.com/EOshXZf.png",
-              type: "clawclip",
-            },
-          ],
-          cart: [],
-          showCart: false,
-          order: {
-            name: "",
-            email: "",
-            phone: "",
-            address: "",
-          },
-          orderSuccess: false,
-        };
-      },
-      computed: {
-        filteredProducts() {
-          return this.products.filter((product) => {
-            const typeMatch =
-              this.filters.type === "all" || product.type === this.filters.type;
-            let priceMatch = true;
-            const price = product.price;
-            switch (this.filters.price) {
-              case "under800":
-                priceMatch = price < 800;
-                break;
-              case "800to1000":
-                priceMatch = price >= 800 && price <= 1000;
-                break;
-              case "over1000":
-                priceMatch = price > 1000;
-                break;
-              default:
-                priceMatch = true;
-            }
-            return typeMatch && priceMatch;
-          });
+  <div v-if="showCart" class="cart-modal">
+    <!-- Cart modal (can be added later for interactivity) -->
+  </div>
+</div>
+
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      showCart: false,
+      cart: [],
+      products: [
+        {
+          name: 'Mini Can Soda - Pepsi',
+          price: 'J$500',
+          image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H27cf27d492e444ddb51282ca93935ce3z.webp'
         },
-        cartCount() {
-          return this.cart.reduce((sum, item) => sum + item.qty, 0);
+        {
+          name: 'Tennis Keychain + Bible',
+          price: 'J$1100',
+          image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4082d5e9abc343d796c724005550d886h.webp'
         },
-        cartTotal() {
-          return this.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+        {
+          name: 'Miu Style Cat Head Keychain',
+          price: 'J$1000',
+          image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4b7310a3a1dc460cb166048ca80bf69e0.webp'
         },
-        orderSummary() {
-          if (!this.cart.length) return "";
-          return this.cart
-            .map(
-              (item) =>
-                `${item.name}${item.color ? " (" + item.color + ")" : ""} x ${
-                  item.qty
-                } = ${this.formattedPrice(item.price * item.qty)}`
-            )
-            .join("\n") + `\nTotal: ${this.formattedPrice(this.cartTotal)}`;
+        {
+          name: 'Miu Heart Keychain',
+          price: 'J$1000',
+          image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6eba452254fe438f8e74a90b6a434b87n.webp'
         },
-      },
-      methods: {
-        formattedPrice(amount) {
-          // Format as Jamaican Dollar with $ sign
-          return `$${amount.toLocaleString("en-JM")}`;
+        {
+          name: 'Puppy Teddy Pendant',
+          price: 'J$800',
+          image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H78c602610c1c4a27b48322f6a0ac9b8be.webp'
         },
-        addToCart(product) {
-          // Find if same product/color combo exists
-          const existingIndex = this.cart.findIndex(
-            (item) => item.id === product.id && item.color === product.selectedColor
-          );
-          if (existingIndex !== -1) {
-            // Increase quantity if stock allows
-            if (this.cart[existingIndex].qty < product.stock) {
-              this.cart[existingIndex].qty++;
-            } else {
-              alert("You have reached the max stock for this item.");
-            }
-          } else {
-            this.cart.push({
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              qty: 1,
-              color: product.selectedColor,
-              stock: product.stock,
-            });
-          }
-          this.showCart = true;
-          this.orderSuccess = false;
+        {
+          name: 'Gold Tennis Racket Keychain',
+          price: 'J$1000',
+          image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H7deef4f9cf394e708254b291e3610bf7w.webp'
         },
-        removeItem(index) {
-          this.cart.splice(index, 1);
-        },
-        increaseQty(index) {
-          const item = this.cart[index];
-          if (item.qty < item.stock) {
-            item.qty++;
-          }
-        },
-        decreaseQty(index) {
-          const item = this.cart[index];
-          if (item.qty > 1) {
-            item.qty--;
-          }
-        },
-        submitOrder() {
-          if (
-            !this.order.name ||
-            !this.order.email ||
-            !this.order.phone ||
-            !this.order.address
-          ) {
-            alert("Please fill all required fields.");
-            return;
-          }
-          alert("Order submitted! We'll contact you soon.");
-          this.orderSuccess = true;
-          this.cart = [];
-          this.order = {
-            name: "",
-            email: "",
-            phone: "",
-            address: "",
-          };
-          this.showCart = false;
-        },
-      },
-    });
-  </script>
+        {
+          name: 'Pearl Bow Heart Keychain',
+          price: 'J$700',
+          image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true'
+        }
+      ]
+    },
+    methods: {
+      addToCart(product) {
+        this.cart.push(product);
+      }
+    }
+  });
+</script>
 </body>
 </html>
