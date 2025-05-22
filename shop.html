@@ -8,9 +8,43 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
   <style>
-    /* ... (Your CSS styles here, unchanged) ... */
+    /* Your existing CSS here (unchanged for brevity) */
     body {margin:0;padding:0;font-family:'Montserrat',Arial,sans-serif;background:#fffaf7;color:#7c5e3c;}
-    /* ... rest of your CSS ... */
+    .navbar {display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.5rem;background:#fff;border-bottom:1px solid #e7dac7;flex-wrap:wrap;}
+    .logo {font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#7c5e3c;}
+    .nav-links {display:flex;gap:1.5rem;list-style:none;margin:0;padding:0;align-items:center;}
+    .nav-links a {font-size:1rem;font-weight:500;color:#7c5e3c;text-decoration:none;}
+    .cart-icon {position:relative;cursor:pointer;font-size:1.4rem;margin-left:1rem;}
+    .cart-count {position:absolute;top:-8px;right:-8px;background:#cc6d8c;color:white;font-size:0.7rem;border-radius:50%;padding:2px 6px;}
+    .user-auth {display:flex;align-items:center;gap:1rem;margin-left:1rem;}
+    .user-auth input {font-size:0.9rem;padding:2px 8px;border-radius:4px;border:1px solid #ccc;}
+    .user-auth button {background:#cc6d8c;color:white;border:none;border-radius:4px;padding:3px 12px;font-size:1rem;cursor:pointer;}
+    .user-info {font-size:0.95rem;color:#7c5e3c;font-weight:600;}
+    .filters {display:flex;flex-wrap:wrap;gap:1rem;padding:1rem;justify-content:center;align-items:center;background:#f0e6db;border-radius:10px;margin:1rem;}
+    .filters label {font-size:0.9rem;color:#7c5e3c;}
+    .filters input[type="text"] {padding:0.4rem 0.8rem;border-radius:5px;border:1px solid #ccc;font-size:1rem;min-width:180px;}
+    .shop-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;padding:1rem;}
+    .product-card {background:#f8f1ea;border-radius:15px;padding:1rem;box-shadow:0 4px 12px rgba(0,0,0,0.05);text-align:center;display:flex;flex-direction:column;justify-content:space-between;}
+    .product-card img {width:100%;border-radius:10px;cursor:pointer;object-fit:contain;max-height:180px;}
+    .product-card h3 {margin:0.8rem 0 0.3rem;}
+    .btn-buy {background:#cc6d8c;color:white;padding:0.5rem 1.2rem;border-radius:20px;font-weight:600;cursor:pointer;border:none;margin-top:0.7rem;}
+    .btn-buy:disabled {background:#ccc;cursor:not-allowed;}
+    .cart-modal {position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:999;overflow-y:auto;padding:1rem;}
+    .cart-content {background:#fff;padding:2rem 1.2rem;border-radius:10px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;}
+    .checkout-form label {display:block;margin-top:1rem;}
+    .checkout-form input, .checkout-form select {width:100%;padding:0.6rem;margin-top:0.4rem;border:1px solid #ccc;border-radius:5px;font-size:1rem;}
+    .close-btn {position:absolute;right:1rem;top:1rem;font-size:1.6rem;cursor:pointer;color:#999;}
+    ul.cart-items {list-style:none;padding:0;margin:1rem 0;max-height:250px;overflow-y:auto;border-top:1px solid #ccc;border-bottom:1px solid #ccc;}
+    ul.cart-items li {display:flex;justify-content:space-between;align-items:center;padding:0.7rem 0;border-bottom:1px solid #eee;}
+    ul.cart-items li:last-child {border-bottom:none;}
+    .quantity-control {display:flex;align-items:center;gap:0.4rem;}
+    .quantity-control button {background:#cc6d8c;border:none;color:white;font-weight:700;font-size:1rem;padding:0 10px;cursor:pointer;border-radius:5px;user-select:none;}
+    .quantity-control span {min-width:25px;text-align:center;display:inline-block;font-weight:600;}
+    .stock-info {font-size:0.8rem;color:#a0445e;margin-top:0.3rem;}
+    .payment-success {padding:1rem;background:#e6ffe6;color:#257a3a;border-radius:7px;margin:1.5rem 0;font-weight:600;text-align:center;}
+    .cart-actions {margin-top:1rem;text-align:right;}
+    .checkout-btn {background:#7c5e3c;color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:20px;cursor:pointer;font-size:1.08rem;font-weight:600;}
+    @media (max-width:600px) {.navbar{flex-direction:column;align-items:flex-start;padding:1rem;}.logo{margin-bottom:0.5rem;}.nav-links{width:100%;justify-content:flex-start;margin-top:0.5rem;flex-wrap:wrap;gap:0.8rem;}.cart-icon{margin-left:0;align-self:flex-end;margin-top:0.5rem;}.filters{flex-direction:column;align-items:stretch;gap:0.7rem;}.shop-grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;}.user-auth{flex-direction:column;margin-left:0;gap:0.4rem;}}
   </style>
 </head>
 <body>
@@ -112,12 +146,12 @@
           </label>
         </div>
         <button
-          class="btn-buy"
-          @click="addToCart(product)"
-          :disabled="product.stock === 0"
-        >
-          Add to Cart
-        </button>
+  class="btn-buy"
+  @click="addToCart(product)"
+  :disabled="product.stock === 0"
+>
+  Add to Cart
+</button>
       </div>
     </section>
 
@@ -182,13 +216,11 @@
                 <option value="cod">Cash on Delivery</option>
               </select>
             </label>
-            <label>
-              Notes (optional):
-              <input type="text" v-model="order.notes" placeholder="Any notes about your order?" />
-            </label>
             <div v-if="order.payment === 'lynk'" style="margin:10px 0;">
               <b>Lynk Payment:</b>
-              <a href="https://deep.lynk.us/6Eae" target="_blank">Pay on Lynk</a>
+              <a href="https://deep.lynk.us/6Eae
+" target="_blank">Pay on Lynk</a>
+              <!-- Replace with your actual Lynk link -->
             </div>
             <div v-if="order.payment === 'paypal'" style="margin:10px 0;">
               <b>PayPal:</b>
@@ -216,8 +248,7 @@
     </div>
   </div>
   <script>
-    // --------- EmailJS Initialization (use your public key here!) ---------
-    emailjs.init('yEYlWETvh08w892PT'); // <-- This is your public key (user/public key)
+    emailjs.init('yEYlWETvh08w892PT'); // <-- Replace with your EmailJS user ID
 
     new Vue({
       el: '#app',
@@ -254,8 +285,7 @@
           phone: "",
           address: "",
           shipping: "",
-          payment: "",
-          notes: ""
+          payment: ""
         },
         shippingOptions: [
           { label: "Spanish Town – 300 JMD", value: 300, currency: "JMD" },
@@ -285,6 +315,7 @@
           let selected = this.shippingOptions.find(opt => opt.label === this.order.shipping);
           if (!selected) return 0;
           if (selected.currency === "USD") {
+            // Convert to JMD for grand total if needed
             return this.currency === "USD" ? selected.value : selected.value * 150;
           }
           return selected.value;
@@ -350,20 +381,19 @@
           this.showCart = false;
         },
         submitOrder() {
-          if (
-            !this.order.name ||
-            !this.order.email ||
-            !this.order.phone ||
-            !this.order.address ||
-            !this.order.shipping ||
-            !this.order.payment
-          ) {
-            alert("Please fill out all fields.");
-            return;
-          }
+  if (
+    !this.order.name ||
+    !this.order.email ||
+    !this.order.phone ||
+    !this.order.address ||
+    !this.order.shipping ||
+    !this.order.payment
+  ) {
+    alert("Please fill out all fields.");
+    return;
+  }
 
-          // Compose order details for the email
-          const orderDetails = `
+  const orderDetails = `
 Name: ${this.order.name}
 Email: ${this.order.email}
 Phone: ${this.order.phone}
@@ -374,49 +404,45 @@ Cart: ${this.cart.map(i => `${i.name}${i.color ? ' ('+i.color+')' : ''} x${i.qua
 Item Total: ${this.formatPrice(this.cartTotal)}
 Shipping: ${this.formatPrice(this.selectedShippingCost)}
 Grand Total: ${this.formatPrice(this.cartTotal + this.selectedShippingCost)}
-          `;
+  `;
+    const now = new Date();
+    const formattedTime = now.toLocaleString();
 
-          const now = new Date();
-          const formattedTime = now.toLocaleString();
-
-          // --------- Correct EmailJS send call --------
-          // service id, template id, and template parameters
-          // Replace 'service_qpk2hk8' with your actual service ID from EmailJS dashboard
-          emailjs.send('service_qpk2hk8', 'template_qd12s7x', {
-            customer_name: this.order.name,
-            customer_email: this.order.email,
-            product_name: this.cart.map(i => i.name).join(', '),
-            quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
-            shipping_method: this.order.shipping,
-            notes: this.order.notes || '',
-            message: orderDetails,
-            time: formattedTime,
-            name: this.order.name
-          })
-          .then(() => {
-            this.orderSuccess = true;
-            setTimeout(() => {
-              this.cart = [];
-              this.showCheckout = false;
-              this.orderSuccess = false;
-              this.showCart = false;
-              this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
-            }, 3500);
-          })
-          .catch((error) => {
-            alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
-            this.orderSuccess = true;
-            setTimeout(() => {
-              this.cart = [];
-              this.showCheckout = false;
-              this.orderSuccess = false;
-              this.showCart = false;
-              this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
-            }, 3500);
-          });
-        }
-      }
-    });
+ emailjs.send('service_qpk2hk8', 'template_qd12s7x', {
+ customer_name: this.order.name,
+ customer_email: this.order.email,
+ product_name: this.cart.map(i => i.name).join(', '),
+ quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
+ shipping_method: this.order.shipping,
+ notes: this.order.notes || '',
+ message: orderDetails,
+ time: formattedTime,
+ name: this.order.name
+  })
+  .then(() => {
+    this.orderSuccess = true;
+    setTimeout(() => {
+      this.cart = [];
+      this.showCheckout = false;
+      this.orderSuccess = false;
+      this.showCart = false;
+      this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+    }, 3500);
+  })
+   .catch((error) => {
+    alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
+    this.orderSuccess = true;
+    setTimeout(() => {
+    this.cart = [];
+    this.showCheckout = false;
+    this.orderSuccess = false;
+    this.showCart = false;
+    this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+    }, 3500);
+   });
+  }
+ }
+});
   </script>
 </body>
 </html>
