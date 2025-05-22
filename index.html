@@ -37,6 +37,12 @@
       color: #7c5e3c;
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
     .nav-links {
       display: flex;
       gap: 2rem;
@@ -58,6 +64,35 @@
     .nav-links a:hover, .nav-links a:focus {
       color: #a0846a;
       border-bottom: 2px solid #a0846a;
+    }
+
+    .cart-container {
+      position: relative;
+      margin-left: 1rem;
+      cursor: pointer;
+    }
+
+    .cart-icon {
+      width: 28px;
+      height: 28px;
+      display: inline-block;
+      vertical-align: middle;
+      fill: #7c5e3c;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #cc6d8c;
+      color: #fff;
+      border-radius: 50%;
+      padding: 2px 7px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      min-width: 18px;
+      text-align: center;
+      line-height: 1.1;
     }
 
     .hero.canva-style {
@@ -106,11 +141,13 @@
       background-color: #cc6d8c;
       color: white;
       border: none;
+      cursor: pointer;
     }
 
     .btn-outline {
       border: 2px solid #cc6d8c;
       color: #cc6d8c;
+      cursor: pointer;
     }
 
     .hero-img {
@@ -259,6 +296,12 @@
         flex-wrap: wrap;
         width: 100%;
       }
+      .nav-right {
+        justify-content: flex-start;
+        gap: 1.3rem;
+        flex-wrap: wrap;
+        width: 100%;
+      }
     }
 
     @media (max-width: 600px) {
@@ -292,13 +335,21 @@
   <header>
     <nav class="navbar">
       <div class="logo">Accessories by Waydia</div>
-      <ul class="nav-links">
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#products">Featured</a></li>
-        <li><a href="shop.html">Shop All</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#products">Featured</a></li>
+          <li><a href="shop.html">Shop All</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="cart-container" title="View Cart">
+          <svg class="cart-icon" viewBox="0 0 24 24">
+            <path d="M7 20c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm10 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm1.83-2.518l1.543-9.013c.095-.556-.061-1.127-.426-1.551a2.006 2.006 0 0 0-1.528-.715H6.364l-.263-1.322A2.006 2.006 0 0 0 4.132 4H2v2h1.868l3.6 18H19.13l1.6-9H7.42l-.23-1.237h11.17a1 1 0 0 1 .98 1.197l-1.54 9.012a.999.999 0 0 1-.979.788H8.219l-.23-1.237h10.841zm-12.246 0l-1.6-8H5.42l1.54 8H6.584z"/>
+          </svg>
+          <span class="cart-badge" id="cart-count">0</span>
+        </div>
+      </div>
     </nav>
   </header>
 
@@ -395,10 +446,20 @@
   </footer>
   <!-- Add to Cart Script -->
   <script>
+    let cartCount = 0;
     function addToCart(productName, price) {
-      alert(productName + " added to cart for J$" + price + "!");
-      // You can add more functionality here (e.g., update cart, use localStorage, etc.)
+      cartCount++;
+      document.getElementById('cart-count').textContent = cartCount;
+      // Optionally, show a notification:
+      // alert(productName + " added to cart for J$" + price + "!");
     }
+
+    // Optional: Make the cart icon clickable to go to a cart page
+    document.querySelector('.cart-container').addEventListener('click', function() {
+      alert("Cart functionality coming soon!");
+      // You can redirect to a cart page here if you have one
+      // window.location.href = 'cart.html';
+    });
   </script>
 </body>
 </html>
