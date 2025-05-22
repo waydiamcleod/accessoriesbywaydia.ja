@@ -407,33 +407,41 @@ Shipping: ${this.formatPrice(this.selectedShippingCost)}
 Grand Total: ${this.formatPrice(this.cartTotal + this.selectedShippingCost)}
   `;
 
-  emailjs.send('yEYlWETvh08w892PT', 'template_qd12s7x', {
-    customer_name: this.order.name,
-    customer_email: this.order.email,
-    message: orderDetails,
-    name: this.order.name,
-    email: this.order.email
-  })
-  .then(() => {
+  const now = new Date();
+const formattedTime = now.toLocaleString();
+
+emailjs.send('yEYlWETvh08w892PT', 'template_qd12s7x', {
+  customer_name: this.order.name,
+  customer_email: this.order.email,
+  product_name: this.cart.map(i => i.name).join(', '),
+  quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
+  shipping_method: this.order.shipping,
+  notes: this.order.notes || '', // add a notes field to your checkout if you wish
+  message: orderDetails,         // orderDetails is your summary string
+  time: formattedTime,
+  name: this.order.name          // or whoever is sending the notification
+})
+.then(() => {
     this.orderSuccess = true;
     setTimeout(() => {
-      this.cart = [];
-      this.showCheckout = false;
-      this.orderSuccess = false;
-      this.showCart = false;
-      this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "" };
+        this.cart = [];
+        this.showCheckout = false;
+        this.orderSuccess = false;
+        this.showCart = false;
+        this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "" };
     }, 3500);
-  }, () => {
-    alert("Order placed but failed to send notification. Please check EmailJS setup.");
+})
+.catch((error) => {
+    alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
     this.orderSuccess = true;
     setTimeout(() => {
-      this.cart = [];
-      this.showCheckout = false;
-      this.orderSuccess = false;
-      this.showCart = false;
-      this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "" };
+        this.cart = [];
+        this.showCheckout = false;
+        this.orderSuccess = false;
+        this.showCart = false;
+        this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "" };
     }, 3500);
-  });
+});
         }
       }
     });
