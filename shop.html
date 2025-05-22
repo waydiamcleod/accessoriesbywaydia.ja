@@ -248,7 +248,8 @@
     </div>
   </div>
   <script>
-    emailjs.init('service_qpk2hk8'); // <-- Replace with your EmailJS user ID
+    
+    emailjs.init('service_qpk2hk8');
 
     new Vue({
       el: '#app',
@@ -406,7 +407,7 @@ Shipping: ${this.formatPrice(this.selectedShippingCost)}
 Grand Total: ${this.formatPrice(this.cartTotal + this.selectedShippingCost)}
   `;
 
-  emailjs.send('service_qpk2hk8', 'template_qd12s7x', {
+  emailjs.send('yEYlWETvh08w892PT', 'template_qd12s7x', {
     customer_name: this.order.name,
     customer_email: this.order.email,
     message: orderDetails,
