@@ -2,121 +2,125 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact – Accessories by Waydia</title>
+  <title>Contact - Accessories by Waydia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400|Montserrat:400,500,700&display=swap" rel="stylesheet"/>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #fff8f4;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    header {
-      padding: 20px;
+    body {margin:0;padding:0;font-family:'Montserrat',Arial,sans-serif;background:#fffaf7;color:#7c5e3c;}
+    .navbar {display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.5rem;background:#fff;border-bottom:1px solid #e7dac7;flex-wrap:wrap;}
+    .logo {font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#7c5e3c;}
+    .nav-links {display:flex;gap:1.5rem;list-style:none;margin:0;padding:0;align-items:center;}
+    .nav-links a {font-size:1rem;font-weight:500;color:#7c5e3c;text-decoration:none;}
+    .nav-links a:hover {color:#cc6d8c;}
+    .contact-section {
+      max-width: 500px;
+      margin: 3rem auto 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      padding: 2.5rem 2rem;
       text-align: center;
     }
-
-    header h1 {
-      margin: 10px 0;
-      font-size: 2em;
+    .contact-section h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      margin-bottom: 1.2rem;
+      color: #cc6d8c;
     }
-
-    .logo {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    .contact-section p {
+      font-size: 1.08rem;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
     }
-
-    .form-container {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 90%;
-      max-width: 500px;
-      margin: 30px 0;
-    }
-
-    form {
+    .contact-form {
       display: flex;
       flex-direction: column;
+      gap: 1.1rem;
+      align-items: stretch;
+      margin-top: 1.2rem;
     }
-
-    label {
-      margin-top: 15px;
+    .contact-form input,
+    .contact-form textarea {
+      border: 1px solid #e7dac7;
+      border-radius: 8px;
+      font-size: 1rem;
+      padding: 0.7rem 0.9rem;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #f9f6f2;
+      color: #7c5e3c;
+    }
+    .contact-form textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+    .contact-form button {
+      background:#cc6d8c;
+      color:white;
+      border:none;
+      border-radius:8px;
+      padding: 0.8rem 0;
+      font-size:1.1rem;
+      font-weight:600;
+      cursor:pointer;
+      margin-top: 0.3rem;
+      transition: background 0.2s;
+    }
+    .contact-form button:hover {background:#a04666;}
+    .contact-success {
+      background: #e6ffe6;
+      color: #257a3a;
+      border-radius: 7px;
+      margin: 1.5rem 0 0 0;
       font-weight: 600;
+      padding: 1rem;
+      text-align: center;
     }
-
-    input, textarea {
-      margin-top: 8px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1em;
-    }
-
-    input:focus, textarea:focus {
-      outline: none;
-      border-color: #ff69b4;
-      box-shadow: 0 0 0 2px #ffe0ef;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 12px;
-      background-color: #ff69b4;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #e458a0;
-    }
-
-    .home-link {
-      margin-bottom: 30px;
-      color: #ff69b4;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .home-link:hover {
-      text-decoration: underline;
+    @media (max-width: 600px) {
+      .contact-section {padding: 1.2rem 0.5rem;}
+      .navbar {flex-direction:column;align-items:flex-start;padding:1rem;}
+      .logo{margin-bottom:0.5rem;}
+      .nav-links{width:100%;justify-content:flex-start;margin-top:0.5rem;flex-wrap:wrap;}
     }
   </style>
 </head>
 <body>
-  <header>
-    <img class="logo" src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/W.png?raw=true" alt="Logo" />
-    <h1>Contact Me</h1>
+  <header class="navbar">
+    <div class="logo">Accessories by Waydia</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="shop.html">Shop</a></li>
+    </ul>
   </header>
-
-  <div class="form-container">
-    <form action="https://formsubmit.co/mcleodwaydia@gmail.com" method="POST">
-      <label for="name">Name</label>
-      <input type="text" name="name" id="name" required>
-
-      <label for="email">Email</label>
-      <input type="email" name="email" id="email" required>
-
-      <label for="message">Message</label>
-      <textarea name="message" id="message" rows="5" required></textarea>
-
+  <section class="contact-section">
+    <h1>Contact Us</h1>
+    <p>
+      We'd love to hear from you!<br>
+      Please fill out the form below and we'll get back to you as soon as possible.
+    </p>
+    <form class="contact-form" id="contactForm">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" placeholder="Your Message" required></textarea>
       <button type="submit">Send Message</button>
     </form>
-  </div>
-
-  <a class="home-link" href="index.html">← Back to Home</a>
+    <div class="contact-success" id="contactSuccess" style="display:none;">
+      Thank you for reaching out!<br>
+      We'll get back to you soon.
+    </div>
+    <p style="margin-top:2.2rem;color:#cc6d8c;font-size:1.07rem;">
+      Or email us directly: <br>
+      <a href="mailto:waydia.mcleod@gmail.com" style="color:#a04666;text-decoration:underline;">waydia.mcleod@gmail.com</a>
+    </p>
+  </section>
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Show success message (for demo; replace with EmailJS or server logic for real use)
+      document.getElementById('contactSuccess').style.display = 'block';
+      this.reset();
+    });
+  </script>
 </body>
 </html>
