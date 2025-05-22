@@ -94,33 +94,22 @@
     </ul>
   </header>
   <section class="contact-section">
-    <h1>Contact Us</h1>
-    <p>
-      We'd love to hear from you!<br>
-      Please fill out the form below and we'll get back to you as soon as possible.
-    </p>
-    <form class="contact-form" id="contactForm">
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email" required />
-      <textarea name="message" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-    <div class="contact-success" id="contactSuccess" style="display:none;">
-      Thank you for reaching out!<br>
-      We'll get back to you soon.
-    </div>
-    <p style="margin-top:2.2rem;color:#cc6d8c;font-size:1.07rem;">
-      Or email us directly: <br>
-      <a href="mailto:waydia.mcleod@gmail.com" style="color:#a04666;text-decoration:underline;">waydia.mcleod@gmail.com</a>
-    </p>
-  </section>
-  <script>
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      // Show success message (for demo; replace with EmailJS or server logic for real use)
-      document.getElementById('contactSuccess').style.display = 'block';
-      this.reset();
-    });
-  </script>
+  <h1>Contact Us</h1>
+  <p>
+    We'd love to hear from you!<br>
+    Please fill out the form below and we'll get back to you as soon as possible.
+  </p>
+  <form class="contact-form" action="https://formsubmit.co/mcleodwaydia@gmail.com" method="POST">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="email" name="email" placeholder="Your Email" required />
+    <textarea name="message" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+  <p style="margin-top:2.2rem;color:#cc6d8c;font-size:1.07rem;">
+    Or email us directly: <br>
+    <a href="mailto:mcleodwaydia@gmail.com" style="color:#a04666;text-decoration:underline;">waydia.mcleod@gmail.com</a>
+  </p>
+</section>
 </body>
 </html>
