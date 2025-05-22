@@ -381,19 +381,19 @@
           this.showCart = false;
         },
         submitOrder() {
-          if (
-            !this.order.name ||
-            !this.order.email ||
-            !this.order.phone ||
-            !this.order.address ||
-            !this.order.shipping ||
-            !this.order.payment
-          ) {
-            alert("Please fill out all fields.");
-            return;
-          }
-          // Email content
-          const orderDetails = `
+  if (
+    !this.order.name ||
+    !this.order.email ||
+    !this.order.phone ||
+    !this.order.address ||
+    !this.order.shipping ||
+    !this.order.payment
+  ) {
+    alert("Please fill out all fields.");
+    return;
+  }
+
+  const orderDetails = `
 Name: ${this.order.name}
 Email: ${this.order.email}
 Phone: ${this.order.phone}
@@ -404,34 +404,35 @@ Cart: ${this.cart.map(i => `${i.name}${i.color ? ' ('+i.color+')' : ''} x${i.qua
 Item Total: ${this.formatPrice(this.cartTotal)}
 Shipping: ${this.formatPrice(this.selectedShippingCost)}
 Grand Total: ${this.formatPrice(this.cartTotal + this.selectedShippingCost)}
-          `;
-          // Send email notification using EmailJS
-          emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-            to_email: 'your@email.com', // <-- Your email here
-            from_name: this.order.name,
-            from_email: this.order.email,
-            message: orderDetails
-          })
-          .then(() => {
-            this.orderSuccess = true;
-            setTimeout(() => {
-              this.cart = [];
-              this.showCheckout = false;
-              this.orderSuccess = false;
-              this.showCart = false;
-              this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "" };
-            }, 3500);
-          }, () => {
-            alert("Order placed but failed to send notification. Please check EmailJS setup.");
-            this.orderSuccess = true;
-            setTimeout(() => {
-              this.cart = [];
-              this.showCheckout = false;
-              this.orderSuccess = false;
-              this.showCart = false;
-              this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "" };
-            }, 3500);
-          });
+  `;
+
+  emailjs.send('service_qpk2hk8', 'template_qd12s7x', {
+    customer_name: this.order.name,
+    customer_email: this.order.email,
+    message: orderDetails,
+    name: this.order.name,
+    email: this.order.email
+  })
+  .then(() => {
+    this.orderSuccess = true;
+    setTimeout(() => {
+      this.cart = [];
+      this.showCheckout = false;
+      this.orderSuccess = false;
+      this.showCart = false;
+      this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "" };
+    }, 3500);
+  }, () => {
+    alert("Order placed but failed to send notification. Please check EmailJS setup.");
+    this.orderSuccess = true;
+    setTimeout(() => {
+      this.cart = [];
+      this.showCheckout = false;
+      this.orderSuccess = false;
+      this.showCart = false;
+      this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "" };
+    }, 3500);
+  });
         }
       }
     });
