@@ -131,20 +131,16 @@
             >Only {{ product.stock }} left!</span>
           <span class="stock-info" v-if="product.stock === 0">Out of stock</span>
         </p>
-        <div v-if="product.type === 'clawclip'">
-          <label>
-            Color:
-            <select v-model="product.selectedColor">
-              <option
-                v-for="color in product.colors"
-                :key="color"
-                :value="color"
-              >
-                {{ color }}
-              </option>
-            </select>
-          </label>
-        </div>
+        <div v-if="product.colors && product.colors.length">
+  <label>
+    Color:
+    <select v-model="product.selectedColor">
+      <option v-for="color in product.colors" :key="color" :value="color">
+        {{ color }}
+      </option>
+    </select>
+  </label>
+</div>
         <button
   class="btn-buy"
   @click="addToCart(product)"
