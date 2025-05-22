@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FAQ - Accessories by Waydia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,400|Montserrat:400,500,700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: #fffaf7;
+      color: #7c5e3c;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2.2rem;
+      background: #fff;
+      border-bottom: 1px solid #e7dac7;
+      flex-wrap: wrap;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #7c5e3c;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #7c5e3c;
+      transition: color 0.18s;
+      padding-bottom: 0.1em;
+      border-bottom: 2px solid transparent;
+      text-decoration: none;
+    }
+    .nav-links a:hover, .nav-links a:focus {
+      color: #a0846a;
+      border-bottom: 2px solid #a0846a;
+    }
+    .faq-container {
+      max-width: 700px;
+      margin: 3rem auto;
+      background: #f8f1ea;
+      border-radius: 18px;
+      padding: 2.5rem 1.5rem;
+      box-shadow: 0 4px 20px rgba(124,94,60,0.07);
+    }
+    .faq-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.1rem;
+      margin-bottom: 1.2rem;
+      color: #7c5e3c;
+      text-align: center;
+    }
+    details {
+      margin-bottom: 1.3rem;
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.1rem 1.3rem;
+      box-shadow: 0 2px 12px rgba(124,94,60,0.05);
+    }
+    summary {
+      font-weight: 600;
+      font-size: 1.13rem;
+      cursor: pointer;
+      outline: none;
+    }
+    details[open] {
+      background: #f7d7e2;
+    }
+    .faq-answer {
+      margin-top: 0.7rem;
+      margin-left: 1.2rem;
+      font-size: 1rem;
+      color: #7c5e3c;
+    }
+    @media (max-width: 700px) {
+      .faq-container {
+        padding: 1.2rem 0.5rem;
+        margin: 1.2rem 0.2rem;
+      }
+    }
+    .main-footer {
+      background: #f3e8dd;
+      padding: 2rem;
+      font-size: 0.9rem;
+      margin-top: 4rem;
+    }
+    .footer-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .footer-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .footer-columns {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .footer-col {
+      min-width: 120px;
+      margin-bottom: 1.2rem;
+    }
+    .footer-heading {
+      font-size: 1rem;
+      margin-bottom: 0.6rem;
+      font-weight: bold;
+    }
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+    }
+    .footer-links a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: inherit;
+    }
+    .footer-icon {
+      width: 16px;
+      height: 16px;
+    }
+    .footer-divider {
+      border: none;
+      border-top: 1px solid #e7dac7;
+      margin: 1.2rem 0 0.6rem 0;
+    }
+    .footer-bottom {
+      text-align: center;
+      color: #a0846a;
+      margin-top: 0.8rem;
+      font-size: 0.95em;
+    }
+    @media (max-width: 600px) {
+      .footer-container, .footer-columns {
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      .main-footer {
+        padding: 1.2rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">Accessories by Waydia</div>
+      <ul class="nav-links">
+        <li><a href="index.html#hero">Home</a></li>
+        <li><a href="index.html#products">Featured</a></li>
+        <li><a href="shop.html">Shop All</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="faq.html" style="border-bottom:2px solid #cc6d8c;">FAQ</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <!-- FAQ CONTENT -->
+  <main>
+    <div class="faq-container">
+      <h1 class="faq-title">Frequently Asked Questions</h1>
+      
+      <details>
+        <summary>How do I place an order?</summary>
+        <div class="faq-answer">Browse our featured collection or shop all products, then click "Add to Cart" on your desired items. Your cart will save your selections while you shop.</div>
+      </details>
+      
+      <details>
+        <summary>What payment methods do you accept?</summary>
+        <div class="faq-answer">We accept cash, bank transfer, and select digital payment options. Please contact us for payment details and instructions.</div>
+      </details>
+      
+      <details>
+        <summary>How long does delivery take?</summary>
+        <div class="faq-answer">Orders are processed within 1–2 days and delivered within 3–5 business days in Jamaica. For custom orders, delivery times may vary.</div>
+      </details>
+      
+      <details>
+        <summary>Can I request a custom order?</summary>
+        <div class="faq-answer">Absolutely! Use our <a href="contact.html">Contact</a> page or email us with your custom request, and we’ll be happy to assist.</div>
+      </details>
+      
+      <details>
+        <summary>How do I leave a review?</summary>
+        <div class="faq-answer">You can leave a 5-star review on each product in our featured collection by clicking the stars under the product after your purchase.</div>
+      </details>
+      
+    </div>
+  </main>
+  
+  <!-- FOOTER -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h2 class="footer-title">Accessories by Waydia</h2>
+        <p class="footer-desc">Handcrafted accessories that add a personal touch to your everyday items.</p>
+      </div>
+      <div class="footer-columns">
+        <div class="footer-col">
+          <h3 class="footer-heading">Quick Links</h3>
+          <a href="index.html#hero">Home</a>
+          <a href="index.html#products">Products</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-heading">Products</h3>
+          <a href="index.html#products">Keychains</a>
+          <a href="index.html#products">Bag Charms</a>
+          <a href="index.html#products">Accessories</a>
+          <a href="contact.html">Custom Orders</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-heading">Connect</h3>
+          <a href="https://instagram.com/accessoriesbywaydia.ja" target="_blank">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram" class="footer-icon">
+            Instagram
+          </a>
+          <a href="https://tiktok.com/@accessoriesbywaydia.ja" target="_blank">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tiktok.svg" alt="TikTok" class="footer-icon">
+            TikTok
+          </a>
+          <a href="mailto:mcleodwaydia@gmail.com">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/maildotru.svg" alt="Email" class="footer-icon">
+            Email
+          </a>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <div class="footer-bottom">
+      &copy; 2025 Accessories by Waydia. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
