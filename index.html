@@ -82,35 +82,91 @@
     .cart-actions { margin-top:1rem; text-align:right; }
     .checkout-btn { background:#7c5e3c; color:#fff; border:none; padding:0.7rem 1.4rem; border-radius:20px; cursor:pointer; font-size:1.08rem; font-weight:600; }
   </style>
+  <!-- Place the hamburger CSS here, either combined or as a separate <style> block: -->
+  <style>
+    /* Hamburger styles */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .hamburger span {
+      display: block;
+      height: 4px;
+      width: 100%;
+      background: #7c5e3c;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* Responsive nav styles */
+    @media (max-width: 900px) {
+      .hamburger {
+        display: flex;
+      }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background: #fff;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        width: 100%;
+        padding: 1rem 0;
+        box-shadow: 0 2px 8px rgba(124,94,60,0.07);
+        z-index: 1000;
+      }
+      .nav-links.open {
+        display: flex;
+      }
+      .navbar {
+        position: relative;
+      }
+    }
+  </style>
 </head>
 <body>
 <div id="app">
   <!-- NAVBAR -->
   <header class="navbar">
     <div class="logo">Accessories by Waydia</div>
-    <ul class="nav-links">
-      <li><a href="#hero">Home</a></li>
-      <li><a href="#products">Featured</a></li>
-      <li><a href="shop.html">Shop All</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li class="cart-icon" @click="showCart = true" title="View Cart">
-        🛒
-        <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
-      </li>
-      <li>
-        <div class="user-auth" v-if="!user.loggedIn">
-          <input type="text" v-model="user.username" placeholder="Username" @keyup.enter="login" />
-          <input type="password" v-model="user.password" placeholder="Password" @keyup.enter="login" />
-          <button @click="login">Login</button>
-        </div>
-        <div v-else class="user-auth">
-          <span class="user-info">Hello, {{ user.username }}!</span>
-          <button @click="logout">Logout</button>
-        </div>
-      </li>
-    </ul>
-  </header>
+    <!-- Hamburger button: visible only on mobile -->
+  <button class="hamburger" @click="mobileMenu = !mobileMenu" aria-label="Toggle navigation">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+    <!-- Nav links: show/hide on mobile -->
+  <ul :class="['nav-links', { open: mobileMenu }]">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#products">Featured</a></li>
+    <li><a href="shop.html">Shop All</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li class="cart-icon" @click="showCart = true" title="View Cart">
+      🛒
+      <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
+    </li>
+    <li>
+      <div class="user-auth" v-if="!user.loggedIn">
+        <input type="text" v-model="user.username" placeholder="Username" @keyup.enter="login" />
+        <input type="password" v-model="user.password" placeholder="Password" @keyup.enter="login" />
+        <button @click="login">Login</button>
+      </div>
+      <div v-else class="user-auth">
+        <span class="user-info">Hello, {{ user.username }}!</span>
+        <button @click="logout">Logout</button>
+      </div>
+    </li>
+  </ul>
+</header>
 
   <!-- HERO SECTION -->
   <section id="hero" class="hero canva-style">
@@ -324,7 +380,8 @@ new Vue({
       { label: "Zip Mail Post-to-Door – 1000 JMD", value: 1000, currency: "JMD" },
       { label: "Zip Mail Post-to-Post – 700 JMD", value: 700, currency: "JMD" },
       { label: "International – 9 USD", value: 9, currency: "USD" }
-    ]
+    ],
+     mobileMenu: false,
   },
   computed: {
     cartTotal() {
