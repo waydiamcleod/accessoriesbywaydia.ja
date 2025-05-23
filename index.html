@@ -145,11 +145,12 @@
   </button>
     <!-- Nav links: show/hide on mobile -->
   <ul :class="['nav-links', { open: mobileMenu }]">
-    <li><a href="#hero">Home</a></li>
-    <li><a href="#products">Featured</a></li>
-    <li><a href="shop.html">Shop All</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html">Contact</a></li>
+  <li><a href="#hero" @click="mobileMenu = false">Home</a></li>
+  <li><a href="#products" @click="mobileMenu = false">Featured</a></li>
+  <li><a href="shop.html" @click="mobileMenu = false">Shop All</a></li>
+  <li><a href="about.html" @click="mobileMenu = false">About</a></li>
+  <li><a href="contact.html" @click="mobileMenu = false">Contact</a></li>
+</ul>
     <li class="cart-icon" @click="showCart = true" title="View Cart">
       🛒
       <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
