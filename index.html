@@ -121,13 +121,14 @@
         width: 100%;
         padding: 1rem 0;
         box-shadow: 0 2px 8px rgba(124,94,60,0.07);
-        z-index: 1000;
       }
       .nav-links.open {
         display: flex;
+        z-index: 2000;
       }
       .navbar {
         position: relative;
+        z-index: 1010;
       }
     }
   </style>
@@ -135,22 +136,17 @@
 <body>
 <div id="app">
   <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="logo">Accessories by Waydia</div>
-    <!-- Hamburger button: visible only on mobile -->
+<header class="navbar">
+  <div class="logo">Accessories by Waydia</div>
   <button class="hamburger" @click="mobileMenu = !mobileMenu" aria-label="Toggle navigation">
-    <span></span>
-    <span></span>
-    <span></span>
+    <span></span><span></span><span></span>
   </button>
-    <!-- Nav links: show/hide on mobile -->
   <ul :class="['nav-links', { open: mobileMenu }]">
-  <li><a href="#hero" @click="mobileMenu = false">Home</a></li>
-  <li><a href="#products" @click="mobileMenu = false">Featured</a></li>
-  <li><a href="shop.html" @click="mobileMenu = false">Shop All</a></li>
-  <li><a href="about.html" @click="mobileMenu = false">About</a></li>
-  <li><a href="contact.html" @click="mobileMenu = false">Contact</a></li>
-</ul>
+    <li><a href="#hero" @click="mobileMenu = false">Home</a></li>
+    <li><a href="#products" @click="mobileMenu = false">Featured</a></li>
+    <li><a href="shop.html" @click="mobileMenu = false">Shop All</a></li>
+    <li><a href="about.html" @click="mobileMenu = false">About</a></li>
+    <li><a href="contact.html" @click="mobileMenu = false">Contact</a></li>
     <li class="cart-icon" @click="showCart = true" title="View Cart">
       🛒
       <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
