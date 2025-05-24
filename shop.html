@@ -212,28 +212,27 @@
                 <option value="cod">Cash on Delivery</option>
               </select>
             </label>
-            <div v-if="order.payment === 'lynk'" style="margin:10px 0;">
-              <b>Lynk Payment:</b>
-              <a href="https://deep.lynk.us/6Eae
-" target="_blank">Pay on Lynk</a>
-              <!-- Replace with your actual Lynk link -->
-            </div>
             <div v-if="order.payment === 'paypal'" style="margin:10px 0;">
-              <b>PayPal:</b>
-              <a href="https://www.paypal.me/WaydiaMcLeod" target="_blank">Pay on PayPal</a>
-            </div>
-            <div v-if="order.payment === 'ncb'" style="margin:10px 0;">
-              <b>NCB Bank Transfer:</b>
-              <br>Bank: NCB<br>Account Name: Waydia McLeod<br>Account Number: 475001613<br>Branch: St.Jago Shopping Center Branch<br>
-            </div>
-            <div v-if="order.payment === 'cod'" style="margin:10px 0;">
-              <b>Cash on Delivery selected. Please have exact change ready.</b>
-            </div>
+  <b>After submitting your order, you will be redirected to PayPal to complete payment.</b>
+</div>
+<div v-if="order.payment === 'lynk'" style="margin:10px 0;">
+  <b>After submitting your order, you will be redirected to Lynk to complete payment.</b>
+</div>
+<div v-if="order.payment === 'ncb'" style="margin:10px 0;">
+  <b>After submitting your order, bank details will be shown for manual payment.</b>
+</div>
+<div v-if="order.payment === 'cod'" style="margin:10px 0;">
+  <b>Cash on Delivery: Please have exact change ready.</b>
+</div>
             <h4>Shipping: {{ formatPrice(selectedShippingCost) }}</h4>
             <h3>Grand Total: {{ formatPrice(cartTotal + selectedShippingCost) }}</h3>
-            <button type="submit" class="checkout-btn" style="margin-top:1rem;">
-              Place Order & Pay
-            </button>
+            <button
+              type="submit"class="checkout-btn"
+              style="margin-top:1rem;"
+              :disabled="processingOrder"
+>
+  {{ processingOrder ? 'Processing...' : 'Place Order & Pay' }}
+</button>
           </form>
         </div>
         <div v-if="orderSuccess" class="payment-success">
@@ -253,6 +252,7 @@
         showCart: false,
         showCheckout: false,
         orderSuccess: false,
+        processingOrder: false,
         filters: {
           type: '',
           maxPrice: Infinity,
@@ -377,18 +377,52 @@
           this.showCart = false;
         },
         submitOrder() {
-  if (
-    !this.order.name ||
-    !this.order.email ||
-    !this.order.phone ||
-    !this.order.address ||
-    !this.order.shipping ||
-    !this.order.payment
+          if (this.processingOrder) return; // Prevent double submit
+this.processingOrder = true;
+          if (
+            !this.order.name ||
+            !this.order.email ||
+            !this.order.phone ||
+            !this.order.address ||
+            !this.order.shipping ||
+            !this.order.payment
   ) {
     alert("Please fill out all fields.");
     return;
   }
 
+  const totalAmount = this.cartTotal + this.selectedShippingCost;
+
+  // Handle payment method
+  if (this.order.payment === 'paypal') {
+    // Redirect to PayPal.me with total
+    window.open(`https://www.paypal.me/WaydiaMcLeod/${totalAmount}`, "_blank");
+    // Optionally, after payment, you can show a confirmation modal/message
+    this.finishOrder();
+    return;
+  }
+
+  if (this.order.payment === 'lynk') {
+    // Redirect to Lynk
+    window.open("https://deep.lynk.us/6Eae", "_blank");
+    this.finishOrder();
+    return;
+  }
+
+  if (this.order.payment === 'ncb') {
+    alert(`Please transfer J$${totalAmount} to:\nAccount: 475001613\nName: Waydia McLeod\nBranch: St.Jago Shopping Center Branch\nAfter payment, send proof to mcleodwaydia@gmail.com.`);
+    this.finishOrder();
+    return;
+  }
+
+  if (this.order.payment === 'cod') {
+    alert("Order placed! Please have exact change ready for Cash on Delivery.");
+    this.finishOrder();
+    return;
+  }
+},
+// Add this helper method to handle order notification via EmailJS and UI reset:
+finishOrder() {
   const orderDetails = `
 Name: ${this.order.name}
 Email: ${this.order.email}
@@ -396,27 +430,26 @@ Phone: ${this.order.phone}
 Address: ${this.order.address}
 Shipping: ${this.order.shipping}
 Payment: ${this.order.payment}
-Cart: ${this.cart.map(i => `${i.name}${i.color ? ' ('+i.color+')' : ''} x${i.quantity}`).join(', ')}
-Item Total: ${this.formatPrice(this.cartTotal)}
-Shipping: ${this.formatPrice(this.selectedShippingCost)}
-Grand Total: ${this.formatPrice(this.cartTotal + this.selectedShippingCost)}
+Cart: ${this.cart.map(i => `${i.name}${i.color ? ' (' + i.color + ')' : ''} x${i.quantity}`).join(', ')}
+Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
   `;
-    const now = new Date();
-    const formattedTime = now.toLocaleString();
+  const now = new Date();
+  const formattedTime = now.toLocaleString();
 
- emailjs.send('service_qpk2hk8', 'template_qd12s7x', {
- customer_name: this.order.name,
- customer_email: this.order.email,
- product_name: this.cart.map(i => i.name).join(', '),
- quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
- shipping_method: this.order.shipping,
- notes: this.order.notes || '',
- message: orderDetails,
- time: formattedTime,
- name: this.order.name
+  emailjs.send('service_qpk2hk8', 'template_qd12s7x', {
+    customer_name: this.order.name,
+    customer_email: this.order.email,
+    product_name: this.cart.map(i => i.name).join(', '),
+    quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
+    shipping_method: this.order.shipping,
+    notes: this.order.notes || '',
+    message: orderDetails,
+    time: formattedTime,
+    name: this.order.name
   })
   .then(() => {
     this.orderSuccess = true;
+    this.processingOrder = false;
     setTimeout(() => {
       this.cart = [];
       this.showCheckout = false;
@@ -425,18 +458,19 @@ Grand Total: ${this.formatPrice(this.cartTotal + this.selectedShippingCost)}
       this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
     }, 3500);
   })
-   .catch((error) => {
+  .catch((error) => {
     alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
+    this.processingOrder = false;
     this.orderSuccess = true;
     setTimeout(() => {
-    this.cart = [];
-    this.showCheckout = false;
-    this.orderSuccess = false;
-    this.showCart = false;
-    this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+      this.cart = [];
+      this.showCheckout = false;
+      this.orderSuccess = false;
+      this.showCart = false;
+      this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
     }, 3500);
-   });
-  }
+  });
+}
  }
 });
   </script>
