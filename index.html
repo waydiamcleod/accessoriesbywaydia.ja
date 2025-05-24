@@ -184,29 +184,26 @@
 
   <!-- COLLECTION -->
   <section id="products" class="collection-section">
-    <h2 class="collection-title">Featured Collection</h2>
-    <p class="collection-subtitle">Discover our bestselling handcrafted accessories.</p>
-    <div class="collection-grid">
-      <div class="collection-card">
-        <img class="product-img" src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant%20for%20Phone%20Bag%20Accessories%20Style%20A.jpg?raw=true" alt="Dachshund Keychain">
-        <div class="card-label">Dachshund Keychain - J$1000</div>
-        <button class="btn-primary btn-sm" @click="addToCart('Dachshund Keychain', 1000)">Add to Cart</button>
-      </div>
-      <div class="collection-card">
-        <img class="product-img" src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lego%20Accessories%20_%20Pink%20Batman%20Keychain%20_%20Color_%20Black_Pink%20_%20Size_%20Os.jpg?raw=true" alt="Pink Batman Lego Keychain">
-        <div class="card-label">Pink Batman Lego - J$850</div>
-        <button class="btn-primary btn-sm" @click="addToCart('Pink Batman Lego Keychain', 850)">Add to Cart</button>
-      </div>
-      <div class="collection-card">
-        <img class="product-img" src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true" alt="Flower Claw Clip">
-        <div class="card-label">Flower Claw Clip - J$500</div>
-        <button class="btn-primary btn-sm" @click="addToCart('Flower Claw Clip', 500)">Add to Cart</button>
-      </div>
+  <h2 class="collection-title">Featured Collection</h2>
+  <p class="collection-subtitle">Discover our bestselling handcrafted accessories.</p>
+  <div class="collection-grid">
+    <div class="collection-card">
+      <img class="product-img" src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant.jpg?raw=true" alt="Dachshund Keychain">
+      <!-- Removed Add to Cart button -->
     </div>
-    <div style="margin-top: 2rem;">
-      <a href="shop.html" class="btn-outline btn-sm">Shop All Products</a>
+    <div class="collection-card">
+      <img class="product-img" src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lego%20Accessories%20_%20Pink%20Batman%20Keychain%20_%20Color_%20Black_Pink%20_%20Size_%20Os.jpg?raw=true" alt="Pink Batman Lego Keychain">
+      <!-- Removed Add to Cart button -->
     </div>
-  </section>
+    <div class="collection-card">
+      <img class="product-img" src="https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true" alt="Flower Claw Clip">
+      <!-- Removed Add to Cart button -->
+    </div>
+  </div>
+  <div style="margin-top: 2rem;">
+    <a href="shop.html" class="btn-outline btn-sm">Shop All Products</a>
+  </div>
+</section>
 
   <!-- CART MODAL & CHECKOUT FORM -->
   <div v-if="showCart" class="cart-modal" @click.self="showCart = false">
