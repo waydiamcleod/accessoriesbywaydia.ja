@@ -404,6 +404,20 @@ new Vue({
       }
       return symbol + converted.toFixed(2);
     },
+    mounted() {
+  window._firebase.onAuthStateChanged(window._firebase.auth, (user) => {
+    if (user) {
+      this.user.loggedIn = true;
+      this.user.email = user.email;
+      this.loadCart();
+    } else {
+      this.user.loggedIn = false;
+      this.user.email = '';
+      // Optional: redirect to homepage if not logged in
+      window.location.href = "index.html";
+    }
+  });
+}
     addToCart(name, price) {
       if (!this.user.loggedIn) {
         alert("Please login to add items to cart.");
