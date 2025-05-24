@@ -8,7 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
   <style>
-    /* Your existing CSS here (unchanged for brevity) */
+    /* Your CSS (unchanged) */
     body {margin:0;padding:0;font-family:'Montserrat',Arial,sans-serif;background:#fffaf7;color:#7c5e3c;}
     .navbar {display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.5rem;background:#fff;border-bottom:1px solid #e7dac7;flex-wrap:wrap;}
     .logo {font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#7c5e3c;}
@@ -44,8 +44,33 @@
     .payment-success {padding:1rem;background:#e6ffe6;color:#257a3a;border-radius:7px;margin:1.5rem 0;font-weight:600;text-align:center;}
     .cart-actions {margin-top:1rem;text-align:right;}
     .checkout-btn {background:#7c5e3c;color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:20px;cursor:pointer;font-size:1.08rem;font-weight:600;}
-    @media (max-width:600px) {.navbar{flex-direction:column;align-items:flex-start;padding:1rem;}.logo{margin-bottom:0.5rem;}.nav-links{width:100%;justify-content:flex-start;margin-top:0.5rem;flex-wrap:wrap;gap:0.8rem;}.cart-icon{margin-left:0;align-self:flex-end;margin-top:0.5rem;}.filters{flex-direction:column;align-items:stretch;gap:0.7rem;}.shop-grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;}.user-auth{flex-direction:column;margin-left:0;gap:0.4rem;}}
+    @media (max-width:600px) {.navbar{flex-direction:column;align-items:flex-start;padding:1rem;}.logo{margin-bottom:0.5rem;}.nav-links{width:100%;justify-content:flex-start;margin-top:0.5rem;flex-wrap:wrap;}}
   </style>
+
+  <!-- Firebase SDKs (type module for ES imports) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDjVNcle0jXm_4u1pyTw90uwSTxtzwxugs",
+      authDomain: "accessoriesbywaydia.firebaseapp.com",
+      projectId: "accessoriesbywaydia",
+      storageBucket: "accessoriesbywaydia.appspot.com",
+      messagingSenderId: "255065080536",
+      appId: "1:255065080536:web:8100b0541efd357f954dad",
+      measurementId: "G-HNN9GQZTT2"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Attach to window for Vue access
+    window._firebase = { auth, db, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, doc, setDoc, getDoc };
+  </script>
 </head>
 <body>
   <div id="app">
@@ -60,13 +85,16 @@
           <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
         </li>
         <li>
+          <!-- Auth form -->
           <div class="user-auth" v-if="!user.loggedIn">
-            <input type="text" v-model="user.username" placeholder="Username" @keyup.enter="login" />
-            <input type="password" v-model="user.password" placeholder="Password" @keyup.enter="login" />
+            <input type="email" v-model="user.email" placeholder="Email" />
+            <input type="password" v-model="user.password" placeholder="Password" />
             <button @click="login">Login</button>
+            <button @click="register">Register</button>
+            <p style="color:red;" v-if="authError">{{ authError }}</p>
           </div>
           <div v-else class="user-auth">
-            <span class="user-info">Hello, {{ user.username }}!</span>
+            <span class="user-info">Hello, {{ user.email }}!</span>
             <button @click="logout">Logout</button>
           </div>
         </li>
@@ -105,49 +133,28 @@
     </section>
 
     <section class="shop-grid">
-      <div
-        v-for="product in filteredProducts"
-        :key="product.id + (product.selectedColor || '')"
-        class="product-card"
-      >
-        <a
-          :href="product.image"
-          target="_blank"
-          v-if="product.stock > 0"
-        ><img
-            :src="product.image"
-            :alt="product.name"
-          /></a>
-        <img
-          v-else
-          :src="product.image"
-          :alt="product.name"
-          style="opacity: 0.5; cursor: not-allowed;"
-        />
+      <div v-for="product in filteredProducts" :key="product.id + (product.selectedColor || '')" class="product-card">
+        <a :href="product.image" target="_blank" v-if="product.stock > 0">
+          <img :src="product.image" :alt="product.name" />
+        </a>
+        <img v-else :src="product.image" :alt="product.name" style="opacity: 0.5; cursor: not-allowed;" />
         <h3>{{ product.name }}</h3>
         <p>
           {{ formatPrice(product.price) }}
-          <span class="stock-info" v-if="product.stock <= 5 && product.stock > 0"
-            >Only {{ product.stock }} left!</span>
+          <span class="stock-info" v-if="product.stock <= 5 && product.stock > 0">Only {{ product.stock }} left!</span>
           <span class="stock-info" v-if="product.stock === 0">Out of stock</span>
         </p>
         <div v-if="product.colors && product.colors.length">
-  <label>
-    Color:
-    <select v-model="product.selectedColor">
-      <option v-for="color in product.colors" :key="color" :value="color">
-        {{ color }}
-      </option>
-    </select>
-  </label>
-</div>
-        <button
-  class="btn-buy"
-  @click="addToCart(product)"
-  :disabled="product.stock === 0"
->
-  Add to Cart
-</button>
+          <label>
+            Color:
+            <select v-model="product.selectedColor">
+              <option v-for="color in product.colors" :key="color" :value="color">
+                {{ color }}
+              </option>
+            </select>
+          </label>
+        </div>
+        <button class="btn-buy" @click="addToCart(product)" :disabled="product.stock === 0">Add to Cart</button>
       </div>
     </section>
 
@@ -212,32 +219,26 @@
                 <option value="cod">Cash on Delivery</option>
               </select>
             </label>
-            <label v-if="order.payment === 'lynk' || order.payment === 'ncb'">
-            Upload Payment Receipt <span style="color: red;">*</span>:<br>
-            <input type="file" @change="handleFileUpload" required>
-            <span v-if="receiptFile">Selected: {{ receiptFile.name }}</span>
-            </label>
+            <div v-if="order.payment === 'lynk' || order.payment === 'ncb'" style="margin:10px 0;">
+              <b>After payment, please email your payment receipt to <span style="color:#cc6d8c;">mcleodwaydia@gmail.com</span></b>
+            </div>
             <div v-if="order.payment === 'paypal'" style="margin:10px 0;">
-  <b>After submitting your order, you will be redirected to PayPal to complete payment.</b>
-</div>
-<div v-if="order.payment === 'lynk'" style="margin:10px 0;">
-  <b>After submitting your order, you will be redirected to Lynk to complete payment.</b>
-</div>
-<div v-if="order.payment === 'ncb'" style="margin:10px 0;">
-  <b>After submitting your order, bank details will be shown for manual payment.</b>
-</div>
-<div v-if="order.payment === 'cod'" style="margin:10px 0;">
-  <b>Cash on Delivery: Please have exact change ready.</b>
-</div>
+              <b>After submitting your order, you will be redirected to PayPal to complete payment.</b>
+            </div>
+            <div v-if="order.payment === 'lynk'" style="margin:10px 0;">
+              <b>After submitting your order, you will be redirected to Lynk to complete payment.</b>
+            </div>
+            <div v-if="order.payment === 'ncb'" style="margin:10px 0;">
+              <b>After submitting your order, bank details will be shown for manual payment.</b>
+            </div>
+            <div v-if="order.payment === 'cod'" style="margin:10px 0;">
+              <b>Cash on Delivery: Please have exact change ready.</b>
+            </div>
             <h4>Shipping: {{ formatPrice(selectedShippingCost) }}</h4>
             <h3>Grand Total: {{ formatPrice(cartTotal + selectedShippingCost) }}</h3>
-            <button
-              type="submit"class="checkout-btn"
-              style="margin-top:1rem;"
-              :disabled="processingOrder"
->
-  {{ processingOrder ? 'Processing...' : 'Place Order & Pay' }}
-</button>
+            <button type="submit" class="checkout-btn" style="margin-top:1rem;" :disabled="processingOrder">
+              {{ processingOrder ? 'Processing...' : 'Place Order & Pay' }}
+            </button>
           </form>
         </div>
         <div v-if="orderSuccess" class="payment-success">
@@ -259,26 +260,26 @@
         orderSuccess: false,
         processingOrder: false,
         filters: {
-        type: '',
-        maxPrice: Infinity,
-        search: '',
-        receiptFile: null,
+          type: '',
+          maxPrice: Infinity,
+          search: ''
         },
         user: {
           loggedIn: false,
-          username: '',
+          email: '',
           password: ''
         },
+        authError: '',
         products: [
-          {id: 1, name: 'Pearl Bow Heart Keychain', price: 800, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true', stock: 10},
-          {id: 2, name: 'Puppy Teddy Pendant', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H78c602610c1c4a27b48322f6a0ac9b8be.webp', stock: 10},
-          {id: 3, name: 'Batman Lego Keychain', price: 850, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lego%20Accessories%20_%20Pink%20Batman%20Keychain%20_%20Color_%20Black_Pink%20_%20Size_%20Os.jpg?raw=true', stock: 10, colors: ['Pink','Black'], selectedColor: ''},
-          {id: 4, name: 'Miu Style Cat Head Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4b7310a3a1dc460cb166048ca80bf69e0.webp', stock: 6},
-          {id: 5, name: 'Miu Style Heart Shaped Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6eba452254fe438f8e74a90b6a434b87n.webp', stock: 6},
-          {id: 6, name: 'Dachshund', price: 1000, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant%20for%20Phone%20Bag%20Accessories%20Style%20A.jpg?raw=true', stock: 3},
-          {id: 7, name: 'Tennis Racket Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H7deef4f9cf394e708254b291e3610bf7w.webp', stock: 3},
-          {id: 8, name: 'Tennis Racket Keychain + Bible', price: 1100, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4082d5e9abc343d796c724005550d886h.webp', stock: 4},
-          {id: 9, name: 'Flower Claw Clip', price: 500, type: 'clawclip', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true', stock: 20, colors: ['Pink','White','Burgundy','Yellow','Orange','Green','Purple'], selectedColor: ''}
+          {id: 1, name: 'Pearl Bow Heart Keychain', price: 800, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true', stock: 8, colors: ['Gold', 'Rose Gold']},
+          {id: 2, name: 'Puppy Teddy Pendant', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H78c602610c1c4a27b48322f6a0a0e9f3o.jpg', stock: 10, colors: ['Brown', 'White']},
+          {id: 3, name: 'Batman Lego Keychain', price: 850, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lego%20Accessories%20_%20Pink%20Batman%20Keychain.jpg?raw=true', stock: 5, colors: ['Pink', 'Black']},
+          {id: 4, name: 'Miu Style Cat Head Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4b7310a3a1dc460cb1609d0aebc9e9a9k.jpg', stock: 3, colors: ['Grey', 'White']},
+          {id: 5, name: 'Miu Style Heart Shaped Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6eba452254fe4380bb15158909fcd6e5s.jpg', stock: 7, colors: ['Red', 'Pink']},
+          {id: 6, name: 'Dachshund', price: 1000, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20Dachshund%20Dog.jpg?raw=true', stock: 2, colors: ['Brown']},
+          {id: 7, name: 'Tennis Racket Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H7deef4f9cf394e708254b291a3d6a2b2r.jpg', stock: 12, colors: ['Blue', 'Pink']},
+          {id: 8, name: 'Tennis Racket Keychain + Bible', price: 1100, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4082d5e9abc343d7b292aebf5e2c1f5l.jpg', stock: 4, colors: ['Blue', 'Pink']},
+          {id: 9, name: 'Flower Claw Clip', price: 500, type: 'clawclip', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true', stock: 20, colors: ['Pink', 'Purple', 'Blue', 'White']}
         ],
         cart: [],
         order: {
@@ -323,10 +324,15 @@
           return selected.value;
         }
       },
+      watch: {
+        cart: {
+          handler(val) {
+            this.saveCart();
+          },
+          deep: true
+        }
+      },
       methods: {
-        handleFileUpload(event) {
-          this.receiptFile = event.target.files[0];
-},
         formatPrice(price) {
           let converted = price;
           let symbol = "J$";
@@ -370,24 +376,59 @@
           if (item.quantity > 1) item.quantity--;
         },
         login() {
-          if (this.user.username && this.user.password) {
-            this.user.loggedIn = true;
-            this.user.password = '';
-            alert("Logged in as " + this.user.username);
-          } else {
-            alert("Please enter username and password.");
-          }
+          this.authError = '';
+          window._firebase.signInWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password)
+            .then(() => {
+              this.user.loggedIn = true;
+              this.user.password = '';
+              this.loadCart();
+            })
+            .catch(e => this.authError = e.message);
+        },
+        register() {
+          this.authError = '';
+          window._firebase.createUserWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password)
+            .then(() => {
+              this.user.loggedIn = true;
+              this.user.password = '';
+              this.cart = [];
+              this.saveCart();
+              alert("Registration successful!");
+            })
+            .catch(e => this.authError = e.message);
         },
         logout() {
-          this.user.loggedIn = false;
-          this.user.username = '';
-          this.user.password = '';
-          this.cart = [];
-          this.showCart = false;
+          window._firebase.signOut(window._firebase.auth).then(() => {
+            this.user.loggedIn = false;
+            this.user.email = '';
+            this.user.password = '';
+            this.cart = [];
+            this.showCart = false;
+          });
+        },
+        saveCart() {
+          if (this.user.loggedIn && this.user.email) {
+            window._firebase.setDoc(
+              window._firebase.doc(window._firebase.db, "carts", this.user.email), 
+              { cart: this.cart }
+            );
+          }
+        },
+        async loadCart() {
+          if (this.user.loggedIn && this.user.email) {
+            const docSnap = await window._firebase.getDoc(
+              window._firebase.doc(window._firebase.db, "carts", this.user.email)
+            );
+            if (docSnap.exists()) {
+              this.cart = docSnap.data().cart || [];
+            } else {
+              this.cart = [];
+            }
+          }
         },
         submitOrder() {
-          if (this.processingOrder) return; // Prevent double submit
-this.processingOrder = true;
+          if (this.processingOrder) return;
+          this.processingOrder = true;
           if (
             !this.order.name ||
             !this.order.email ||
@@ -395,44 +436,36 @@ this.processingOrder = true;
             !this.order.address ||
             !this.order.shipping ||
             !this.order.payment
-  ) {
-    alert("Please fill out all fields.");
-    return;
-  }
-
-  const totalAmount = this.cartTotal + this.selectedShippingCost;
-
-  // Handle payment method
-  if (this.order.payment === 'paypal') {
-    // Redirect to PayPal.me with total
-    window.open(`https://www.paypal.me/WaydiaMcLeod/${totalAmount}`, "_blank");
-    // Optionally, after payment, you can show a confirmation modal/message
-    this.finishOrder();
-    return;
-  }
-
-  if (this.order.payment === 'lynk') {
-    // Redirect to Lynk
-    window.open("https://deep.lynk.us/6Eae", "_blank");
-    this.finishOrder();
-    return;
-  }
-
-  if (this.order.payment === 'ncb') {
-    alert(`Please transfer J$${totalAmount} to:\nAccount: 475001613\nName: Waydia McLeod\nBranch: St.Jago Shopping Center Branch\nAfter payment, send proof to mcleodwaydia@gmail.com.`);
-    this.finishOrder();
-    return;
-  }
-
-  if (this.order.payment === 'cod') {
-    alert("Order placed! Please have exact change ready for Cash on Delivery.");
-    this.finishOrder();
-    return;
-  }
-},
-// Add this helper method to handle order notification via EmailJS and UI reset:
-finishOrder() {
-  const orderDetails = `
+          ) {
+            alert("Please fill out all fields.");
+            this.processingOrder = false;
+            return;
+          }
+          const totalAmount = this.cartTotal + this.selectedShippingCost;
+          // Payment method handlers
+          if (this.order.payment === 'paypal') {
+            window.open(`https://www.paypal.me/WaydiaMcLeod/${totalAmount}`, "_blank");
+            this.finishOrder();
+            return;
+          }
+          if (this.order.payment === 'lynk') {
+            window.open("https://deep.lynk.us/6Eae", "_blank");
+            this.finishOrder();
+            return;
+          }
+          if (this.order.payment === 'ncb') {
+            alert(`Please transfer J$${totalAmount} to:\nAccount: 475001613\nName: Waydia McLeod\nBranch: St.Jago Shopping Center Branch\nAfter payment, send proof to mcleodwaydia@gmail.com.`);
+            this.finishOrder();
+            return;
+          }
+          if (this.order.payment === 'cod') {
+            alert("Order placed! Please have exact change ready for Cash on Delivery.");
+            this.finishOrder();
+            return;
+          }
+        },
+        finishOrder() {
+          const orderDetails = `
 Name: ${this.order.name}
 Email: ${this.order.email}
 Phone: ${this.order.phone}
@@ -441,47 +474,59 @@ Shipping: ${this.order.shipping}
 Payment: ${this.order.payment}
 Cart: ${this.cart.map(i => `${i.name}${i.color ? ' (' + i.color + ')' : ''} x${i.quantity}`).join(', ')}
 Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
-  `;
-  const now = new Date();
-  const formattedTime = now.toLocaleString();
-
-  emailjs.send('service_qpk2hk8', 'template_qd12s7x', {
-    customer_name: this.order.name,
-    customer_email: this.order.email,
-    product_name: this.cart.map(i => i.name).join(', '),
-    quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
-    shipping_method: this.order.shipping,
-    notes: this.order.notes || '',
-    message: orderDetails,
-    time: formattedTime,
-    name: this.order.name
-  })
-  .then(() => {
-    this.orderSuccess = true;
-    this.processingOrder = false;
-    setTimeout(() => {
-      this.cart = [];
-      this.showCheckout = false;
-      this.orderSuccess = false;
-      this.showCart = false;
-      this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
-    }, 3500);
-  })
-  .catch((error) => {
-    alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
-    this.processingOrder = false;
-    this.orderSuccess = true;
-    setTimeout(() => {
-      this.cart = [];
-      this.showCheckout = false;
-      this.orderSuccess = false;
-      this.showCart = false;
-      this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
-    }, 3500);
-  });
-}
- }
-});
+          `;
+          const now = new Date();
+          const formattedTime = now.toLocaleString();
+          emailjs.send('service_qpk2hk8', 'template_qd12s7x', {
+            customer_name: this.order.name,
+            customer_email: this.order.email,
+            product_name: this.cart.map(i => i.name).join(', '),
+            quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
+            shipping_method: this.order.shipping,
+            notes: this.order.notes || '',
+            message: orderDetails,
+            time: formattedTime,
+            name: this.order.name
+          })
+          .then(() => {
+            this.orderSuccess = true;
+            this.processingOrder = false;
+            setTimeout(() => {
+              this.cart = [];
+              this.showCheckout = false;
+              this.orderSuccess = false;
+              this.showCart = false;
+              this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+            }, 3500);
+          })
+          .catch((error) => {
+            alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
+            this.processingOrder = false;
+            this.orderSuccess = true;
+            setTimeout(() => {
+              this.cart = [];
+              this.showCheckout = false;
+              this.orderSuccess = false;
+              this.showCart = false;
+              this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+            }, 3500);
+          });
+        }
+      },
+      mounted() {
+        window._firebase.onAuthStateChanged(window._firebase.auth, (user) => {
+          if (user) {
+            this.user.loggedIn = true;
+            this.user.email = user.email;
+            this.loadCart();
+          } else {
+            this.user.loggedIn = false;
+            this.user.email = '';
+            this.cart = [];
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>
