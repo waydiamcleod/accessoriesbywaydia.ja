@@ -212,6 +212,11 @@
                 <option value="cod">Cash on Delivery</option>
               </select>
             </label>
+            <label v-if="order.payment === 'lynk' || order.payment === 'ncb'">
+            Upload Payment Receipt <span style="color: red;">*</span>:<br>
+            <input type="file" @change="handleFileUpload" required>
+            <span v-if="receiptFile">Selected: {{ receiptFile.name }}</span>
+            </label>
             <div v-if="order.payment === 'paypal'" style="margin:10px 0;">
   <b>After submitting your order, you will be redirected to PayPal to complete payment.</b>
 </div>
@@ -254,9 +259,10 @@
         orderSuccess: false,
         processingOrder: false,
         filters: {
-          type: '',
-          maxPrice: Infinity,
-          search: ''
+        type: '',
+        maxPrice: Infinity,
+        search: '',
+        receiptFile: null,
         },
         user: {
           loggedIn: false,
@@ -318,6 +324,9 @@
         }
       },
       methods: {
+        handleFileUpload(event) {
+          this.receiptFile = event.target.files[0];
+},
         formatPrice(price) {
           let converted = price;
           let symbol = "J$";
