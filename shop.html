@@ -8,7 +8,6 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
   <style>
-    /* Your CSS (unchanged) */
     body {margin:0;padding:0;font-family:'Montserrat',Arial,sans-serif;background:#fffaf7;color:#7c5e3c;}
     .navbar {display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.5rem;background:#fff;border-bottom:1px solid #e7dac7;flex-wrap:wrap;}
     .logo {font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#7c5e3c;}
@@ -46,13 +45,10 @@
     .checkout-btn {background:#7c5e3c;color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:20px;cursor:pointer;font-size:1.08rem;font-weight:600;}
     @media (max-width:600px) {.navbar{flex-direction:column;align-items:flex-start;padding:1rem;}.logo{margin-bottom:0.5rem;}.nav-links{width:100%;justify-content:flex-start;margin-top:0.5rem;flex-wrap:wrap;}}
   </style>
-
-  <!-- Firebase SDKs (type module for ES imports) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-
     const firebaseConfig = {
       apiKey: "AIzaSyDjVNcle0jXm_4u1pyTw90uwSTxtzwxugs",
       authDomain: "accessoriesbywaydia.firebaseapp.com",
@@ -62,13 +58,9 @@
       appId: "1:255065080536:web:8100b0541efd357f954dad",
       measurementId: "G-HNN9GQZTT2"
     };
-
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-
-    // Attach to window for Vue access
     window._firebase = { auth, db, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, doc, setDoc, getDoc };
   </script>
 </head>
@@ -280,7 +272,7 @@
           {id: 7, name: 'Tennis Racket Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H7deef4f9cf394e708254b291e3610bf7w.webp', stock: 3, colors: ['Gold']},
           {id: 8, name: 'Tennis Racket Keychain + Bible', price: 1100, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4082d5e9abc343d796c724005550d886h.webp', stock: 4},
           {id: 9, name: 'Flower Claw Clip', price: 500, type: 'clawclip', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true', stock: 20, colors: ['Burgundy', 'Pink', 'Purple', 'Yellow', 'White']},
-          {id: 10, name: "Mini Juice Can Keychain", price: 500, type: "keychain", image: "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H27cf27d492e444ddb51282ca93935ce3z.webp", stock: 30, flavours: ["Pepsi", "Cola", "Sprite", "Fanta"]}
+          {id: 10, name: "Mini Juice Can Keychain", price: 500, type: "keychain", image: "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H27cf27d492e444ddb51282ca93935ce3z.webp", stock: 30, colors: ["Pepsi", "Cola", "Sprite", "Fanta"]}
         ],
         cart: [],
         order: {
@@ -328,6 +320,7 @@
       watch: {
         cart: {
           handler(val) {
+            this.saveCartToLocal();
             this.saveCart();
           },
           deep: true
@@ -392,7 +385,7 @@
             .then(() => {
               this.user.loggedIn = true;
               this.user.password = '';
-              this.cart = [];
+              // If user had items in guest cart, sync them to Firestore cart
               this.saveCart();
               alert("Registration successful!");
             })
@@ -405,6 +398,7 @@
             this.user.password = '';
             this.cart = [];
             this.showCart = false;
+            this.saveCartToLocal();
           });
         },
         saveCart() {
@@ -415,6 +409,19 @@
             );
           }
         },
+        saveCartToLocal() {
+          localStorage.setItem('cart', JSON.stringify(this.cart));
+        },
+        loadCartFromLocal() {
+          const local = localStorage.getItem('cart');
+          if (local) {
+            try {
+              this.cart = JSON.parse(local);
+            } catch (e) {
+              this.cart = [];
+            }
+          }
+        },
         async loadCart() {
           if (this.user.loggedIn && this.user.email) {
             const docSnap = await window._firebase.getDoc(
@@ -423,7 +430,8 @@
             if (docSnap.exists()) {
               this.cart = docSnap.data().cart || [];
             } else {
-              this.cart = [];
+              // If Firestore has no cart, fallback to localStorage
+              this.loadCartFromLocal();
             }
           }
         },
@@ -498,6 +506,8 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
               this.orderSuccess = false;
               this.showCart = false;
               this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+              this.saveCartToLocal();
+              this.saveCart();
             }, 3500);
           })
           .catch((error) => {
@@ -510,11 +520,14 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
               this.orderSuccess = false;
               this.showCart = false;
               this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+              this.saveCartToLocal();
+              this.saveCart();
             }, 3500);
           });
         }
       },
       mounted() {
+        this.loadCartFromLocal();
         window._firebase.onAuthStateChanged(window._firebase.auth, (user) => {
           if (user) {
             this.user.loggedIn = true;
@@ -523,7 +536,6 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
           } else {
             this.user.loggedIn = false;
             this.user.email = '';
-            this.cart = [];
           }
         });
       }
