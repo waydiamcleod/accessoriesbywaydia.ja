@@ -49,28 +49,28 @@
 
   <!-- Firebase SDKs (type module for ES imports) -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDjVNcle0jXm_4u1pyTw90uwSTxtzwxugs",
-      authDomain: "accessoriesbywaydia.firebaseapp.com",
-      projectId: "accessoriesbywaydia",
-      storageBucket: "accessoriesbywaydia.appspot.com",
-      messagingSenderId: "255065080536",
-      appId: "1:255065080536:web:8100b0541efd357f954dad",
-      measurementId: "G-HNN9GQZTT2"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyDjVNcle0jXm_4u1pyTw90uwSTxtzwxugs",
+    authDomain: "accessoriesbywaydia.firebaseapp.com",
+    projectId: "accessoriesbywaydia",
+    storageBucket: "accessoriesbywaydia.appspot.com",
+    messagingSenderId: "255065080536",
+    appId: "1:255065080536:web:8100b0541efd357f954dad",
+    measurementId: "G-HNN9GQZTT2"
+  };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    // Attach to window for Vue access
-    window._firebase = { auth, db, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, doc, setDoc, getDoc };
-  </script>
+  // Attach to window for Vue access
+  window._firebase = { auth, db, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, doc, setDoc, getDoc, addDoc, collection };
+</script>
 </head>
 <body>
   <div id="app">
@@ -333,6 +333,18 @@
         }
       },
       methods: {
+        async saveOrderToFirestore(orderData) {
+  try {
+    const db = window._firebase.db;
+    await window._firebase.addDoc(
+      window._firebase.collection(db, "orders"),
+      orderData
+    );
+    // Optionally: you can console.log or show a message here if you want
+  } catch (e) {
+    console.error("Failed to save order to Firestore", e);
+  }
+}
         formatPrice(price) {
           let converted = price;
           let symbol = "J$";
@@ -489,6 +501,13 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
             name: this.order.name
           })
           .then(() => {
+            this.saveOrderToFirestore({
+  ...this.order,
+  email: this.order.email || this.user.email,
+  cart: this.cart,
+  total: this.cartTotal + this.selectedShippingCost,
+  createdAt: new Date().toISOString()
+});
             this.orderSuccess = true;
             this.processingOrder = false;
             setTimeout(() => {
