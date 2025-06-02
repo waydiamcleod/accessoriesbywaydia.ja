@@ -24,10 +24,15 @@
     .filters input[type="text"] {padding:0.4rem 0.8rem;border-radius:5px;border:1px solid #ccc;font-size:1rem;min-width:180px;}
     .shop-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;padding:1rem;}
     .product-card {background:#f8f1ea;border-radius:15px;padding:1rem;box-shadow:0 4px 12px rgba(0,0,0,0.05);text-align:center;display:flex;flex-direction:column;justify-content:space-between;}
-    .product-card img {width:100%;border-radius:10px;cursor:pointer;object-fit:contain;max-height:180px;}
+    .product-slider {position:relative;width:100%;max-width:180px;height:180px;margin:0 auto 0.5rem auto;}
+    .product-slider img {width:100%;height:180px;object-fit:cover;border-radius:10px;}
+    .slider-arrow {position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.7);border:none;border-radius:50%;font-size:1.2rem;cursor:pointer;z-index:2;width:28px;height:28px;}
+    .slider-arrow.left {left:3px;}
+    .slider-arrow.right {right:3px;}
     .product-card h3 {margin:0.8rem 0 0.3rem;}
     .btn-buy {background:#cc6d8c;color:white;padding:0.5rem 1.2rem;border-radius:20px;font-weight:600;cursor:pointer;border:none;margin-top:0.7rem;}
     .btn-buy:disabled {background:#ccc;cursor:not-allowed;}
+    .stock-info {font-size:0.8rem;color:#a0445e;margin-top:0.3rem;}
     .cart-modal {position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:999;overflow-y:auto;padding:1rem;}
     .cart-content {background:#fff;padding:2rem 1.2rem;border-radius:10px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;}
     .checkout-form label {display:block;margin-top:1rem;}
@@ -39,7 +44,6 @@
     .quantity-control {display:flex;align-items:center;gap:0.4rem;}
     .quantity-control button {background:#cc6d8c;border:none;color:white;font-weight:700;font-size:1rem;padding:0 10px;cursor:pointer;border-radius:5px;user-select:none;}
     .quantity-control span {min-width:25px;text-align:center;display:inline-block;font-weight:600;}
-    .stock-info {font-size:0.8rem;color:#a0445e;margin-top:0.3rem;}
     .payment-success {padding:1rem;background:#e6ffe6;color:#257a3a;border-radius:7px;margin:1.5rem 0;font-weight:600;text-align:center;}
     .cart-actions {margin-top:1rem;text-align:right;}
     .checkout-btn {background:#7c5e3c;color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:20px;cursor:pointer;font-size:1.08rem;font-weight:600;}
@@ -77,15 +81,20 @@
           <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
         </li>
         <li>
-          <!-- Auth form -->
-          <div v-if="user.loggedIn" class="user-auth">
-  <span class="user-info">Hello, {{ user.email }}!</span>
-  <button @click="logout">Logout</button>
-</div>
+          <div v-if="!user.loggedIn" class="user-auth">
+            <input v-model="user.email" type="email" placeholder="Email" />
+            <input v-model="user.password" type="password" placeholder="Password" />
+            <button @click="login">Login</button>
+            <button @click="register">Register</button>
+            <span v-if="authError" style="color:#cc6d8c;font-size:0.95rem;">{{ authError }}</span>
+          </div>
+          <div v-else class="user-auth">
+            <span class="user-info">Hello, {{ user.email }}!</span>
+            <button @click="logout">Logout</button>
+          </div>
         </li>
       </ul>
     </header>
-
     <section class="filters">
       <label>
         Filter by type:
@@ -116,20 +125,19 @@
         <input type="text" v-model="filters.search" placeholder="Search products..." />
       </label>
     </section>
-
     <section class="shop-grid">
       <div v-for="(product, i) in filteredProducts" :key="product.id + (product.selectedColor || '')" class="product-card">
         <div class="product-slider"
-  @touchstart="touchStart($event, i)"
-  @touchmove="touchMove($event, i)"
-  @touchend="touchEnd($event, i)">
-  <button class="slider-arrow left" v-if="product.images && product.images.length > 1" @click="prevImage(i)" aria-label="Previous image">&#8592;</button>
-  <a v-if="product.stock > 0" :href="(product.images && product.images.length) ? product.images[product.currentImage] : product.image" target="_blank">
-    <img :src="(product.images && product.images.length) ? product.images[product.currentImage] : product.image" :alt="product.name" />
-  </a>
-  <img v-else :src="(product.images && product.images.length) ? product.images[product.currentImage] : product.image" :alt="product.name" style="opacity: 0.5; cursor: not-allowed;" />
-  <button class="slider-arrow right" v-if="product.images && product.images.length > 1" @click="nextImage(i)" aria-label="Next image">&#8594;</button>
-</div>
+          @touchstart="touchStart($event, i)"
+          @touchmove="touchMove($event, i)"
+          @touchend="touchEnd($event, i)">
+          <button class="slider-arrow left" v-if="product.images && product.images.length > 1" @click="prevImage(i)" aria-label="Previous image">&#8592;</button>
+          <a v-if="product.stock > 0" :href="product.images[product.currentImage]" target="_blank">
+            <img :src="product.images[product.currentImage]" :alt="product.name" />
+          </a>
+          <img v-else :src="product.images[product.currentImage]" :alt="product.name" style="opacity: 0.5; cursor: not-allowed;" />
+          <button class="slider-arrow right" v-if="product.images && product.images.length > 1" @click="nextImage(i)" aria-label="Next image">&#8594;</button>
+        </div>
         <h3>{{ product.name }}</h3>
         <p>
           {{ formatPrice(product.price) }}
@@ -146,10 +154,13 @@
             </select>
           </label>
         </div>
-        <button class="btn-buy" @click="addToCart(product)" :disabled="product.stock === 0">Add to Cart</button>
+        <button class="btn-buy" @click="addToCart(product)" :disabled="product.stock === 0 || !user.loggedIn">Add to Cart</button>
       </div>
     </section>
-
+    <div v-if="!user.loggedIn" style="margin-top:2rem;color:#cc6d8c;text-align:center;">
+      Please log in or register above to add products to your cart.
+    </div>
+    <!-- CART MODAL -->
     <div v-if="showCart" class="cart-modal" @click.self="showCart = false">
       <div class="cart-content" @click.stop>
         <span class="close-btn" @click="showCart = false">&times;</span>
@@ -241,7 +252,7 @@
     </div>
   </div>
   <script>
-    emailjs.init('yEYlWETvh08w892PT'); // <-- Replace with your EmailJS user ID
+    emailjs.init('yEYlWETvh08w892PT');
 
     new Vue({
       el: '#app',
@@ -256,7 +267,8 @@
           maxPrice: Infinity,
           search: ''
         },
-        user: { loggedIn: false, username: '' },
+        user: { loggedIn: false, email: '', password: '' },
+        authError: '',
         products: [
           {id: 1, name: 'Pearl Bow Heart Keychain', price: 800, type: 'keychain', stock: 8, colors: ['White'], images: ['https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true'], currentImage: 0 },
           {id: 2, name: 'Puppy Teddy Pendant', price: 1000, type: 'keychain', stock: 10, colors: ['Brown', 'Beige'], images: ['https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H78c602610c1c4a27b48322f6a0ac9b8be.webp'], currentImage: 0 },
@@ -275,9 +287,6 @@
           ], currentImage: 0 }
         ],
         cart: [],
-        touchStartX: null,
-        touchEndX: null
-      },
         order: {
           name: "",
           email: "",
@@ -291,7 +300,9 @@
           { label: "Zip Mail Post-to-Door – 1000 JMD", value: 1000, currency: "JMD" },
           { label: "Zip Mail Post-to-Post – 700 JMD", value: 700, currency: "JMD" },
           { label: "International – 9 USD", value: 9, currency: "USD" }
-        ]
+        ],
+        touchStartX: null,
+        touchEndX: null
       },
       computed: {
         filteredProducts() {
@@ -323,6 +334,9 @@
       watch: {
         cart: {
           handler(newCart) {
+            if (this.user.loggedIn && this.user.email) {
+              this.saveCart();
+            }
             localStorage.setItem('cart', JSON.stringify(newCart));
           },
           deep: true
@@ -338,9 +352,74 @@
           }
           return symbol + converted.toFixed(2);
         },
+        async login() {
+          this.authError = '';
+          try {
+            await window._firebase.signInWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password);
+            this.user.loggedIn = true;
+            this.user.password = '';
+            await this.loadCart();
+          } catch (e) {
+            this.authError = e.message;
+          }
+        },
+        async register() {
+          this.authError = '';
+          try {
+            await window._firebase.createUserWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password);
+            this.user.loggedIn = true;
+            this.user.password = '';
+            await this.saveCart();
+            alert("Registration successful!");
+          } catch (e) {
+            this.authError = e.message;
+          }
+        },
+        async logout() {
+          await window._firebase.signOut(window._firebase.auth);
+          this.user.loggedIn = false;
+          this.user.email = '';
+          this.user.password = '';
+          this.cart = [];
+          this.showCart = false;
+          this.saveCartToLocal();
+        },
+        saveCart() {
+          if (this.user.loggedIn && this.user.email) {
+            window._firebase.setDoc(
+              window._firebase.doc(window._firebase.db, "carts", this.user.email),
+              { cart: this.cart }
+            );
+          }
+        },
+        saveCartToLocal() {
+          localStorage.setItem('cart', JSON.stringify(this.cart));
+        },
+        loadCartFromLocal() {
+          const local = localStorage.getItem('cart');
+          if (local) {
+            try {
+              this.cart = JSON.parse(local);
+            } catch (e) {
+              this.cart = [];
+            }
+          }
+        },
+        async loadCart() {
+          if (this.user.loggedIn && this.user.email) {
+            const docSnap = await window._firebase.getDoc(
+              window._firebase.doc(window._firebase.db, "carts", this.user.email)
+            );
+            if (docSnap.exists()) {
+              this.cart = docSnap.data().cart || [];
+            } else {
+              this.loadCartFromLocal();
+            }
+          }
+        },
         addToCart(product) {
           if (!this.user.loggedIn) {
-            alert("Please log in on the homepage to add products to your cart.");
+            alert("Please log in or register above to add products to your cart.");
             return;
           }
           const color = product.selectedColor || '';
@@ -371,71 +450,31 @@
           const item = this.cart[index];
           if (item.quantity > 1) item.quantity--;
         },
-        login() {
-          this.authError = '';
-          window._firebase.signInWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password)
-            .then(() => {
-              this.user.loggedIn = true;
-              this.user.password = '';
-              this.loadCart();
-            })
-            .catch(e => this.authError = e.message);
+        prevImage(i) {
+          const prod = this.filteredProducts[i];
+          if (!prod.images) return;
+          prod.currentImage = (prod.currentImage === 0) ? prod.images.length - 1 : prod.currentImage - 1;
         },
-        register() {
-          this.authError = '';
-          window._firebase.createUserWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password)
-            .then(() => {
-              this.user.loggedIn = true;
-              this.user.password = '';
-              // If user had items in guest cart, sync them to Firestore cart
-              this.saveCart();
-              alert("Registration successful!");
-            })
-            .catch(e => this.authError = e.message);
+        nextImage(i) {
+          const prod = this.filteredProducts[i];
+          if (!prod.images) return;
+          prod.currentImage = (prod.currentImage + 1) % prod.images.length;
         },
-        logout() {
-          window._firebase.signOut(window._firebase.auth).then(() => {
-            this.user.loggedIn = false;
-            this.user.email = '';
-            this.user.password = '';
-            this.cart = [];
-            this.showCart = false;
-            this.saveCartToLocal();
-          });
+        touchStart(e, i) {
+          this.touchStartX = e.changedTouches[0].screenX;
         },
-        saveCart() {
-          if (this.user.loggedIn && this.user.email) {
-            window._firebase.setDoc(
-              window._firebase.doc(window._firebase.db, "carts", this.user.email), 
-              { cart: this.cart }
-            );
+        touchMove(e, i) {
+          this.touchEndX = e.changedTouches[0].screenX;
+        },
+        touchEnd(e, i) {
+          if (this.touchStartX === null || this.touchEndX === null) return;
+          if (this.touchEndX - this.touchStartX > 40) {
+            this.prevImage(i);
+          } else if (this.touchStartX - this.touchEndX > 40) {
+            this.nextImage(i);
           }
-        },
-        saveCartToLocal() {
-          localStorage.setItem('cart', JSON.stringify(this.cart));
-        },
-        loadCartFromLocal() {
-          const local = localStorage.getItem('cart');
-          if (local) {
-            try {
-              this.cart = JSON.parse(local);
-            } catch (e) {
-              this.cart = [];
-            }
-          }
-        },
-        async loadCart() {
-          if (this.user.loggedIn && this.user.email) {
-            const docSnap = await window._firebase.getDoc(
-              window._firebase.doc(window._firebase.db, "carts", this.user.email)
-            );
-            if (docSnap.exists()) {
-              this.cart = docSnap.data().cart || [];
-            } else {
-              // If Firestore has no cart, fallback to localStorage
-              this.loadCartFromLocal();
-            }
-          }
+          this.touchStartX = null;
+          this.touchEndX = null;
         },
         submitOrder() {
           if (this.processingOrder) return;
@@ -529,18 +568,27 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
         }
       },
       mounted() {
-        // Restore login state (from homepage)
-        if (localStorage.getItem('loggedIn') === 'true') {
-          this.user.loggedIn = true;
-          this.user.username = localStorage.getItem('username') || '';
-        }
-        // Restore cart
-        const savedCart = localStorage.getItem('cart');
-        if (savedCart) {
-          try {
-            this.cart = JSON.parse(savedCart);
-          } catch {
+        window._firebase.onAuthStateChanged(window._firebase.auth, async user => {
+          if (user) {
+            this.user.loggedIn = true;
+            this.user.email = user.email || '';
+            await this.loadCart();
+          } else {
+            this.user.loggedIn = false;
+            this.user.email = '';
             this.cart = [];
+            this.saveCartToLocal();
+          }
+        });
+        // Restore cart from localStorage if not logged in
+        if (!this.user.loggedIn) {
+          const savedCart = localStorage.getItem('cart');
+          if (savedCart) {
+            try {
+              this.cart = JSON.parse(savedCart);
+            } catch {
+              this.cart = [];
+            }
           }
         }
       }
