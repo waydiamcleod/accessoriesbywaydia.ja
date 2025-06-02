@@ -261,6 +261,7 @@
           search: ''
         },
         user: { loggedIn: false, email: '', password: '' },
+        loadingAuth: true,
         authError: '',
         products: [
           {id: 1, name: 'Pearl Bow Heart Keychain', price: 800, type: 'keychain', stock: 8, colors: ['White'], images: ['https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true'], currentImage: 0 },
@@ -577,6 +578,7 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
             this.cart = [];
             this.saveCartToLocal();
           }
+          this.loadingAuth = false;
         });
         // Restore cart from localStorage if not logged in
         if (!this.user.loggedIn) {
