@@ -126,6 +126,22 @@
       }
     }
   </style>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyDjVNcle0jXm_4u1pyTw90uwSTxtzwxugs",
+  authDomain: "accessoriesbywaydia.firebaseapp.com",
+  projectId: "accessoriesbywaydia",
+  storageBucket: "accessoriesbywaydia.appspot.com",
+  messagingSenderId: "255065080536",
+  appId: "1:255065080536:web:8100b0541efd357f954dad",
+  measurementId: "G-HNN9GQZTT2"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+window._firebase = { auth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut };
+</script>
 </head>
 <body>
 <div id="app">
@@ -146,16 +162,18 @@
       <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
     </li>
     <li>
-      <div class="user-auth" v-if="!user.loggedIn">
-        <input type="text" v-model="user.username" placeholder="Username" @keyup.enter="login" />
-        <input type="password" v-model="user.password" placeholder="Password" @keyup.enter="login" />
-        <button @click="login">Login</button>
-      </div>
-      <div v-else class="user-auth">
-        <span class="user-info">Hello, {{ user.username }}!</span>
-        <button @click="logout">Logout</button>
-      </div>
-    </li>
+  <div class="user-auth" v-if="!user.loggedIn">
+    <input type="email" v-model="user.email" placeholder="Email" />
+    <input type="password" v-model="user.password" placeholder="Password" />
+    <button @click="login">Login</button>
+    <button @click="register">Register</button>
+    <span v-if="authError" style="color:#cc6d8c;font-size:0.95rem;">{{ authError }}</span>
+  </div>
+  <div v-else class="user-auth">
+    <span class="user-info">Hello, {{ user.email }}!</span>
+    <button @click="logout">Logout</button>
+  </div>
+</li>
   </ul>
 </header>
 
@@ -338,7 +356,7 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
 <script>
-emailjs.init('yEYlWETvh08w892PT'); // <-- Replace with your EmailJS user ID if needed
+emailjs.init('yEYlWETvh08w892PT');
 
 new Vue({
   el: '#app',
@@ -347,11 +365,13 @@ new Vue({
     showCart: false,
     showCheckout: false,
     orderSuccess: false,
+    processingOrder: false,
     user: {
       loggedIn: false,
-      username: '',
+      email: '',
       password: ''
     },
+    authError: '',
     cart: [],
     order: {
       name: "",
@@ -396,6 +416,35 @@ new Vue({
       }
       return symbol + converted.toFixed(2);
     },
+    async login() {
+      this.authError = '';
+      try {
+        await window._firebase.signInWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password);
+        this.user.loggedIn = true;
+        this.user.password = '';
+      } catch (e) {
+        this.authError = e.message;
+      }
+    },
+    async register() {
+      this.authError = '';
+      try {
+        await window._firebase.createUserWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password);
+        this.user.loggedIn = true;
+        this.user.password = '';
+        alert("Registration successful!");
+      } catch (e) {
+        this.authError = e.message;
+      }
+    },
+    async logout() {
+      await window._firebase.signOut(window._firebase.auth);
+      this.user.loggedIn = false;
+      this.user.email = '';
+      this.user.password = '';
+      this.cart = [];
+      this.showCart = false;
+    },
     addToCart(name, price) {
       if (!this.user.loggedIn) {
         alert("Please login to add items to cart.");
@@ -423,27 +472,6 @@ new Vue({
     },
     decreaseQuantity(index) {
       if (this.cart[index].quantity > 1) this.cart[index].quantity--;
-    },
-    login() {
-      if (this.user.username && this.user.password) {
-        this.user.loggedIn = true;
-        localStorage.setItem('loggedIn', 'true');
-        localStorage.setItem('username', this.user.username);
-        this.user.password = '';
-        alert("Logged in as " + this.user.username);
-      } else {
-        alert("Please enter username and password.");
-      }
-    },
-    logout() {
-      this.user.loggedIn = false;
-      this.user.username = '';
-      this.user.password = '';
-      this.cart = [];
-      this.showCart = false;
-      localStorage.removeItem('loggedIn');
-      localStorage.removeItem('username');
-      localStorage.removeItem('cart');
     },
     submitOrder() {
       if (
@@ -515,11 +543,17 @@ Grand Total: ${this.formatPrice(this.cartTotal + this.selectedShippingCost)}
     }
   },
   mounted() {
-    // Restore login state
-    if (localStorage.getItem('loggedIn') === 'true') {
-      this.user.loggedIn = true;
-      this.user.username = localStorage.getItem('username') || '';
-    }
+    // Firebase auth state listener
+    window._firebase.onAuthStateChanged(window._firebase.auth, user => {
+      if (user) {
+        this.user.loggedIn = true;
+        this.user.email = user.email || '';
+      } else {
+        this.user.loggedIn = false;
+        this.user.email = '';
+        this.cart = [];
+      }
+    });
     // Restore cart
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
