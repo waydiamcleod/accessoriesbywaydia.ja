@@ -82,13 +82,6 @@
         </li>
         <li>
           <div v-if="!user.loggedIn" class="user-auth">
-            <input v-model="user.email" type="email" placeholder="Email" />
-            <input v-model="user.password" type="password" placeholder="Password" />
-            <button @click="login">Login</button>
-            <button @click="register">Register</button>
-            <span v-if="authError" style="color:#cc6d8c;font-size:0.95rem;">{{ authError }}</span>
-          </div>
-          <div v-else class="user-auth">
             <span class="user-info">Hello, {{ user.email }}!</span>
             <button @click="logout">Logout</button>
           </div>
