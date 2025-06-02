@@ -81,12 +81,19 @@
           <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
         </li>
         <li>
-          <div v-if="user.loggedIn" class="user-auth">
-  <span class="user-info">Hello, {{ user.email }}!</span>
-  <button @click="logout">Logout</button>
-</div>
-        </li>
-      </ul>
+    <div class="user-auth" v-if="!user.loggedIn">
+      <input type="email" v-model="user.email" placeholder="Email" />
+      <input type="password" v-model="user.password" placeholder="Password" />
+      <button @click="login">Login</button>
+      <button @click="register">Register</button>
+      <span v-if="authError" style="color:#cc6d8c;font-size:0.95rem;">{{ authError }}</span>
+    </div>
+    <div v-else class="user-auth">
+      <span class="user-info">Hello, {{ user.email }}!</span>
+      <button @click="logout">Logout</button>
+    </div>
+  </li>
+</ul>
     </header>
     <section class="filters">
       <label>
