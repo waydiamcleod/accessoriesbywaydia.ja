@@ -81,10 +81,10 @@
           <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
         </li>
         <li>
-          <div v-if="!user.loggedIn" class="user-auth">
-            <span class="user-info">Hello, {{ user.email }}!</span>
-            <button @click="logout">Logout</button>
-          </div>
+          <div v-if="user.loggedIn" class="user-auth">
+  <span class="user-info">Hello, {{ user.email }}!</span>
+  <button @click="logout">Logout</button>
+</div>
         </li>
       </ul>
     </header>
@@ -147,7 +147,7 @@
             </select>
           </label>
         </div>
-        <button class="btn-buy" @click="addToCart(product)" :disabled="product.stock === 0 || !user.loggedIn">Add to Cart</button>
+        <button class="btn-buy" @click="addToCart(product)" :disabled="product.stock === 0">Add to Cart</button>
       </div>
     </section>
     <div v-if="!user.loggedIn" style="margin-top:2rem;color:#cc6d8c;text-align:center;">
