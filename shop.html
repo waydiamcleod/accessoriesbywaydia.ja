@@ -249,12 +249,7 @@
           maxPrice: Infinity,
           search: ''
         },
-        user: {
-          loggedIn: false,
-          email: '',
-          password: ''
-        },
-        authError: '',
+        user: { loggedIn: false, username: '' },
         products: [
           {id: 1, name: 'Pearl Bow Heart Keychain', price: 800, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true', stock: 8, colors: ['White']},
           {id: 2, name: 'Puppy Teddy Pendant', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H78c602610c1c4a27b48322f6a0ac9b8be.webp', stock: 10, colors: ['Brown', 'Beige']},
@@ -264,10 +259,13 @@
           {id: 6, name: 'Dachshund', price: 1000, type: 'keychain', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant%20for%20Phone%20Bag%20Accessories%20Style%20A.jpg?raw=true', stock: 3},
           {id: 7, name: 'Tennis Racket Keychain', price: 1000, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H7deef4f9cf394e708254b291e3610bf7w.webp', stock: 3, colors: ['Gold']},
           {id: 8, name: 'Tennis Racket Keychain + Bible', price: 1100, type: 'keychain', image: 'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4082d5e9abc343d796c724005550d886h.webp', stock: 4},
-          {id: 9, name: 'Flower Claw Clip', price: 500, type: 'clawclip', image: 'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true', stock: 20, colors: ['Burgundy', 'Pink', 'Purple', 'Yellow', 'White']},
+          {id: 9, name: 'Flower Claw Clip', price: 500, type: 'clawclip', images: ['https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true', ''], currentImage: 0 stock: 20, colors: ['Burgundy', 'Pink', 'Purple', 'Yellow', 'White']},
           {id: 10, name: "Mini Juice Can Keychain", price: 500, type: "keychain", image: "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H27cf27d492e444ddb51282ca93935ce3z.webp", stock: 30, colors: ["Pepsi", "Cola", "Sprite", "Fanta"]}
         ],
         cart: [],
+        touchStartX: null,
+        touchEndX: null
+      },
         order: {
           name: "",
           email: "",
@@ -312,9 +310,8 @@
       },
       watch: {
         cart: {
-          handler(val) {
-            this.saveCartToLocal();
-            this.saveCart();
+          handler(newCart) {
+            localStorage.setItem('cart', JSON.stringify(newCart));
           },
           deep: true
         }
@@ -331,7 +328,7 @@
         },
         addToCart(product) {
           if (!this.user.loggedIn) {
-            alert("Please login to add items to cart.");
+            alert("Please log in on the homepage to add products to your cart.");
             return;
           }
           const color = product.selectedColor || '';
@@ -520,17 +517,20 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
         }
       },
       mounted() {
-        this.loadCartFromLocal();
-        window._firebase.onAuthStateChanged(window._firebase.auth, (user) => {
-          if (user) {
-            this.user.loggedIn = true;
-            this.user.email = user.email;
-            this.loadCart();
-          } else {
-            this.user.loggedIn = false;
-            this.user.email = '';
+        // Restore login state (from homepage)
+        if (localStorage.getItem('loggedIn') === 'true') {
+          this.user.loggedIn = true;
+          this.user.username = localStorage.getItem('username') || '';
+        }
+        // Restore cart
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+          try {
+            this.cart = JSON.parse(savedCart);
+          } catch {
+            this.cart = [];
           }
-        });
+        }
       }
     });
   </script>
