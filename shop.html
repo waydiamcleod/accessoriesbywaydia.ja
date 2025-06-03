@@ -47,129 +47,7 @@
     .payment-success {padding:1rem;background:#e6ffe6;color:#257a3a;border-radius:7px;margin:1.5rem 0;font-weight:600;text-align:center;}
     .cart-actions {margin-top:1rem;text-align:right;}
     .checkout-btn {background:#7c5e3c;color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:20px;cursor:pointer;font-size:1.08rem;font-weight:600;}
-    @media (max-width: 600px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0.7rem;
-  }
-  .logo {
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
-  }
-  .nav-links {
-    width: 100%;
-    justify-content: flex-start;
-    margin-top: 0.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-    font-size: 1rem;
-    padding-left: 0;
-  }
-  .nav-links li {
-    width: 100%;
-  }
-  .shop-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 0.5rem;
-  }
-  .product-card {
-    padding: 0.7rem;
-    font-size: 0.95rem;
-  }
-  .cart-content {
-    padding: 1rem 0.5rem;
-    max-width: 98vw;
-  }
-  .filters {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
-    margin: 0.5rem;
-    padding: 0.5rem;
-  }
-  .btn-buy, .checkout-btn {
-    width: 100%;
-    font-size: 1rem;
-    padding: 0.7rem 0;
-  }
-  .product-slider img {
-    height: 140px;
-    max-width: 100%;
-  }
-  .user-auth {
-    margin-left: 0 !important;
-    width: 100%;
-    justify-content: flex-start;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-  .user-auth input, .user-auth button {
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 5px;
-  }
-}
-  .hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  height: 36px;
-  width: 36px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 1100;
-  margin-left: auto;
-}
-.hamburger span {
-  display: block;
-  width: 28px;
-  height: 4px;
-  background: #7c5e3c;
-  margin: 4px 0;
-  border-radius: 2px;
-  transition: 0.4s;
-}
-.hamburger span.open:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
-.hamburger span.open:nth-child(2) { opacity: 0; }
-.hamburger span.open:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
-
-@media (max-width: 900px) {
-  .hamburger { display: flex; }
-  .nav-links {
-    position: absolute;
-    top: 64px;
-    left: 0;
-    width: 100%;
-    background: #fff;
-    flex-direction: column;
-    gap: 0;
-    padding: 1rem 0;
-    border-bottom: 1px solid #e7dac7;
-    transition: max-height 0.3s;
-    max-height: 0;
-    overflow: hidden;
-    z-index: 1000;
-  }
-  .nav-links.open {
-    max-height: 500px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.07);
-  }
-  .nav-links li {
-    width: 100%;
-    text-align: left;
-    padding: 0.7rem 1.5rem;
-    border-bottom: 1px solid #f0e6db;
-  }
-  .user-auth {
-    flex-direction: column;
-    width: 100%;
-    margin-left: 0;
-    gap: 0.5rem;
-  }
-}  
+    @media (max-width:600px) {.navbar{flex-direction:column;align-items:flex-start;padding:1rem;}.logo{margin-bottom:0.5rem;}.nav-links{width:100%;justify-content:flex-start;margin-top:0.5rem;flex-wrap:wrap;}}
   </style>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
@@ -193,35 +71,30 @@
 <body>
   <div id="app">
     <header class="navbar">
-  <div class="logo">Accessories by Waydia</div>
-  <button class="hamburger" @click="navOpen = !navOpen" :aria-expanded="navOpen" aria-label="Toggle navigation">
-    <span :class="{ open: navOpen }"></span>
-    <span :class="{ open: navOpen }"></span>
-    <span :class="{ open: navOpen }"></span>
-  </button>
-  <ul class="nav-links" :class="{ open: navOpen }">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li class="cart-icon" @click="showCart = true" title="View Cart">
-      🛒
-      <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
-    </li>
-    <li>
-      <div class="user-auth" v-if="!user.loggedIn">
-        <input type="email" v-model="user.email" placeholder="Email" />
-        <input type="password" v-model="user.password" placeholder="Password" />
-        <button @click="login">Login</button>
-        <button @click="register">Register</button>
-        <span v-if="authError" style="color:#cc6d8c;font-size:0.95rem;">{{ authError }}</span>
-      </div>
-      <div v-else class="user-auth">
-        <span class="user-info">Hello, {{ user.email }}!</span>
-        <button @click="logout">Logout</button>
-      </div>
-    </li>
-  </ul>
-</header>
+      <div class="logo">Accessories by Waydia</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="cart-icon" @click="showCart = true" title="View Cart">
+          🛒
+          <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
+        </li>
+        <li>
+    <div class="user-auth" v-if="!user.loggedIn">
+      <input type="email" v-model="user.email" placeholder="Email" />
+      <input type="password" v-model="user.password" placeholder="Password" />
+      <button @click="login">Login</button>
+      <button @click="register">Register</button>
+      <span v-if="authError" style="color:#cc6d8c;font-size:0.95rem;">{{ authError }}</span>
+    </div>
+    <div v-else class="user-auth">
+      <span class="user-info">Hello, {{ user.email }}!</span>
+      <button @click="logout">Logout</button>
+    </div>
+  </li>
+</ul>
+    </header>
     <section class="filters">
       <label>
         Filter by type:
@@ -384,7 +257,6 @@
     new Vue({
       el: '#app',
       data: {
-        navOpen: false,
         currency: 'JMD',
         showCart: false,
         showCheckout: false,
@@ -439,222 +311,217 @@
         touchEndX: null
       },
       computed: {
-    filteredProducts() {
-      return this.products.filter(product => {
-        const matchesType = !this.filters.type || product.type === this.filters.type;
-        const matchesPrice = product.price <= this.filters.maxPrice;
-        const matchesSearch = !this.filters.search ||
-          product.name.toLowerCase().includes(this.filters.search.toLowerCase());
-        return matchesType && matchesPrice && matchesSearch;
-      });
-    },
-    cartTotal() {
-      return this.cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    },
-    totalQuantity() {
-      return this.cart.reduce((acc, item) => acc + item.quantity, 0);
-    },
-    selectedShippingCost() {
-      if (!this.order.shipping) return 0;
-      let selected = this.shippingOptions.find(opt => opt.label === this.order.shipping);
-      if (!selected) return 0;
-      if (selected.currency === "USD") {
-        // Convert to JMD for grand total if needed
-        return this.currency === "USD" ? selected.value : selected.value * 150;
-      }
-      return selected.value;
-    }
-  },
-  watch: {
-    cart: {
-      handler(newCart) {
-        if (this.user.loggedIn && this.user.email) {
-          this.saveCart();
+        filteredProducts() {
+          return this.products.filter(product => {
+            const matchesType = !this.filters.type || product.type === this.filters.type;
+            const matchesPrice = product.price <= this.filters.maxPrice;
+            const matchesSearch = !this.filters.search ||
+              product.name.toLowerCase().includes(this.filters.search.toLowerCase());
+            return matchesType && matchesPrice && matchesSearch;
+          });
+        },
+        cartTotal() {
+          return this.cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+        },
+        totalQuantity() {
+          return this.cart.reduce((acc, item) => acc + item.quantity, 0);
+        },
+        selectedShippingCost() {
+          if (!this.order.shipping) return 0;
+          let selected = this.shippingOptions.find(opt => opt.label === this.order.shipping);
+          if (!selected) return 0;
+          if (selected.currency === "USD") {
+            // Convert to JMD for grand total if needed
+            return this.currency === "USD" ? selected.value : selected.value * 150;
+          }
+          return selected.value;
         }
-        localStorage.setItem('cart', JSON.stringify(newCart));
       },
-      deep: true
-    }
-  },
-  methods: {
-    formatPrice(price) {
-      let converted = price;
-      let symbol = "J$";
-      if (this.currency === "USD") {
-        converted = price / 150;
-        symbol = "$";
-      }
-      return symbol + converted.toFixed(2);
-    },
-    async login() {
-      this.authError = '';
-      try {
-        await window._firebase.signInWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password);
-        this.user.loggedIn = true;
-        this.user.password = '';
-        await this.loadCart();
-        this.navOpen = false; // Close menu after successful login
-      } catch (e) {
-        this.authError = e.message;
-        this.navOpen = false; // Also close menu on error
-      }
-    },
-    async register() {
-      this.authError = '';
-      try {
-        await window._firebase.createUserWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password);
-        this.user.loggedIn = true;
-        this.user.password = '';
-        await this.saveCart();
-        alert("Registration successful!");
-        this.navOpen = false; // Close menu after successful register
-      } catch (e) {
-        this.authError = e.message;
-        this.navOpen = false; // Also close menu on error
-      }
-    },
-    async logout() {
-      await window._firebase.signOut(window._firebase.auth);
-      this.user.loggedIn = false;
-      this.user.email = '';
-      this.user.password = '';
-      this.cart = [];
-      this.showCart = false;
-      this.saveCartToLocal();
-      this.navOpen = false; // Always close hamburger menu
-    },
-    saveCart() {
-      if (this.user.loggedIn && this.user.email) {
-        window._firebase.setDoc(
-          window._firebase.doc(window._firebase.db, "carts", this.user.email),
-          { cart: this.cart }
-        );
-      }
-    },
-    saveCartToLocal() {
-      localStorage.setItem('cart', JSON.stringify(this.cart));
-    },
-    loadCartFromLocal() {
-      const local = localStorage.getItem('cart');
-      if (local) {
-        try {
-          this.cart = JSON.parse(local);
-        } catch (e) {
+      watch: {
+        cart: {
+          handler(newCart) {
+            if (this.user.loggedIn && this.user.email) {
+              this.saveCart();
+            }
+            localStorage.setItem('cart', JSON.stringify(newCart));
+          },
+          deep: true
+        }
+      },
+      methods: {
+        formatPrice(price) {
+          let converted = price;
+          let symbol = "J$";
+          if (this.currency === "USD") {
+            converted = price / 150;
+            symbol = "$";
+          }
+          return symbol + converted.toFixed(2);
+        },
+        async login() {
+          this.authError = '';
+          try {
+            await window._firebase.signInWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password);
+            this.user.loggedIn = true;
+            this.user.password = '';
+            await this.loadCart();
+          } catch (e) {
+            this.authError = e.message;
+          }
+        },
+        async register() {
+          this.authError = '';
+          try {
+            await window._firebase.createUserWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password);
+            this.user.loggedIn = true;
+            this.user.password = '';
+            await this.saveCart();
+            alert("Registration successful!");
+          } catch (e) {
+            this.authError = e.message;
+          }
+        },
+        async logout() {
+          await window._firebase.signOut(window._firebase.auth);
+          this.user.loggedIn = false;
+          this.user.email = '';
+          this.user.password = '';
           this.cart = [];
-        }
-      }
-    },
-    async loadCart() {
-      if (this.user.loggedIn && this.user.email) {
-        const docSnap = await window._firebase.getDoc(
-          window._firebase.doc(window._firebase.db, "carts", this.user.email)
-        );
-        if (docSnap.exists()) {
-          this.cart = docSnap.data().cart || [];
-        } else {
-          this.loadCartFromLocal();
-        }
-      }
-    },
-    addToCart(product) {
-      if (!this.user.loggedIn) {
-        alert("Please log in or register above to add products to your cart.");
-        return;
-      }
-      const color = product.selectedColor || '';
-      const id = product.id + (color ? '-' + color : '');
-      const item = this.cart.find(i => i.id === id);
-      if (item) {
-        if (item.quantity < product.stock) item.quantity++;
-      } else {
-        this.cart.push({
-          id: id,
-          name: product.name,
-          price: product.price,
-          quantity: 1,
-          color: color,
-          stock: product.stock
-        });
-      }
-      this.showCart = true;
-    },
-    removeFromCart(index) {
-      this.cart.splice(index, 1);
-    },
-    increaseQuantity(index) {
-      const item = this.cart[index];
-      if (item.quantity < item.stock) item.quantity++;
-    },
-    decreaseQuantity(index) {
-      const item = this.cart[index];
-      if (item.quantity > 1) item.quantity--;
-    },
-    prevImage(i) {
-      const prod = this.filteredProducts[i];
-      if (!prod.images) return;
-      prod.currentImage = (prod.currentImage === 0) ? prod.images.length - 1 : prod.currentImage - 1;
-    },
-    nextImage(i) {
-      const prod = this.filteredProducts[i];
-      if (!prod.images) return;
-      prod.currentImage = (prod.currentImage + 1) % prod.images.length;
-    },
-    touchStart(e, i) {
-      this.touchStartX = e.changedTouches[0].screenX;
-    },
-    touchMove(e, i) {
-      this.touchEndX = e.changedTouches[0].screenX;
-    },
-    touchEnd(e, i) {
-      if (this.touchStartX === null || this.touchEndX === null) return;
-      if (this.touchEndX - this.touchStartX > 40) {
-        this.prevImage(i);
-      } else if (this.touchStartX - this.touchEndX > 40) {
-        this.nextImage(i);
-      }
-      this.touchStartX = null;
-      this.touchEndX = null;
-    },
-    submitOrder() {
-      if (this.processingOrder) return;
-      this.processingOrder = true;
-      if (
-        !this.order.name ||
-        !this.order.email ||
-        !this.order.phone ||
-        !this.order.address ||
-        !this.order.shipping ||
-        !this.order.payment
-      ) {
-        alert("Please fill out all fields.");
-        this.processingOrder = false;
-        return;
-      }
-      const totalAmount = this.cartTotal + this.selectedShippingCost;
-      // Payment method handlers
-      if (this.order.payment === 'paypal') {
-        window.open(`https://www.paypal.me/WaydiaMcLeod/${totalAmount}`, "_blank");
-        this.finishOrder();
-        return;
-      }
-      if (this.order.payment === 'lynk') {
-        window.open("https://deep.lynk.us/6Eae", "_blank");
-        this.finishOrder();
-        return;
-      }
-      if (this.order.payment === 'ncb') {
-        alert(`Please transfer J$${totalAmount} to:\nAccount: 475001613\nName: Waydia McLeod\nBranch: St.Jago Shopping Center Branch\nAfter payment, send proof to mcleodwaydia@gmail.com.`);
-        this.finishOrder();
-        return;
-      }
-      if (this.order.payment === 'cod') {
-        alert("Order placed! Please have exact change ready for Cash on Delivery.");
-        this.finishOrder();
-        return;
-      }
-    },
-    finishOrder() {
-      const orderDetails = `
+          this.showCart = false;
+          this.saveCartToLocal();
+        },
+        saveCart() {
+          if (this.user.loggedIn && this.user.email) {
+            window._firebase.setDoc(
+              window._firebase.doc(window._firebase.db, "carts", this.user.email),
+              { cart: this.cart }
+            );
+          }
+        },
+        saveCartToLocal() {
+          localStorage.setItem('cart', JSON.stringify(this.cart));
+        },
+        loadCartFromLocal() {
+          const local = localStorage.getItem('cart');
+          if (local) {
+            try {
+              this.cart = JSON.parse(local);
+            } catch (e) {
+              this.cart = [];
+            }
+          }
+        },
+        async loadCart() {
+          if (this.user.loggedIn && this.user.email) {
+            const docSnap = await window._firebase.getDoc(
+              window._firebase.doc(window._firebase.db, "carts", this.user.email)
+            );
+            if (docSnap.exists()) {
+              this.cart = docSnap.data().cart || [];
+            } else {
+              this.loadCartFromLocal();
+            }
+          }
+        },
+        addToCart(product) {
+          if (!this.user.loggedIn) {
+            alert("Please log in or register above to add products to your cart.");
+            return;
+          }
+          const color = product.selectedColor || '';
+          const id = product.id + (color ? '-' + color : '');
+          const item = this.cart.find(i => i.id === id);
+          if (item) {
+            if (item.quantity < product.stock) item.quantity++;
+          } else {
+            this.cart.push({
+              id: id,
+              name: product.name,
+              price: product.price,
+              quantity: 1,
+              color: color,
+              stock: product.stock
+            });
+          }
+          this.showCart = true;
+        },
+        removeFromCart(index) {
+          this.cart.splice(index, 1);
+        },
+        increaseQuantity(index) {
+          const item = this.cart[index];
+          if (item.quantity < item.stock) item.quantity++;
+        },
+        decreaseQuantity(index) {
+          const item = this.cart[index];
+          if (item.quantity > 1) item.quantity--;
+        },
+        prevImage(i) {
+          const prod = this.filteredProducts[i];
+          if (!prod.images) return;
+          prod.currentImage = (prod.currentImage === 0) ? prod.images.length - 1 : prod.currentImage - 1;
+        },
+        nextImage(i) {
+          const prod = this.filteredProducts[i];
+          if (!prod.images) return;
+          prod.currentImage = (prod.currentImage + 1) % prod.images.length;
+        },
+        touchStart(e, i) {
+          this.touchStartX = e.changedTouches[0].screenX;
+        },
+        touchMove(e, i) {
+          this.touchEndX = e.changedTouches[0].screenX;
+        },
+        touchEnd(e, i) {
+          if (this.touchStartX === null || this.touchEndX === null) return;
+          if (this.touchEndX - this.touchStartX > 40) {
+            this.prevImage(i);
+          } else if (this.touchStartX - this.touchEndX > 40) {
+            this.nextImage(i);
+          }
+          this.touchStartX = null;
+          this.touchEndX = null;
+        },
+        submitOrder() {
+          if (this.processingOrder) return;
+          this.processingOrder = true;
+          if (
+            !this.order.name ||
+            !this.order.email ||
+            !this.order.phone ||
+            !this.order.address ||
+            !this.order.shipping ||
+            !this.order.payment
+          ) {
+            alert("Please fill out all fields.");
+            this.processingOrder = false;
+            return;
+          }
+          const totalAmount = this.cartTotal + this.selectedShippingCost;
+          // Payment method handlers
+          if (this.order.payment === 'paypal') {
+            window.open(`https://www.paypal.me/WaydiaMcLeod/${totalAmount}`, "_blank");
+            this.finishOrder();
+            return;
+          }
+          if (this.order.payment === 'lynk') {
+            window.open("https://deep.lynk.us/6Eae", "_blank");
+            this.finishOrder();
+            return;
+          }
+          if (this.order.payment === 'ncb') {
+            alert(`Please transfer J$${totalAmount} to:\nAccount: 475001613\nName: Waydia McLeod\nBranch: St.Jago Shopping Center Branch\nAfter payment, send proof to mcleodwaydia@gmail.com.`);
+            this.finishOrder();
+            return;
+          }
+          if (this.order.payment === 'cod') {
+            alert("Order placed! Please have exact change ready for Cash on Delivery.");
+            this.finishOrder();
+            return;
+          }
+        },
+        finishOrder() {
+          const orderDetails = `
 Name: ${this.order.name}
 Email: ${this.order.email}
 Phone: ${this.order.phone}
@@ -663,90 +530,84 @@ Shipping: ${this.order.shipping}
 Payment: ${this.order.payment}
 Cart: ${this.cart.map(i => `${i.name}${i.color ? ' (' + i.color + ')' : ''} x${i.quantity}`).join(', ')}
 Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
-      `;
-      const now = new Date();
-      const formattedTime = now.toLocaleString();
-      emailjs.send("service_qpk2hk8", "template_qd12s7x", {
-        customer_name: this.order.name,
-        customer_email: this.order.email,
-        product_name: this.cart.map(i => i.name).join(', '),
-        quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
-        shipping_method: this.order.shipping,
-        notes: this.order.notes || '',
-        message: orderDetails,
-        time: formattedTime,
-        name: this.order.name
-      })
-      .then(() => {
-        // Decrease product stock for each item in the cart
-        this.cart.forEach(cartItem => {
-          const product = this.products.find(p => p.id == cartItem.id.split('-')[0]);
-          if (product) {
-            product.stock -= cartItem.quantity;
-            if (product.stock < 0) product.stock = 0;
-          }
-        });
-        this.orderSuccess = true;
-        this.processingOrder = false;
-        setTimeout(() => {
-          this.cart = [];
-          this.showCheckout = false;
-          this.orderSuccess = false;
-          this.showCart = false;
-          this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
-          this.saveCartToLocal();
-          this.saveCart();
-        }, 3500);
-      })
-      .catch((error) => {
-        alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
-        this.processingOrder = false;
-        this.orderSuccess = true;
-        setTimeout(() => {
-          this.cart = [];
-          this.showCheckout = false;
-          this.orderSuccess = false;
-          this.showCart = false;
-          this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
-          this.saveCartToLocal();
-          this.saveCart();
-        }, 3500);
-      });
-    }
-  },
-  mounted() {
-    window._firebase.onAuthStateChanged(window._firebase.auth, async user => {
-      if (user) {
-        this.user.loggedIn = true;
-        this.user.email = user.email || '';
-        await this.loadCart();
-      } else {
-        this.user.loggedIn = false;
-        this.user.email = '';
-        this.cart = [];
-        this.saveCartToLocal();
+          `;
+          const now = new Date();
+          const formattedTime = now.toLocaleString();
+          emailjs.send("service_qpk2hk8", "template_qd12s7x", {
+            customer_name: this.order.name,
+            customer_email: this.order.email,
+            product_name: this.cart.map(i => i.name).join(', '),
+            quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
+            shipping_method: this.order.shipping,
+            notes: this.order.notes || '',
+            message: orderDetails,
+            time: formattedTime,
+            name: this.order.name
+          })
+          .then(() => {
+            // Decrease product stock for each item in the cart
+    this.cart.forEach(cartItem => {
+      const product = this.products.find(p => p.id == cartItem.id.split('-')[0]);
+      if (product) {
+        product.stock -= cartItem.quantity;
+        if (product.stock < 0) product.stock = 0;
       }
-      this.loadingAuth = false;
     });
-
-    // Close hamburger menu on scroll
-    window.addEventListener('scroll', () => {
-      this.navOpen = false;
-    });
-
-    // Restore cart from localStorage if not logged in
-    if (!this.user.loggedIn) {
-      const savedCart = localStorage.getItem('cart');
-      if (savedCart) {
-        try {
-          this.cart = JSON.parse(savedCart);
-        } catch {
-          this.cart = [];
+            this.orderSuccess = true;
+            this.processingOrder = false;
+            setTimeout(() => {
+              this.cart = [];
+              this.showCheckout = false;
+              this.orderSuccess = false;
+              this.showCart = false;
+              this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+              this.saveCartToLocal();
+              this.saveCart();
+            }, 3500);
+          })
+          .catch((error) => {
+            alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
+            this.processingOrder = false;
+            this.orderSuccess = true;
+            setTimeout(() => {
+              this.cart = [];
+              this.showCheckout = false;
+              this.orderSuccess = false;
+              this.showCart = false;
+              this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+              this.saveCartToLocal();
+              this.saveCart();
+            }, 3500);
+          });
+        }
+      },
+      mounted() {
+        window._firebase.onAuthStateChanged(window._firebase.auth, async user => {
+          if (user) {
+            this.user.loggedIn = true;
+            this.user.email = user.email || '';
+            await this.loadCart();
+          } else {
+            this.user.loggedIn = false;
+            this.user.email = '';
+            this.cart = [];
+            this.saveCartToLocal();
+          }
+          this.loadingAuth = false;
+        });
+        // Restore cart from localStorage if not logged in
+        if (!this.user.loggedIn) {
+          const savedCart = localStorage.getItem('cart');
+          if (savedCart) {
+            try {
+              this.cart = JSON.parse(savedCart);
+            } catch {
+              this.cart = [];
+            }
+          }
         }
       }
-    }
-  }
-});
-</script>
+    });
+  </script>
 </body>
 </html>
