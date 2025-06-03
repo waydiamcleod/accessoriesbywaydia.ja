@@ -545,6 +545,14 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
             name: this.order.name
           })
           .then(() => {
+            // Decrease product stock for each item in the cart
+    this.cart.forEach(cartItem => {
+      const product = this.products.find(p => p.id == cartItem.id.split('-')[0]);
+      if (product) {
+        product.stock -= cartItem.quantity;
+        if (product.stock < 0) product.stock = 0;
+      }
+    });
             this.orderSuccess = true;
             this.processingOrder = false;
             setTimeout(() => {
