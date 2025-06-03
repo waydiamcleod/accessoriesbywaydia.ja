@@ -533,7 +533,7 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
           `;
           const now = new Date();
           const formattedTime = now.toLocaleString();
-          emailjs.send('service_qpk2hk8', 'template_qd12s7x', {
+          emailjs.send("service_qpk2hk8", "template_qd12s7x", {
             customer_name: this.order.name,
             customer_email: this.order.email,
             product_name: this.cart.map(i => i.name).join(', '),
