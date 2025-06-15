@@ -16,10 +16,6 @@
     .nav-links a {font-size:1rem;font-weight:500;color:#7c5e3c;text-decoration:none;}
     .cart-icon {position:relative;cursor:pointer;font-size:1.4rem;margin-left:1rem;}
     .cart-count {position:absolute;top:-8px;right:-8px;background:#cc6d8c;color:white;font-size:0.7rem;border-radius:50%;padding:2px 6px;}
-    .user-auth {display:flex;align-items:center;gap:1rem;margin-left:1rem;}
-    .user-auth input {font-size:0.9rem;padding:2px 8px;border-radius:4px;border:1px solid #ccc;}
-    .user-auth button {background:#cc6d8c;color:white;border:none;border-radius:4px;padding:3px 12px;font-size:1rem;cursor:pointer;}
-    .user-info {font-size:0.95rem;color:#7c5e3c;font-weight:600;}
     .filters {display:flex;flex-wrap:wrap;gap:1rem;padding:1rem;justify-content:center;align-items:center;background:#f0e6db;border-radius:10px;margin:1rem;}
     .filters label {font-size:0.9rem;color:#7c5e3c;}
     .filters input[type="text"] {padding:0.4rem 0.8rem;border-radius:5px;border:1px solid #ccc;font-size:1rem;min-width:180px;}
@@ -50,115 +46,80 @@
     .checkout-btn {background:#7c5e3c;color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:20px;cursor:pointer;font-size:1.08rem;font-weight:600;}
     @media (max-width:600px) {.navbar{flex-direction:column;align-items:flex-start;padding:1rem;}.logo{margin-bottom:0.5rem;}.nav-links{width:100%;justify-content:flex-start;margin-top:0.5rem;flex-wrap:wrap;}}
     @media (max-width: 900px) {
-  .user-auth {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    gap: 0.5rem;
-    margin-left: 0;
-  }
-  .user-auth input,
-  .user-auth button {
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
+      .hamburger {
+        display: flex;
+      }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background: #fff;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        width: 100%;
+        padding: 1rem 0;
+        box-shadow: 0 2px 8px rgba(124,94,60,0.07);
+      }
+      .nav-links.open {
+        display: flex;
+        z-index: 2000;
+      }
+      .navbar {
+        position: relative;
+        z-index: 1010;
+      }
+      .user-auth {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 0.5rem;
+        margin-left: 0;
+      }
+      .user-auth input,
+      .user-auth button {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
     .hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  gap: 6px;
-  margin-left: auto;
-}
-.hamburger span {
-  display: block;
-  height: 4px;
-  width: 100%;
-  background: #7c5e3c;
-  border-radius: 2px;
-  transition: 0.3s;
-}
-@media (max-width: 900px) {
-  .hamburger {
-    display: flex;
-  }
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    background: #fff;
-    position: absolute;
-    top: 64px;
-    left: 0;
-    width: 100%;
-    padding: 1rem 0;
-    box-shadow: 0 2px 8px rgba(124,94,60,0.07);
-  }
-  .nav-links.open {
-    display: flex;
-    z-index: 2000;
-  }
-  .navbar {
-    position: relative;
-    z-index: 1010;
-  }
-}
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .hamburger span {
+      display: block;
+      height: 4px;
+      width: 100%;
+      background: #7c5e3c;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
   </style>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
-    const firebaseConfig = {
-      apiKey: "AIzaSyDjVNcle0jXm_4u1pyTw90uwSTxtzwxugs",
-      authDomain: "accessoriesbywaydia.firebaseapp.com",
-      projectId: "accessoriesbywaydia",
-      storageBucket: "accessoriesbywaydia.appspot.com",
-      messagingSenderId: "255065080536",
-      appId: "1:255065080536:web:8100b0541efd357f954dad",
-      measurementId: "G-HNN9GQZTT2"
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    import { setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
-setPersistence(auth, browserLocalPersistence);
-    const db = getFirestore(app);
-    window._firebase = { auth, db, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, doc, setDoc, getDoc };
-  </script>
 </head>
 <body>
   <div id="app">
     <header class="navbar">
-  <div class="logo">Accessories by Waydia</div>
-  <button class="hamburger" @click="mobileMenu = !mobileMenu" aria-label="Toggle navigation">
-    <span></span><span></span><span></span>
-  </button>
-  <ul :class="['nav-links', { open: mobileMenu }]">
-    <li><a href="index.html" @click="mobileMenu = false">Home</a></li>
-    <li><a href="about.html" @click="mobileMenu = false">About</a></li>
-    <li><a href="contact.html" @click="mobileMenu = false">Contact</a></li>
-    <li class="cart-icon" @click="showCart = true" title="View Cart">
-      🛒
-      <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
-    </li>
-    <li>
-      <div class="user-auth" v-if="!user.loggedIn">
-        <input type="email" v-model="user.email" placeholder="Email" />
-        <input type="password" v-model="user.password" placeholder="Password" />
-        <button @click="login">Login</button>
-        <button @click="register">Register</button>
-        <span v-if="authError" style="color:#cc6d8c;font-size:0.95rem;">{{ authError }}</span>
-      </div>
-      <div v-else class="user-auth">
-        <span class="user-info">Hello, {{ user.email }}!</span>
-        <button @click="logout">Logout</button>
-      </div>
-    </li>
-  </ul>
-</header>
+      <div class="logo">Accessories by Waydia</div>
+      <button class="hamburger" @click="mobileMenu = !mobileMenu" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul :class="['nav-links', { open: mobileMenu }]">
+        <li><a href="index.html" @click="mobileMenu = false">Home</a></li>
+        <li><a href="about.html" @click="mobileMenu = false">About</a></li>
+        <li><a href="contact.html" @click="mobileMenu = false">Contact</a></li>
+        <li class="cart-icon" @click="showCart = true" title="View Cart">
+          🛒
+          <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
+        </li>
+      </ul>
+    </header>
     <section class="filters">
       <label>
         Filter by type:
@@ -221,9 +182,6 @@ setPersistence(auth, browserLocalPersistence);
         <button class="btn-buy" @click="addToCart(product)" :disabled="product.stock === 0">Add to Cart</button>
       </div>
     </section>
-    <div v-if="!user.loggedIn" style="margin-top:2rem;color:#cc6d8c;text-align:center;">
-      Please log in or register above to add products to your cart.
-    </div>
     <!-- CART MODAL -->
     <div v-if="showCart" class="cart-modal" @click.self="showCart = false">
       <div class="cart-content" @click.stop>
@@ -332,9 +290,6 @@ setPersistence(auth, browserLocalPersistence);
           maxPrice: Infinity,
           search: ''
         },
-        user: { loggedIn: false, email: '', password: '' },
-        loadingAuth: true,
-        authError: '',
         products: [
           {id: 1, name: 'Pearl Bow Heart Keychain', price: 800, type: 'keychain', stock: 8, colors: ['White'], images: ['https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true'], currentImage: 0 },
           {id: 2, name: 'Puppy Teddy Pendant', price: 1000, type: 'keychain', stock: 10, colors: ['Brown', 'Beige'], images: ['https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H78c602610c1c4a27b48322f6a0ac9b8be.webp'], currentImage: 0 },
@@ -357,60 +312,60 @@ setPersistence(auth, browserLocalPersistence);
             "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H27cf27d492e444ddb51282ca93935ce3z.webp"
           ], currentImage: 0 },
           {
-  id: 11,
-  name: "Phone Card Display",
-  price: 500,
-  type: "keychain",
-  stock: 10,
-  colors: ["Phone", "Camera"],
-  images: [
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H9f663b8f12c24f8f8b74879c4d030c74S.webp",
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6d21aab4925147489a0f0bb799c877dbX.webp"
-  ],
-  currentImage: 0
-},
-{
-  id: 12,
-  name: "Turtle Keychain",
-  price: 500,
-  type: "keychain",
-  stock: 10,
-  colors: ["White", "Turquoise"],
-  images: [
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H8e83a2c6fbed4c6ebac4a174e09954fea.webp",
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H10c9eef6bd8445acb80b82c8f4f472efB.webp",
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H18058d834fa84ab189d1c4bf1e6af3f2S.webp"
-  ],
-  currentImage: 0
-},
+            id: 11,
+            name: "Phone Card Display",
+            price: 500,
+            type: "keychain",
+            stock: 10,
+            colors: ["Phone", "Camera"],
+            images: [
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H9f663b8f12c24f8f8b74879c4d030c74S.webp",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6d21aab4925147489a0f0bb799c877dbX.webp"
+            ],
+            currentImage: 0
+          },
           {
-  id: 13,
-  name: "Mini Slot Machine",
-  price: 1500,
-  type: "keychain",
-  stock: 10,
-  colors: ["Pink", "Black", "Gold"],
-  images: [
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H8555a41a4e204f748bbb08d09077622cM.avif",
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H19d0ddfce55746acbac5de0a6b07d8d6S.avif",
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/Hb378ec6da95c410d9aec3f5f0cfc65e6a.avif"
-  ],
-  currentImage: 0
-},
-{
-  id: 14,
-  name: "Tamagotchi Pet Game",
-  price: 1500,
-  type: "keychain",
-  stock: 10,
-  colors: ["Pink", "Purple", "Clear"],
-  images: [
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/Hc06807d4bdfb4aae95583c897bf9cc0eW.avif",
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H50815014fbd44dfd92051b94986e3495k.avif",
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H904166b0da6c4f4a92584bbcb975d0feR.avif"
-  ],
-  currentImage: 0
-}
+            id: 12,
+            name: "Turtle Keychain",
+            price: 500,
+            type: "keychain",
+            stock: 10,
+            colors: ["White", "Turquoise"],
+            images: [
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H8e83a2c6fbed4c6ebac4a174e09954fea.webp",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H10c9eef6bd8445acb80b82c8f4f472efB.webp",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H18058d834fa84ab189d1c4bf1e6af3f2S.webp"
+            ],
+            currentImage: 0
+          },
+          {
+            id: 13,
+            name: "Mini Slot Machine",
+            price: 1500,
+            type: "keychain",
+            stock: 10,
+            colors: ["Pink", "Black", "Gold"],
+            images: [
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H8555a41a4e204f748bbb08d09077622cM.avif",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H19d0ddfce55746acbac5de0a6b07d8d6S.avif",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/Hb378ec6da95c410d9aec3f5f0cfc65e6a.avif"
+            ],
+            currentImage: 0
+          },
+          {
+            id: 14,
+            name: "Tamagotchi Pet Game",
+            price: 1500,
+            type: "keychain",
+            stock: 10,
+            colors: ["Pink", "Purple", "Clear"],
+            images: [
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/Hc06807d4bdfb4aae95583c897bf9cc0eW.avif",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H50815014fbd44dfd92051b94986e3495k.avif",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H904166b0da6c4f4a92584bbcb975d0feR.avif"
+            ],
+            currentImage: 0
+          }
         ],
         cart: [],
         order: {
@@ -462,9 +417,6 @@ setPersistence(auth, browserLocalPersistence);
       watch: {
         cart: {
           handler(newCart) {
-            if (this.user.loggedIn && this.user.email) {
-              this.saveCart();
-            }
             localStorage.setItem('cart', JSON.stringify(newCart));
           },
           deep: true
@@ -480,46 +432,6 @@ setPersistence(auth, browserLocalPersistence);
           }
           return symbol + converted.toFixed(2);
         },
-        async login() {
-          this.authError = '';
-          try {
-            await window._firebase.signInWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password);
-            this.user.loggedIn = true;
-            this.user.password = '';
-            await this.loadCart();
-          } catch (e) {
-            this.authError = e.message;
-          }
-        },
-        async register() {
-          this.authError = '';
-          try {
-            await window._firebase.createUserWithEmailAndPassword(window._firebase.auth, this.user.email, this.user.password);
-            this.user.loggedIn = true;
-            this.user.password = '';
-            await this.saveCart();
-            alert("Registration successful!");
-          } catch (e) {
-            this.authError = e.message;
-          }
-        },
-        async logout() {
-          await window._firebase.signOut(window._firebase.auth);
-          this.user.loggedIn = false;
-          this.user.email = '';
-          this.user.password = '';
-          this.cart = [];
-          this.showCart = false;
-          this.saveCartToLocal();
-        },
-        saveCart() {
-          if (this.user.loggedIn && this.user.email) {
-            window._firebase.setDoc(
-              window._firebase.doc(window._firebase.db, "carts", this.user.email),
-              { cart: this.cart }
-            );
-          }
-        },
         saveCartToLocal() {
           localStorage.setItem('cart', JSON.stringify(this.cart));
         },
@@ -533,23 +445,7 @@ setPersistence(auth, browserLocalPersistence);
             }
           }
         },
-        async loadCart() {
-          if (this.user.loggedIn && this.user.email) {
-            const docSnap = await window._firebase.getDoc(
-              window._firebase.doc(window._firebase.db, "carts", this.user.email)
-            );
-            if (docSnap.exists()) {
-              this.cart = docSnap.data().cart || [];
-            } else {
-              this.loadCartFromLocal();
-            }
-          }
-        },
         addToCart(product) {
-          if (!this.user.loggedIn) {
-            alert("Please log in or register above to add products to your cart.");
-            return;
-          }
           const color = product.selectedColor || '';
           const id = product.id + (color ? '-' + color : '');
           const item = this.cart.find(i => i.id === id);
@@ -668,13 +564,13 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
           })
           .then(() => {
             // Decrease product stock for each item in the cart
-    this.cart.forEach(cartItem => {
-      const product = this.products.find(p => p.id == cartItem.id.split('-')[0]);
-      if (product) {
-        product.stock -= cartItem.quantity;
-        if (product.stock < 0) product.stock = 0;
-      }
-    });
+            this.cart.forEach(cartItem => {
+              const product = this.products.find(p => p.id == cartItem.id.split('-')[0]);
+              if (product) {
+                product.stock -= cartItem.quantity;
+                if (product.stock < 0) product.stock = 0;
+              }
+            });
             this.orderSuccess = true;
             this.processingOrder = false;
             setTimeout(() => {
@@ -684,7 +580,6 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
               this.showCart = false;
               this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
               this.saveCartToLocal();
-              this.saveCart();
             }, 3500);
           })
           .catch((error) => {
@@ -698,34 +593,17 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
               this.showCart = false;
               this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
               this.saveCartToLocal();
-              this.saveCart();
             }, 3500);
           });
         }
       },
       mounted() {
-        window._firebase.onAuthStateChanged(window._firebase.auth, async user => {
-          if (user) {
-            this.user.loggedIn = true;
-            this.user.email = user.email || '';
-            await this.loadCart();
-          } else {
-            this.user.loggedIn = false;
-            this.user.email = '';
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+          try {
+            this.cart = JSON.parse(savedCart);
+          } catch {
             this.cart = [];
-            this.saveCartToLocal();
-          }
-          this.loadingAuth = false;
-        });
-        // Restore cart from localStorage if not logged in
-        if (!this.user.loggedIn) {
-          const savedCart = localStorage.getItem('cart');
-          if (savedCart) {
-            try {
-              this.cart = JSON.parse(savedCart);
-            } catch {
-              this.cart = [];
-            }
           }
         }
       }
