@@ -15,7 +15,6 @@
     .nav-links {display:flex;gap:1.5rem;list-style:none;margin:0;padding:0;align-items:center;}
     .nav-links a {font-size:1rem;font-weight:500;color:#7c5e3c;text-decoration:none;}
     .header-actions {display: flex; align-items: center; gap: 1rem;}
-    .search-label input[type="text"] {padding:0.4rem 0.8rem;border-radius:5px;border:1px solid #ccc;font-size:1rem;min-width:120px;}
     .cart-icon {position:relative;cursor:pointer;font-size:1.4rem;margin-left:1rem;}
     .cart-count {position:absolute;top:-8px;right:-8px;background:#cc6d8c;color:white;font-size:0.7rem;border-radius:50%;padding:2px 6px;}
     .filters {display:flex;flex-wrap:wrap;gap:1rem;padding:1rem;justify-content:center;align-items:center;background:#f0e6db;border-radius:10px;margin:1rem;}
@@ -52,6 +51,10 @@
     .product-details-content .close-btn {position: absolute;right: 1.1rem;top: 1.1rem;font-size: 1.6rem;color: #cc6d8c;cursor: pointer;}
     .product-details-content .product-slider {max-width: 270px;height: 220px;margin: 0 auto 18px auto;}
     .product-details-content img {width: 100%;height: 220px;object-fit: cover;border-radius: 10px;}
+    .search-container {position: relative; display: flex; align-items: center;}
+    .search-icon {transition: color 0.2s; margin-right: 0.1em;}
+    .search-input {border: 1px solid #ccc;border-radius: 5px;padding: 0.4rem 0.8rem;font-size: 1rem;min-width: 120px;outline: none;margin-left: 0.3em;transition: width 0.2s, opacity 0.2s;width: 150px;opacity: 1;}
+    .search-input[style*="display: none"], .search-input:not([v-show="true"]) {width: 0;opacity: 0;padding: 0;border: none;}
     @media (max-width:600px) {
       .shop-grid {grid-template-columns: repeat(2, 1fr);gap: 0.8rem;padding: 0.5rem;}
       .product-card {padding: 0.5rem;}
@@ -60,9 +63,9 @@
       .cart-content {padding: 1rem 0.3rem;max-width: 99vw;width: 100vw;margin-top: 1rem;max-height: 95vh;overflow-y: auto;border-radius: 10px;left: 0;right: 0;background: #fff;box-sizing: border-box;}
       .close-btn {top: 0.5rem;right: 0.5rem;font-size: 2rem;}
       .cart-items {max-height: 300px;overflow-y: auto;}
-      .btn-buy, .checkout-btn, .quantity-control button {font-size: 1.1rem;padding: 0.7rem 1.1rem;}
-      .product-slider, .product-slider img {max-width: 98vw;width: 100%;height: 140px;}
-      .product-details-content .product-slider, .product-details-content img {max-width: 98vw;width: 100%;height: 160px;}
+      .btn-buy, .checkout-btn, .quantity-control button {font-size: 1.1rem;padding: 0.5rem 1.1rem;}
+      .product-slider, .product-slider img {max-width: 98vw;width: 100%;height: 145px;}
+      .product-details-content .product-slider, .product-details-content img {max-width: 95vw;width: 95%;height: 160px;}
     }
     @media (max-width: 900px) {
       .hamburger {display: flex;}
@@ -81,9 +84,13 @@
     <header class="navbar">
       <div class="logo">Accessories by Waydia</div>
       <div class="header-actions">
-        <label class="search-label">
-          <input type="text" v-model="filters.search" placeholder="Search products..." />
-        </label>
+        <div class="search-container">
+          <svg @click="toggleSearch" xmlns="http://www.w3.org/2000/svg" class="search-icon" width="22" height="22" viewBox="0 0 20 20" fill="none" style="cursor:pointer;">
+            <circle cx="9" cy="9" r="7" stroke="#7c5e3c" stroke-width="2"/>
+            <line x1="14.6" y1="14.6" x2="19" y2="19" stroke="#7c5e3c" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input v-show="showSearch" type="text" v-model="filters.search" class="search-input" placeholder="Search products..." @blur="hideSearch"/>
+        </div>
         <span class="cart-icon" @click="showCart = true" title="View Cart">
           🛒
           <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
@@ -292,6 +299,7 @@
         showCheckout: false,
         orderSuccess: false,
         processingOrder: false,
+        showSearch: false,
         filters: {
           type: '',
           maxPrice: Infinity,
@@ -299,209 +307,209 @@
         },
         selectedProduct: null,
         products: [
-  {
-    id: 1,
-    name: 'Pearl Bow Heart Keychain',
-    price: 800,
-    type: 'bagcharm',
-    stock: 8,
-    colors: ['White'],
-    material: 'Alloy, Faux Pearl',
-    description: 'A lovely heart-shaped keychain with a pearl bow accent. Perfect for bags and keys.',
-    images: [
-      'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true'
-    ],
-    currentImage: 0
-  },
-  {
-    id: 2,
-    name: 'Puppy Teddy Pendant',
-    price: 1000,
-    type: 'bagcharm',
-    stock: 10,
-    colors: ['Brown', 'Beige'],
-    material: 'Plush, Alloy',
-    description: 'Adorable puppy teddy pendant that adds a cute touch to your bag.',
-    images: [
-      'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H78c602610c1c4a27b48322f6a0ac9b8be.webp'
-    ],
-    currentImage: 0
-  },
-  {
-    id: 3,
-    name: 'Batman Lego Keychain',
-    price: 850,
-    type: 'keychain',
-    stock: 10,
-    colors: ['Pink', 'Black'],
-    material: 'ABS Plastic, Metal Alloy',
-    description: 'A fun Batman Lego minifigure keychain. Choose pink or black!',
-    images: [
-      'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lego%20Accessories%20_%20Pink%20Batman%20Keychain%20_%20Color_%20Black_Pink%20_%20Size_%20Os.jpg?raw=true',
-      'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/SSSS%20Compatible%20with%20Building%20blocks%20Keychain%20Drawing%20School%20Bag%20Pendant%20Chain%20Minifigure%20Building%20Blocks%20Couple%20Gifts%20Toys.jpg?raw=true'
-    ],
-    currentImage: 0
-  },
-  {
-    id: 4,
-    name: 'Miu Style Cat Head Keychain',
-    price: 1000,
-    type: 'bagcharm',
-    stock: 6,
-    material: 'Alloy, Enamel',
-    description: 'Chic cat head design with Miu flair. Great for cat lovers!',
-    images: [
-      'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4b7310a3a1dc460cb166048ca80bf69e0.webp'
-    ],
-    currentImage: 0
-  },
-  {
-    id: 5,
-    name: 'Miu Style Heart Shaped Keychain',
-    price: 1000,
-    type: 'bagcharm',
-    stock: 6,
-    material: 'Alloy, Enamel',
-    description: 'Heart-shaped keychain in the iconic Miu style.',
-    images: [
-      'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6eba452254fe438f8e74a90b6a434b87n.webp'
-    ],
-    currentImage: 0
-  },
-  {
-    id: 6,
-    name: 'Dachshund',
-    price: 1000,
-    type: 'bagcharm',
-    stock: 3,
-    material: 'Braided Rope, Alloy',
-    description: 'High-grade dachshund pendant with braided rope for bags or phone.',
-    images: [
-      'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant%20for%20Phone%20Bag%20Accessories%20Style%20A.jpg?raw=true'
-    ],
-    currentImage: 0
-  },
-  {
-    id: 7,
-    name: 'Tennis Racket Keychain',
-    price: 1000,
-    type: 'keychain',
-    stock: 3,
-    colors: ['Gold'],
-    material: 'Metal Alloy',
-    description: 'Mini tennis racket design keychain in gold color.',
-    images: [
-      'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H7deef4f9cf394e708254b291e3610bf7w.webp'
-    ],
-    currentImage: 0
-  },
-  {
-    id: 8,
-    name: 'Tennis Racket Keychain + Bible',
-    price: 1100,
-    type: 'keychain',
-    stock: 4,
-    material: 'Metal Alloy, Plastic',
-    description: 'Tennis racket keychain with a mini Bible charm.',
-    images: [
-      'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4082d5e9abc343d796c724005550d886h.webp'
-    ],
-    currentImage: 0
-  },
-  {
-    id: 9,
-    name: 'Flower Claw Clip',
-    price: 500,
-    type: 'hairclip',
-    stock: 20,
-    colors: ['Burgundy', 'Pink', 'Purple', 'Yellow', 'White'],
-    material: 'Acrylic',
-    description: 'Cute and colorful flower-shaped hair claw clip, available in multiple colors.',
-    images: [
-      'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true',
-      'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Pink%20Two%20Tone%20Flower%20Hair%20Claw%20Clip%20_%20New%20Look.jpg?raw=true',
-      'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lovisa%20Acrylic%20Pink%20Tropical%20Flower%20Claw%20Clip.jpg?raw=true',
-      'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Token%20Frangipani%20Flower%20Hair%20Claw%20Clip%20Burgundy.jpg?raw=true'
-    ],
-    currentImage: 0
-  },
-  {
-    id: 10,
-    name: "Mini Juice Can Keychain",
-    price: 500,
-    type: "keychain",
-    stock: 30,
-    colors: ["Pepsi", "Cola", "Sprite", "Fanta"],
-    material: 'Plastic, Alloy',
-    description: 'Fun miniature juice can keychain, available in various drink designs.',
-    images: [
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H27cf27d492e444ddb51282ca93935ce3z.webp"
-    ],
-    currentImage: 0
-  },
-  {
-    id: 11,
-    name: "Phone Card Display",
-    price: 500,
-    type: "bagcharm",
-    stock: 10,
-    colors: ["Phone", "Camera"],
-    material: 'Plastic, Alloy',
-    description: 'Cute card display charm for your phone or bag.',
-    images: [
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H9f663b8f12c24f8f8b74879c4d030c74S.webp",
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6d21aab4925147489a0f0bb799c877dbX.webp"
-    ],
-    currentImage: 0
-  },
-  {
-    id: 12,
-    name: "Turtle Keychain",
-    price: 500,
-    type: "keychain",
-    stock: 10,
-    colors: ["White", "Turquoise"],
-    material: 'Resin, Alloy',
-    description: 'Charming turtle keychain, available in white or turquoise.',
-    images: [
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H8e83a2c6fbed4c6ebac4a174e09954fea.webp",
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H10c9eef6bd8445acb80b82c8f4f472efB.webp",
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H18058d834fa84ab189d1c4bf1e6af3f2S.webp"
-    ],
-    currentImage: 0
-  },
-  {
-    id: 13,
-    name: "Mini Slot Machine",
-    price: 1500,
-    type: "bagcharm",
-    stock: 10,
-    colors: ["Pink", "Black", "Gold"],
-    material: 'Plastic, Alloy',
-    description: 'Mini slot machine bag charm in playful colors.',
-    images: [
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H8555a41a4e204f748bbb08d09077622cM.avif",
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H19d0ddfce55746acbac5de0a6b07d8d6S.avif",
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/Hb378ec6da95c410d9aec3f5f0cfc65e6a.avif"
-    ],
-    currentImage: 0
-  },
-  {
-    id: 14,
-    name: "Tamagotchi Pet Game",
-    price: 1500,
-    type: "bagcharm",
-    stock: 10,
-    colors: ["Pink", "Purple", "Clear"],
-    material: 'Plastic, Electronics',
-    description: 'Classic Tamagotchi digital pet game, works as a bag charm and game.',
-    images: [
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/Hc06807d4bdfb4aae95583c897bf9cc0eW.avif",
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H50815014fbd44dfd92051b94986e3495k.avif",
-      "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H904166b0da6c4f4a92584bbcb975d0feR.avif"
-    ],
-    currentImage: 0
-  }
+          {
+            id: 1,
+            name: 'Pearl Bow Heart Keychain',
+            price: 800,
+            type: 'bagcharm',
+            stock: 8,
+            colors: ['White'],
+            material: 'Alloy, Faux Pearl',
+            description: 'A lovely heart-shaped keychain with a pearl bow accent. Perfect for bags and keys.',
+            images: [
+              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/%F0%9F%96%A4%F0%9F%94%97.jpg?raw=true'
+            ],
+            currentImage: 0
+          },
+          {
+            id: 2,
+            name: 'Puppy Teddy Pendant',
+            price: 1000,
+            type: 'bagcharm',
+            stock: 10,
+            colors: ['Brown', 'Beige'],
+            material: 'Plush, Alloy',
+            description: 'Adorable puppy teddy pendant that adds a cute touch to your bag.',
+            images: [
+              'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H78c602610c1c4a27b48322f6a0ac9b8be.webp'
+            ],
+            currentImage: 0
+          },
+          {
+            id: 3,
+            name: 'Batman Lego Keychain',
+            price: 850,
+            type: 'keychain',
+            stock: 10,
+            colors: ['Pink', 'Black'],
+            material: 'ABS Plastic, Metal Alloy',
+            description: 'A fun Batman Lego minifigure keychain. Choose pink or black!',
+            images: [
+              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lego%20Accessories%20_%20Pink%20Batman%20Keychain%20_%20Color_%20Black_Pink%20_%20Size_%20Os.jpg?raw=true',
+              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/SSSS%20Compatible%20with%20Building%20blocks%20Keychain%20Drawing%20School%20Bag%20Pendant%20Chain%20Minifigure%20Building%20Blocks%20Couple%20Gifts%20Toys.jpg?raw=true'
+            ],
+            currentImage: 0
+          },
+          {
+            id: 4,
+            name: 'Miu Style Cat Head Keychain',
+            price: 1000,
+            type: 'bagcharm',
+            stock: 6,
+            material: 'Alloy, Enamel',
+            description: 'Chic cat head design with Miu flair. Great for cat lovers!',
+            images: [
+              'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4b7310a3a1dc460cb166048ca80bf69e0.webp'
+            ],
+            currentImage: 0
+          },
+          {
+            id: 5,
+            name: 'Miu Style Heart Shaped Keychain',
+            price: 1000,
+            type: 'bagcharm',
+            stock: 6,
+            material: 'Alloy, Enamel',
+            description: 'Heart-shaped keychain in the iconic Miu style.',
+            images: [
+              'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6eba452254fe438f8e74a90b6a434b87n.webp'
+            ],
+            currentImage: 0
+          },
+          {
+            id: 6,
+            name: 'Dachshund',
+            price: 1000,
+            type: 'bagcharm',
+            stock: 3,
+            material: 'Braided Rope, Alloy',
+            description: 'High-grade dachshund pendant with braided rope for bags or phone.',
+            images: [
+              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Iplaynox%20Braided%20Rope%20Keychain%20Pendant%20%E2%80%93%20High-Grade%20Dachshund%20Pendant%20for%20Phone%20Bag%20Accessories%20Style%20A.jpg?raw=true'
+            ],
+            currentImage: 0
+          },
+          {
+            id: 7,
+            name: 'Tennis Racket Keychain',
+            price: 1000,
+            type: 'keychain',
+            stock: 3,
+            colors: ['Gold'],
+            material: 'Metal Alloy',
+            description: 'Mini tennis racket design keychain in gold color.',
+            images: [
+              'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H7deef4f9cf394e708254b291e3610bf7w.webp'
+            ],
+            currentImage: 0
+          },
+          {
+            id: 8,
+            name: 'Tennis Racket Keychain + Bible',
+            price: 1100,
+            type: 'keychain',
+            stock: 4,
+            material: 'Metal Alloy, Plastic',
+            description: 'Tennis racket keychain with a mini Bible charm.',
+            images: [
+              'https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H4082d5e9abc343d796c724005550d886h.webp'
+            ],
+            currentImage: 0
+          },
+          {
+            id: 9,
+            name: 'Flower Claw Clip',
+            price: 500,
+            type: 'hairclip',
+            stock: 20,
+            colors: ['Burgundy', 'Pink', 'Purple', 'Yellow', 'White'],
+            material: 'Acrylic',
+            description: 'Cute and colorful flower-shaped hair claw clip, available in multiple colors.',
+            images: [
+              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/flower%20hair%20clips.jpg?raw=true',
+              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Pink%20Two%20Tone%20Flower%20Hair%20Claw%20Clip%20_%20New%20Look.jpg?raw=true',
+              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Lovisa%20Acrylic%20Pink%20Tropical%20Flower%20Claw%20Clip.jpg?raw=true',
+              'https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Token%20Frangipani%20Flower%20Hair%20Claw%20Clip%20Burgundy.jpg?raw=true'
+            ],
+            currentImage: 0
+          },
+          {
+            id: 10,
+            name: "Mini Juice Can Keychain",
+            price: 500,
+            type: "keychain",
+            stock: 30,
+            colors: ["Pepsi", "Cola", "Sprite", "Fanta"],
+            material: 'Plastic, Alloy',
+            description: 'Fun miniature juice can keychain, available in various drink designs.',
+            images: [
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H27cf27d492e444ddb51282ca93935ce3z.webp"
+            ],
+            currentImage: 0
+          },
+          {
+            id: 11,
+            name: "Phone Card Display",
+            price: 500,
+            type: "bagcharm",
+            stock: 10,
+            colors: ["Phone", "Camera"],
+            material: 'Plastic, Alloy',
+            description: 'Cute card display charm for your phone or bag.',
+            images: [
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H9f663b8f12c24f8f8b74879c4d030c74S.webp",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H6d21aab4925147489a0f0bb799c877dbX.webp"
+            ],
+            currentImage: 0
+          },
+          {
+            id: 12,
+            name: "Turtle Keychain",
+            price: 500,
+            type: "keychain",
+            stock: 10,
+            colors: ["White", "Turquoise"],
+            material: 'Resin, Alloy',
+            description: 'Charming turtle keychain, available in white or turquoise.',
+            images: [
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H8e83a2c6fbed4c6ebac4a174e09954fea.webp",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H10c9eef6bd8445acb80b82c8f4f472efB.webp",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H18058d834fa84ab189d1c4bf1e6af3f2S.webp"
+            ],
+            currentImage: 0
+          },
+          {
+            id: 13,
+            name: "Mini Slot Machine",
+            price: 1500,
+            type: "bagcharm",
+            stock: 10,
+            colors: ["Pink", "Black", "Gold"],
+            material: 'Plastic, Alloy',
+            description: 'Mini slot machine bag charm in playful colors.',
+            images: [
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H8555a41a4e204f748bbb08d09077622cM.avif",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H19d0ddfce55746acbac5de0a6b07d8d6S.avif",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/Hb378ec6da95c410d9aec3f5f0cfc65e6a.avif"
+            ],
+            currentImage: 0
+          },
+          {
+            id: 14,
+            name: "Tamagotchi Pet Game",
+            price: 1500,
+            type: "bagcharm",
+            stock: 10,
+            colors: ["Pink", "Purple", "Clear"],
+            material: 'Plastic, Electronics',
+            description: 'Classic Tamagotchi digital pet game, works as a bag charm and game.',
+            images: [
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/Hc06807d4bdfb4aae95583c897bf9cc0eW.avif",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H50815014fbd44dfd92051b94986e3495k.avif",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/refs/heads/main/H904166b0da6c4f4a92584bbcb975d0feR.avif"
+            ],
+            currentImage: 0
+          }
         ],
         cart: [],
         order: {
@@ -559,6 +567,17 @@
         }
       },
       methods: {
+        toggleSearch() {
+          this.showSearch = !this.showSearch;
+          this.$nextTick(() => {
+            if(this.showSearch) {
+              this.$el.querySelector('.search-input').focus();
+            }
+          });
+        },
+        hideSearch() {
+          setTimeout(() => { this.showSearch = false; }, 150);
+        },
         formatPrice(price) {
           let converted = price;
           let symbol = "J$";
