@@ -159,6 +159,24 @@
         width: 100%;
         height: 140px;
       }
+      .slider-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+  gap: 8px;
+}
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ccc;
+  display: inline-block;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.slider-dot.active {
+  background: #cc6d8c;
+}
     }
   </style>
 </head>
@@ -217,12 +235,19 @@
           @touchstart="touchStart($event, i)"
           @touchmove="touchMove($event, i)"
           @touchend="touchEnd($event, i)">
-          <button class="slider-arrow left" v-if="product.images && product.images.length > 1" @click="prevImage(i)" aria-label="Previous image">&#8592;</button>
           <a v-if="product.stock > 0" :href="product.images[product.currentImage]" target="_blank">
             <img :src="product.images[product.currentImage]" :alt="product.name" />
           </a>
           <img v-else :src="product.images[product.currentImage]" :alt="product.name" style="opacity: 0.5; cursor: not-allowed;" />
-          <button class="slider-arrow right" v-if="product.images && product.images.length > 1" @click="nextImage(i)" aria-label="Next image">&#8594;</button>
+          <div class="slider-dots" v-if="product.images && product.images.length > 1">
+            <span
+              v-for="(img, idx) in product.images"
+              :key="idx"
+              class="slider-dot"
+              :class="{ active: product.currentImage === idx }"
+              @click="setImage(i, idx)"
+            ></span>
+          </div>
         </div>
         <h3>{{ product.name }}</h3>
         <p>
@@ -506,6 +531,16 @@
             }
           }
         },
+        setImage(productIdx, imgIdx) {
+  // Find the product in the filtered list
+  let prod = this.filteredProducts[productIdx];
+  // Find its index in the main products array
+  let mainIdx = this.products.findIndex(p => p.id === prod.id);
+  // Update its currentImage (to keep Vue reactivity working)
+  if (mainIdx !== -1) {
+    this.products[mainIdx].currentImage = imgIdx;
+  }
+},
         addToCart(product) {
           const color = product.selectedColor || '';
           const id = product.id + (color ? '-' + color : '');
