@@ -868,36 +868,57 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
           `;
           const now = new Date();
           const formattedTime = now.toLocaleString();
-          emailjs.send("service_qpk2hk8", "template_qd12s7x", {
-            customer_name: this.order.name,
-            customer_email: this.order.email,
-            product_name: this.cart.map(i => i.name).join(', '),
-            quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
-            shipping_method: this.order.shipping,
-            notes: this.order.notes || '',
-            message: orderDetails,
-            time: formattedTime,
-            name: this.order.name
-          })
-          .then(() => {
-            this.cart.forEach(cartItem => {
-              const product = this.products.find(p => p.id == cartItem.id.split('-')[0]);
-              if (product) {
-                product.stock -= cartItem.quantity;
-                if (product.stock < 0) product.stock = 0;
-              }
-            });
-            this.orderSuccess = true;
-            this.processingOrder = false;
-            setTimeout(() => {
-              this.cart = [];
-              this.showCheckout = false;
-              this.orderSuccess = false;
-              this.showCart = false;
-              this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
-              this.saveCartToLocal();
-            }, 3500);
-          })
+          Promise.all([
+  emailjs.send("service_qpk2hk8", "template_qd12s7x", {
+    customer_name: this.order.name,
+    customer_email: this.order.email,
+    product_name: this.cart.map(i => i.name).join(', '),
+    quantity: this.cart.reduce((sum, i) => sum + i.quantity, 0),
+    shipping_method: this.order.shipping,
+    notes: this.order.notes || '',
+    message: orderDetails,
+    time: formattedTime,
+    name: this.order.name
+  }),
+  emailjs.send("service_qpk2hk8", "template_b0dsexd", {
+    customer_name: this.order.name,
+    customer_email: this.order.email,
+    order_summary: orderDetails
+  })
+])
+.then(() => {
+  // Success logic for both emails sent
+  this.cart.forEach(cartItem => {
+    const product = this.products.find(p => p.id == cartItem.id.split('-')[0]);
+    if (product) {
+      product.stock -= cartItem.quantity;
+      if (product.stock < 0) product.stock = 0;
+    }
+  });
+  this.orderSuccess = true;
+  this.processingOrder = false;
+  setTimeout(() => {
+    this.cart = [];
+    this.showCheckout = false;
+    this.orderSuccess = false;
+    this.showCart = false;
+    this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+    this.saveCartToLocal();
+  }, 3500);
+})
+.catch((error) => {
+  alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
+  this.processingOrder = false;
+  this.orderSuccess = true;
+  setTimeout(() => {
+    this.cart = [];
+    this.showCheckout = false;
+    this.orderSuccess = false;
+    this.showCart = false;
+    this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
+    this.saveCartToLocal();
+  }, 3500);
+});
           .catch((error) => {
             alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
             this.processingOrder = false;
