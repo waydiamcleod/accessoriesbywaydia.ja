@@ -42,6 +42,47 @@
     .filters input[type="text"] {padding:0.4rem 0.8rem;border-radius:5px;border:1px solid #ccc;font-size:1rem;min-width:180px;}
     .shop-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;padding:1rem;box-sizing:border-box;max-width:100vw;}
     .product-card {background:#f8f1ea;border-radius:15px;padding:1rem;box-shadow:0 4px 12px rgba(0,0,0,0.05);text-align:center;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;box-sizing:border-box;max-width:100vw;}
+    .product-details-modal {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+.product-details-content {
+  background: #fffaf7;
+  border-radius: 15px;
+  width: 370px;
+  max-width: 95vw;
+  max-height: 95vh;
+  overflow-y: auto;
+  padding: 1.5rem 1.2rem 2rem;
+  position: relative;
+  box-shadow: 0 6px 36px rgba(0,0,0,0.16);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.product-details-content .close-btn {
+  position: absolute;
+  right: 1.1rem;
+  top: 1.1rem;
+  font-size: 1.6rem;
+  color: #cc6d8c;
+  cursor: pointer;
+}
+    @media (max-width: 600px) {
+  .product-details-content {
+    width: 98vw;
+    max-width: 98vw;
+    padding: 0.7rem 0.3rem 1.3rem;
+  }
+}
     .product-slider {position:relative;width:100%;max-width:180px;height:180px;margin:0 auto 0.5rem auto;}
     .product-slider img {width:100%;height:180px;object-fit:cover;border-radius:10px;}
     .slider-dots {display: flex;justify-content: center;margin-top: 8px;gap: 8px;}
@@ -270,8 +311,8 @@
 
     <!-- PRODUCT DETAILS MODAL -->
     <div v-if="selectedProduct" class="product-details-modal" @click.self="closeProduct">
-      <div class="product-details-content">
-        <span class="close-btn" @click="closeProduct">&times;</span>
+  <div class="product-details-content">
+    <span class="close-btn" @click="closeProduct">&times;</span>
         <div class="product-slider"
           @touchstart="touchStart($event, -1, true)"
           @touchmove="touchMove($event, -1, true)"
