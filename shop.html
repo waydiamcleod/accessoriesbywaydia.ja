@@ -857,27 +857,14 @@
         },
         finishOrder() {
           const orderDetails = `
-<b>Name:</b> ${this.order.name}<br>
-<b>Email:</b> ${this.order.email}<br>
-<b>Phone:</b> ${this.order.phone}<br>
-<b>Address:</b> ${this.order.address}<br>
-<b>Shipping:</b> ${this.order.shipping}<br>
-<b>Payment:</b> ${this.order.payment}<br>
-<b>Cart:</b><br>
-${this.cart.map(item => {
-  // Get the product for the image
-  const product = this.products.find(p => p.id == item.id.split('-')[0]);
-  const img = product && product.images[0] ? 
-    `<img src="${product.images[0]}" alt="${item.name}" style="max-width:80px;max-height:80px;display:inline-block;margin:6px 10px 6px 0;vertical-align:middle;">`
-    : '';
-  return `
-    <div style="margin-bottom:12px;">
-      ${img}
-      <b>${item.name}${item.color ? ' (' + item.color + ')' : ''}</b> x${item.quantity} — <b>J$${item.price}</b>
-    </div>
-  `;
-}).join('')}
-<b>Grand Total:</b> J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
+Name: ${this.order.name}
+Email: ${this.order.email}
+Phone: ${this.order.phone}
+Address: ${this.order.address}
+Shipping: ${this.order.shipping}
+Payment: ${this.order.payment}
+Cart: ${this.cart.map(i => `${i.name}${i.color ? ' (' + i.color + ')' : ''} x${i.quantity}`).join(', ')}
+Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
 `;
           const now = new Date();
           const formattedTime = now.toLocaleString();
