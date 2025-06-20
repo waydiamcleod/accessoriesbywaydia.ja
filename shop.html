@@ -906,19 +906,6 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
     this.saveCartToLocal();
   }, 3500);
 })
-.catch((error) => {
-  alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
-  this.processingOrder = false;
-  this.orderSuccess = true;
-  setTimeout(() => {
-    this.cart = [];
-    this.showCheckout = false;
-    this.orderSuccess = false;
-    this.showCart = false;
-    this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
-    this.saveCartToLocal();
-  }, 3500);
-});
           .catch((error) => {
             alert("Order placed but failed to send notification. Error: " + (error?.text || JSON.stringify(error)));
             this.processingOrder = false;
