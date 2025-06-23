@@ -328,12 +328,13 @@
           </div>
         </div>
         <h2>{{ selectedProduct.name }}</h2>
-        <p><b>Price:</b> {{ formatPrice(selectedProduct.price) }}</p>
-        <p v-if="selectedProduct.material"><b>Material:</b> {{ selectedProduct.material }}</p>
-        <p v-if="selectedProduct.description"><b>Description:</b> {{ selectedProduct.description }}</p>
-        <button class="btn-buy" @click="addToCart(selectedProduct)">Add to Cart</button>
-      </div>
-    </div>
+    <div style="margin:0.3em 0; line-height:1.4;">
+      <div><b>Price:</b> {{ formatPrice(selectedProduct.price) }}</div>
+      <div v-if="selectedProduct.material"><b>Material:</b> {{ selectedProduct.material }}</div>
+      <div v-if="selectedProduct.description"><b>Description:</b> {{ selectedProduct.description }}</div>
+</div>
+<p v-if="selectedProduct.stock === 0" class="stock-info">Out of stock</p>
+<button class="btn-buy" @click="addToCart(selectedProduct)" :disabled="selectedProduct.stock === 0">Add to Cart</button>
 
     <!-- CART MODAL -->
     <div v-if="showCart" class="cart-modal" @click.self="showCart = false">
