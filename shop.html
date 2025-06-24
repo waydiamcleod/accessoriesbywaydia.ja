@@ -43,46 +43,46 @@
     .shop-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;padding:1rem;box-sizing:border-box;max-width:100vw;}
     .product-card {background:#f8f1ea;border-radius:15px;padding:1rem;box-shadow:0 4px 12px rgba(0,0,0,0.05);text-align:center;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;box-sizing:border-box;max-width:100vw;}
     .product-details-modal {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3000;
-}
-.product-details-content {
-  background: #fffaf7;
-  border-radius: 15px;
-  width: 370px;
-  max-width: 95vw;
-  max-height: 80vh;
-  overflow-y: auto;
-  padding: 1.5rem 1.2rem 2rem;
-  position: relative;
-  box-shadow: 0 6px 36px rgba(0,0,0,0.16);
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.product-details-content .close-btn {
-  position: absolute;
-  right: 1.1rem;
-  top: 1.1rem;
-  font-size: 1.6rem;
-  color: #cc6d8c;
-  cursor: pointer;
-}
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+    }
+    .product-details-content {
+      background: #fffaf7;
+      border-radius: 15px;
+      width: 370px;
+      max-width: 95vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 1.5rem 1.2rem 2rem;
+      position: relative;
+      box-shadow: 0 6px 36px rgba(0,0,0,0.16);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .product-details-content .close-btn {
+      position: absolute;
+      right: 1.1rem;
+      top: 1.1rem;
+      font-size: 1.6rem;
+      color: #cc6d8c;
+      cursor: pointer;
+    }
     @media (max-width: 600px) {
-  .product-details-content {
-    width: 95vw;
-    max-width: 90vw;
-    padding: 0.7rem 0.3rem 1.3rem;
-  }
-}
+      .product-details-content {
+        width: 95vw;
+        max-width: 90vw;
+        padding: 0.7rem 0.3rem 1.3rem;
+      }
+    }
     .product-slider {position:relative;width:100%;max-width:180px;height:180px;margin:0 auto 0.5rem auto;}
     .product-slider img {width:100%;height:180px;object-fit:cover;border-radius:10px;}
     .slider-dots {display: flex;justify-content: center;margin-top: 8px;gap: 8px;}
@@ -93,14 +93,40 @@
     .btn-buy {background:#cc6d8c;color:white;padding:0.5rem 1.2rem;border-radius:20px;font-weight:600;cursor:pointer;border:none;margin-top:0.7rem;font-size:1.1rem;transition:all 0.15s;}
     .btn-buy:disabled {background:#ccc;cursor:not-allowed;}
     .stock-info {font-size:0.8rem;color:#a0445e;margin-top:0.3rem;}
-    .cart-modal {position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:999;overflow-y:auto;padding:1rem;}
-    .cart-content {background:#fff;padding:2rem 1.2rem;border-radius:10px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;}
-    .checkout-form label {display:block;margin-top:1rem;}
-    .checkout-form input, .checkout-form select {width:100%;padding:0.6rem;margin-top:0.4rem;border:1px solid #ccc;border-radius:5px;font-size:1rem;}
-    .close-btn {position:absolute;right:1rem;top:1rem;font-size:1.6rem;cursor:pointer;color:#999;}
-    ul.cart-items {list-style:none;padding:0;margin:1rem 0;max-height:250px;overflow-y:auto;border-top:1px solid #ccc;border-bottom:1px solid #ccc;}
-    ul.cart-items li {display:flex;justify-content:space-between;align-items:center;padding:0.7rem 0;border-bottom:1px solid #eee;}
-    ul.cart-items li:last-child {border-bottom:none;}
+    /* Floating Cart Panel Styles */
+    .floating-cart-panel {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 340px;
+      max-width: 95vw;
+      background: #fff;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+      border-radius: 14px;
+      z-index: 3001;
+      padding: 0;
+      overflow-y: auto;
+      max-height: 80vh;
+      transition: box-shadow 0.2s;
+    }
+    .floating-cart-panel .cart-content {
+      padding: 1.2rem 1rem 1.5rem 1rem;
+    }
+    @media (max-width:600px) {
+      .shop-grid {grid-template-columns: repeat(2, 1fr);gap: 0.8rem;padding: 0.5rem;}
+      .product-card {padding: 0.5rem;}
+      .filters {flex-direction: column;gap: 0.6rem;padding: 0.5rem;margin: 0.5rem;width: 100%;box-sizing:border-box;}
+      .floating-cart-panel {
+        width: 96vw;
+        right: 2vw;
+        bottom: 2vw;
+        max-height: 80vh;
+        border-radius: 10px;
+      }
+      .floating-cart-panel .cart-content {
+        padding: 1rem 0.5rem 1.2rem 0.5rem;
+      }
+    }
     .quantity-control {display:flex;align-items:center;gap:0.4rem;}
     .quantity-control button {background:#cc6d8c;border:none;color:white;font-weight:700;font-size:1rem;padding:0 10px;cursor:pointer;border-radius:5px;user-select:none;}
     .quantity-control span {min-width:25px;text-align:center;display:inline-block;font-weight:600;}
@@ -139,42 +165,6 @@
     .hamburger.open span:nth-child(3) {
       transform: rotate(-45deg) translate(7px, -7px);
     }
-    /* Floating Cart Button */
-    .floating-cart-btn {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #cc6d8c;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 58px;
-      height: 58px;
-      box-shadow: 0 4px 14px rgba(204,109,140,0.25);
-      font-size: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 2002;
-      transition: background 0.18s, transform 0.16s;
-    }
-    .floating-cart-btn:hover, .floating-cart-btn:focus {
-      background: #a0846a;
-      transform: scale(1.08);
-    }
-    .cart-count-float {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: #fff;
-      color: #cc6d8c;
-      font-size: 0.95rem;
-      font-weight: bold;
-      border-radius: 50%;
-      padding: 1.5px 6px;
-      pointer-events: none;
-    }
     @media (max-width:900px) {
       .hamburger {
         display: flex;
@@ -197,28 +187,6 @@
       .navbar {
         position: relative;
         z-index: 1010;
-      }
-    }
-    @media (max-width:600px) {
-      .navbar {
-        min-height: 64px;
-        height: 64px;
-        padding: 0 0.5rem;
-      }
-      .shop-grid {grid-template-columns: repeat(2, 1fr);gap: 0.8rem;padding: 0.5rem;}
-      .product-card {padding: 0.5rem;}
-      .filters {flex-direction: column;gap: 0.6rem;padding: 0.5rem;margin: 0.5rem;width: 100%;box-sizing:border-box;}
-      .floating-cart-btn {
-        bottom: 14px;
-        right: 14px;
-        width: 50px;
-        height: 50px;
-        font-size: 1.45rem;
-      }
-      .cart-count-float {
-        top: 8px;
-        right: 8px;
-        font-size: 0.8rem;
       }
     }
   </style>
@@ -311,8 +279,8 @@
 
     <!-- PRODUCT DETAILS MODAL -->
     <div v-if="selectedProduct" class="product-details-modal" @click.self="closeProduct">
-  <div class="product-details-content">
-    <span class="close-btn" @click="closeProduct">&times;</span>
+      <div class="product-details-content">
+        <span class="close-btn" @click="closeProduct">&times;</span>
         <div class="product-slider"
           @touchstart="touchStart($event, -1, true)"
           @touchmove="touchMove($event, -1, true)"
@@ -328,18 +296,19 @@
           </div>
         </div>
         <h2>{{ selectedProduct.name }}</h2>
-    <div style="margin:0.3em 0; line-height:1.4;">
-      <div><b>Price:</b> {{ formatPrice(selectedProduct.price) }}</div>
-      <div v-if="selectedProduct.material"><b>Material:</b> {{ selectedProduct.material }}</div>
-      <div v-if="selectedProduct.description"><b>Description:</b> {{ selectedProduct.description }}</div>
-</div>
-<p v-if="selectedProduct.stock === 0" class="stock-info">Out of stock</p>
-<button class="btn-buy" @click="addToCart(selectedProduct)" :disabled="selectedProduct.stock === 0">Add to Cart</button>
+        <div style="margin:0.3em 0; line-height:1.4;">
+          <div><b>Price:</b> {{ formatPrice(selectedProduct.price) }}</div>
+          <div v-if="selectedProduct.material"><b>Material:</b> {{ selectedProduct.material }}</div>
+          <div v-if="selectedProduct.description"><b>Description:</b> {{ selectedProduct.description }}</div>
+        </div>
+        <p v-if="selectedProduct.stock === 0" class="stock-info">Out of stock</p>
+        <button class="btn-buy" @click="addToCart(selectedProduct)" :disabled="selectedProduct.stock === 0">Add to Cart</button>
+      </div>
+    </div>
 
-    <!-- CART MODAL -->
-    <div v-if="showCart" class="cart-modal" @click.self="showCart = false">
-      <div class="cart-content" @click.stop>
-        <span class="close-btn" @click="showCart = false">&times;</span>
+    <!-- FLOATING CART PANEL: Always Visible -->
+    <div class="floating-cart-panel">
+      <div class="cart-content">
         <h2>Your Cart</h2>
         <ul class="cart-items" v-if="cart.length">
           <li v-for="(item, index) in cart" :key="item.id + '-' + (item.color || '')">
@@ -426,16 +395,8 @@
         </div>
       </div>
     </div>
-    <!-- Floating Cart Button -->
-    <button 
-      class="floating-cart-btn" 
-      @click="showCart = true"
-      v-if="cart.length"
-      aria-label="Open Cart"
-    >
-      🛒
-      <span v-if="totalQuantity" class="cart-count-float">{{ totalQuantity }}</span>
-    </button>
+    <!-- END FLOATING CART PANEL -->
+
   </div>
   <script>
     emailjs.init('yEYlWETvh08w892PT');
@@ -444,7 +405,6 @@
       data: {
         currency: 'JMD',
         mobileMenu: false,
-        showCart: false,
         showCheckout: false,
         orderSuccess: false,
         processingOrder: false,
@@ -529,7 +489,7 @@
             name: 'Dachshund',
             price: 1000,
             type: 'bagcharm',
-            stock: 3,
+            stock: 2,
             material: 'Braided Rope, Alloy',
             description: 'High-grade dachshund pendant with braided rope for bags or phone.',
             images: [
@@ -615,7 +575,7 @@
             name: "Turtle Keychain",
             price: 500,
             type: "keychain",
-            stock: 10,
+            stock: 9,
             colors: ["White", "Turquoise"],
             material: 'Resin, Alloy',
             description: 'Charming turtle keychain, available in white or turquoise.',
@@ -813,7 +773,6 @@
               stock: product.stock
             });
           }
-          this.showCart = true;
         },
         removeFromCart(index) { this.cart.splice(index, 1); },
         increaseQuantity(index) {
@@ -947,7 +906,6 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
               this.cart = [];
               this.showCheckout = false;
               this.orderSuccess = false;
-              this.showCart = false;
               this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
               localStorage.setItem('cart', JSON.stringify([]));
             }, 3500);
@@ -960,7 +918,6 @@ Grand Total: J$${(this.cartTotal + this.selectedShippingCost).toFixed(2)}
               this.cart = [];
               this.showCheckout = false;
               this.orderSuccess = false;
-              this.showCart = false;
               this.order = { name: "", email: "", phone: "", address: "", shipping: "", payment: "", notes: "" };
               localStorage.setItem('cart', JSON.stringify([]));
             }, 3500);
