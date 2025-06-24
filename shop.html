@@ -93,6 +93,42 @@
     .btn-buy {background:#cc6d8c;color:white;padding:0.5rem 1.2rem;border-radius:20px;font-weight:600;cursor:pointer;border:none;margin-top:0.7rem;font-size:1.1rem;transition:all 0.15s;}
     .btn-buy:disabled {background:#ccc;cursor:not-allowed;}
     .stock-info {font-size:0.8rem;color:#a0445e;margin-top:0.3rem;}
+    /* Floating Cart Icon Button */
+    .floating-cart-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #cc6d8c;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 58px;
+      height: 58px;
+      box-shadow: 0 4px 14px rgba(204,109,140,0.25);
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 3002;
+      transition: background 0.18s, transform 0.16s;
+    }
+    .floating-cart-btn:hover, .floating-cart-btn:focus {
+      background: #a0846a;
+      transform: scale(1.08);
+    }
+    .cart-count-float {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #fff;
+      color: #cc6d8c;
+      font-size: 0.95rem;
+      font-weight: bold;
+      border-radius: 50%;
+      padding: 1.5px 6px;
+      pointer-events: none;
+    }
     /* Floating Cart Panel Styles */
     .floating-cart-panel {
       position: fixed;
@@ -107,24 +143,61 @@
       padding: 0;
       overflow-y: auto;
       max-height: 80vh;
-      transition: box-shadow 0.2s;
+      transition: box-shadow 0.2s, opacity 0.2s;
+      display: none;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .floating-cart-panel.open {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+      animation: slideIn 0.25s;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
     .floating-cart-panel .cart-content {
       padding: 1.2rem 1rem 1.5rem 1rem;
+      width: 100%;
+      height: auto;
+      overflow-y: auto;
+      position: relative;
+    }
+    .floating-cart-panel .close-btn {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: #cc6d8c;
+      background: none;
+      border: none;
     }
     @media (max-width:600px) {
       .shop-grid {grid-template-columns: repeat(2, 1fr);gap: 0.8rem;padding: 0.5rem;}
       .product-card {padding: 0.5rem;}
       .filters {flex-direction: column;gap: 0.6rem;padding: 0.5rem;margin: 0.5rem;width: 100%;box-sizing:border-box;}
-      .floating-cart-panel {
-        width: 96vw;
+      .floating-cart-panel, .floating-cart-btn {
         right: 2vw;
         bottom: 2vw;
+      }
+      .floating-cart-panel {
+        width: 96vw;
         max-height: 80vh;
         border-radius: 10px;
       }
-      .floating-cart-panel .cart-content {
-        padding: 1rem 0.5rem 1.2rem 0.5rem;
+      .floating-cart-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.45rem;
+      }
+      .cart-count-float {
+        top: 8px;
+        right: 8px;
+        font-size: 0.8rem;
       }
     }
     .quantity-control {display:flex;align-items:center;gap:0.4rem;}
@@ -306,9 +379,21 @@
       </div>
     </div>
 
-    <!-- FLOATING CART PANEL: Always Visible -->
-    <div class="floating-cart-panel">
+    <!-- FLOATING CART ICON BUTTON -->
+    <button 
+      class="floating-cart-btn"
+      @click="showFloatingCart = !showFloatingCart"
+      aria-label="View Cart"
+      style="z-index:3002;"
+    >
+      🛒
+      <span v-if="totalQuantity" class="cart-count-float">{{ totalQuantity }}</span>
+    </button>
+
+    <!-- FLOATING CART PANEL -->
+    <div class="floating-cart-panel" :class="{ open: showFloatingCart }">
       <div class="cart-content">
+        <button class="close-btn" @click="showFloatingCart = false">&times;</button>
         <h2>Your Cart</h2>
         <ul class="cart-items" v-if="cart.length">
           <li v-for="(item, index) in cart" :key="item.id + '-' + (item.color || '')">
@@ -396,7 +481,6 @@
       </div>
     </div>
     <!-- END FLOATING CART PANEL -->
-
   </div>
   <script>
     emailjs.init('yEYlWETvh08w892PT');
@@ -405,6 +489,7 @@
       data: {
         currency: 'JMD',
         mobileMenu: false,
+        showFloatingCart: false,
         showCheckout: false,
         orderSuccess: false,
         processingOrder: false,
@@ -650,34 +735,34 @@
             currentImage: 0
           },
           {
-  id: 17,
-  name: "Adhesive Phone Holder",
-  price: 600,
-  type: "phoneaccessories",
-  stock: 0,
-  colors: ["Pink", "Black"],
-  material: 'Silicone',
-  description: 'Keep your phone exactly where you need it with our sleek, ultra-strong Adhesive Phone Holder. Whether you\'re watching TikToks, video calling, or following recipes in the kitchen, this holder sticks securely to any smooth surface—no tools, no mess.',
-  images: [
-    "https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Octobuddy,%20Silicone%20Suction%20Phone%20Case,%20Suction%20Phone%20Case%20Adhesive%20Mount%20_%20Hands-Free%20Shower%20Phone%20Holder%20_%20Suction%20Cup%20Phone%20Mount%20For%20Kitchen%20Bathroom,%20Black%20+%20Pink.jpg?raw=true",
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/main/2Pcs%20Silicone%20Suction%20Cup%20Phone%20Case%20Mount%20Double%20Sided%2C%20Phone%20Accessories%20Hands-Free%20Sticky%20Phone%20Grip%20for%20Selfies%20and%20Videos%2C%20Anti-Slip%20Phone%20Suction%20Grip%20for%20iPhone%20and%20Android%2C%20Pink.jpg"
-  ],
-  currentImage: 0
-},
+            id: 17,
+            name: "Adhesive Phone Holder",
+            price: 600,
+            type: "phoneaccessories",
+            stock: 0,
+            colors: ["Pink", "Black"],
+            material: 'Silicone',
+            description: 'Keep your phone exactly where you need it with our sleek, ultra-strong Adhesive Phone Holder. Whether you\'re watching TikToks, video calling, or following recipes in the kitchen, this holder sticks securely to any smooth surface—no tools, no mess.',
+            images: [
+              "https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/Octobuddy,%20Silicone%20Suction%20Phone%20Case,%20Suction%20Phone%20Case%20Adhesive%20Mount%20_%20Hands-Free%20Shower%20Phone%20Holder%20_%20Suction%20Cup%20Phone%20Mount%20For%20Kitchen%20Bathroom,%20Black%20+%20Pink.jpg?raw=true",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/main/2Pcs%20Silicone%20Suction%20Cup%20Phone%20Case%20Mount%20Double%20Sided%2C%20Phone%20Accessories%20Hands-Free%20Sticky%20Phone%20Grip%20for%20Selfies%20and%20Videos%2C%20Anti-Slip%20Phone%20Suction%20Grip%20for%20iPhone%20and%20Android%2C%20Pink.jpg"
+            ],
+            currentImage: 0
+          },
           {
-  id: 18,
-  name: "Lace Bow",
-  price: 600,
-  type: "bagcharm",
-  stock: 10,
-  material: 'Polyester, Nylon',
-  description: 'Soft, stylish, and multifunctional, this elegant lace bow does it all. Whether you\'re accessorizing your hair or adding flair to your bag, this piece brings a delicate, feminine touch wherever it goes.',
-  images: [
-    "https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/download%20(4).jpg?raw=true",
-    "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/main/%F0%93%82%83%20%E0%A3%AA%20%E2%8B%86.jpg"
-  ],
-  currentImage: 0
-}
+            id: 18,
+            name: "Lace Bow",
+            price: 600,
+            type: "bagcharm",
+            stock: 10,
+            material: 'Polyester, Nylon',
+            description: 'Soft, stylish, and multifunctional, this elegant lace bow does it all. Whether you\'re accessorizing your hair or adding flair to your bag, this piece brings a delicate, feminine touch wherever it goes.',
+            images: [
+              "https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/download%20(4).jpg?raw=true",
+              "https://raw.githubusercontent.com/waydiamcleod/accessoriesbywaydia.ja/main/%F0%93%82%83%20%E0%A3%AA%20%E2%8B%86.jpg"
+            ],
+            currentImage: 0
+          }
         ],
         cart: [],
         order: {
