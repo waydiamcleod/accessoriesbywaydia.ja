@@ -361,13 +361,15 @@
         Filter by type:
         <select v-model="filters.type">
           <option value="">All</option>
+          <option value="bags">Bags</option>
+          <option value="bathbody">Bath & Body</option>
           <option value="keychain">Keychain</option>
           <option value="hairclip">Hair Clip</option>
           <option value="bottle">Tumblers</option>
-          <option value="cup">Cup</option>
+          <option value="cup">Cups</option>
           <option value="bagcharm">Bag Charm</option>
           <option value="phoneaccessories">Phone Accessories</option>
-          <option value="accessories">Accessories</option>
+          <option value="storage">Storage & Organization.</option>
         </select>
       </label>
       <label>
@@ -761,7 +763,7 @@
             id: 12,
             name: "Hello Kitty Tote Bag",
             price: 1800,
-            type: "bag",
+            type: "bags",
             stock: 7,
             colors: ["Dark Pink", "Blush"],
             material: 'Cotton',
@@ -823,7 +825,7 @@
               id: 16,
             name: "Jewelry Box",
             price: 1500,
-            type: "accessories",
+            type: "storage",
             stock: 11,
               colors: ["Pink", "Black", "Beige", "Blue"],
             material: 'PU Leather, Velvet',
@@ -882,6 +884,21 @@
               ],
             currentImage: 0
           },
+          {
+            id: 20,
+            name: "Exfoliating Gloves",
+            price: 500,
+            type: "bathbody",
+            stock: 0,
+            colors: ["Pink", "Rose Red", "Blue", "Purple"],
+            material: 'Nylon, Polyester, Elastic',
+            description: 'Reveal softer, healthier skin with our Exfoliating Gloves, designed to gently remove dead skin cells and enhance your natural glow.',
+            images: [
+            "https://github.com/waydiamcleod/accessoriesbywaydia.ja/blob/main/12%20Pairs%20Double%20Sided%20Exfoliating%20Gloves%20Body%20Scrubber%20Scrubbing%20Glove%20Bath%20Mitts%20Scrubs%20for%20Shower,%20Body%20Spa%20Massage%20Dead%20Skin%20Cell%20Remover,%2012%20Colors.jpg?raw=true",
+            ""
+              ],
+            currentImage: 0
+          }
         ],
         cart: [],
         order: {
