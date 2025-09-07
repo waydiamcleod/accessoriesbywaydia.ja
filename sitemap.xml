@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.accessoriesbywaydia.com/</loc>
+    <priority>1.00</priority>
+  </url>
+
+  <!-- About page -->
+  <url>
+    <loc>https://www.accessoriesbywaydia.com/about/</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Contact page -->
+  <url>
+    <loc>https://www.accessoriesbywaydia.com/contact/</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Shop page -->
+  <url>
+    <loc>https://www.accessoriesbywaydia.com/shop/</loc>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- FAQ page -->
+  <url>
+    <loc>https://www.accessoriesbywaydia.com/faq/</loc>
+    <priority>0.80</priority>
+  </url>
+</urlset>
