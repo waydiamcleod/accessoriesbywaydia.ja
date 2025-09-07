@@ -1,0 +1,15 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# ------------------------
+# Map clean URLs to .html files
+# ------------------------
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^([a-zA-Z0-9_-]+)$ $1.html [L]
+
+# ------------------------
+# Redirect any .html URLs to clean URLs
+# ------------------------
+RewriteCond %{THE_REQUEST} /([a-zA-Z0-9_-]+)\.html
+RewriteRule ^([a-zA-Z0-9_-]+)\.html$ /$1 [R=301,L]
