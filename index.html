@@ -198,9 +198,9 @@
     <ul :class="['nav-links', { open: mobileMenu }]">
       <li><a href="#hero" @click="mobileMenu = false">Home</a></li>
       <li><a href="#products" @click="mobileMenu = false">Featured</a></li>
-      <li><a href="shop.html" @click="mobileMenu = false">Shop All</a></li>
-      <li><a href="about.html" @click="mobileMenu = false">About</a></li>
-      <li><a href="contact.html" @click="mobileMenu = false">Contact</a></li>
+      <li><a href="/shop" @click="mobileMenu = false">Shop All</a></li>
+      <li><a href="/about" @click="mobileMenu = false">About</a></li>
+      <li><a href="/contact" @click="mobileMenu = false">Contact</a></li>
       <li class="cart-icon" @click="showCart = true" title="View Cart">
         🛒
         <span v-if="cart.length" class="cart-count">{{ totalQuantity }}</span>
@@ -257,17 +257,17 @@
           <h3 class="footer-heading">Quick Links</h3>
           <a href="#hero">Home</a>
           <a href="#products">Products</a>
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
-          <a href="faq.html">FAQ</a> 
-          <a href="legal.html">Privacy & Terms</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+          <a href="/faq">FAQ</a> 
+          <a href="/legal">Privacy & Terms</a>
         </div>
         <div class="footer-col">
           <h3 class="footer-heading">Products</h3>
           <a href="#products">Keychains</a>
           <a href="#products">Bag Charms</a>
           <a href="#products">Accessories</a>
-          <a href="contact.html">Custom Orders</a>
+          <a href="/contact">Custom Orders</a>
         </div>
         <div class="footer-col">
           <h3 class="footer-heading">Connect</h3>
