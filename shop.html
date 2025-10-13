@@ -530,7 +530,6 @@
                 <option value="lynk">Lynk Payment</option>
                 <option value="paypal">PayPal</option>
                 <option value="ncb">NCB Bank Transfer</option>
-                <option value="cod">Cash on Delivery</option>
               </select>
             </label>
             <div v-if="order.payment === 'lynk' || order.payment === 'ncb'" style="margin:10px 0;">
@@ -544,9 +543,6 @@
             </div>
             <div v-if="order.payment === 'ncb'" style="margin:10px 0;">
               <b>After submitting your order, bank details will be shown for manual payment.</b>
-            </div>
-            <div v-if="order.payment === 'cod'" style="margin:10px 0;">
-              <b>Cash on Delivery: Please have exact change ready.</b>
             </div>
             <h4>Shipping: {{ formatPrice(selectedShippingCost) }}</h4>
             <h3>Grand Total: {{ formatPrice(cartTotal + selectedShippingCost) }}</h3>
@@ -753,7 +749,7 @@
             name: 'Large 3pcs Flower Claw Clip',
             price: 800,
             type: 'hairclip',
-            stock: 11,
+            stock: 10,
             colors: ['Yellow White', 'Purple White', 'Jelly Rose', 'Matte Rose'],
             material: 'Acrylic',
             description: 'Cute and colorful flower-shaped hair claw clip, available in multiple colors.',
@@ -1059,7 +1055,7 @@
           let selected = this.shippingOptions.find(opt => opt.label === this.order.shipping);
           if (!selected) return 0;
           if (selected.currency === "USD") {
-            return this.currency === "USD" ? selected.value : selected.value * 150;
+            return this.currency === "USD" ? selected.value : selected.value * 160;
           }
           return selected.value;
         }
@@ -1190,11 +1186,6 @@
           }
           if (this.order.payment === 'ncb') {
             alert(`Please transfer J$${totalAmount} to:\nAccount: 475001613\nName: Waydia McLeod\nBranch: St.Jago Shopping Center Branch\nAfter payment, send proof to mcleodwaydia@gmail.com.`);
-            this.finishOrder();
-            return;
-          }
-          if (this.order.payment === 'cod') {
-            alert("Order placed! Please have exact change ready for Cash on Delivery.");
             this.finishOrder();
             return;
           }
